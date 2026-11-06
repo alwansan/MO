@@ -106,3 +106,9 @@ Official GLES layer docs: https://developer.android.com/ndk/guides/rootless-debu
 - [ ] Stable APK signing secret for future same-package upgrades (no public signing key).
 - [ ] No rootless integration with stock Outlanders; original FPS/graphics locks unchanged.
 Guide docs/OWNED_GLES_LAYER_TEST_AR.md.
+
+## New delivery channel MO-20261107-CHAT-RELEASE-010
+- CI now uploads raw APKs to GitHub Releases on main branch after successful unit tests and build, not a zipped Actions artifact.
+- Each release is tagged `mo-v<appVersion>-run<runNumber>` and contains separate MO Graphics Probe and MO Layer Test APKs.
+- Verify repository Releases API actually shows both APK files after workflow run. `--prerelease` until device test and stable signing.
+- Release documentation `docs/RELEASE_DISTRIBUTION_AR.md`.

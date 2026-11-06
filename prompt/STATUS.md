@@ -103,3 +103,9 @@ P4 owns disposable debug app `com.alwansan.mo.glesprobe`, original GLES intercep
 - Both APKs extracted and ZIP CRC checked. **No real-device P4 activation/injection test yet.**
 - P4.0 first Actions run 42309871683 failed due missing probe JUnit dependency. Corrected at cdb8f29f99985b4e0893db2466990856107cbc5f; later run 42309995020 succeeded probe build, 42310714620 succeeded full v0.4 controls.
 - Owner instructions: uninstall old MO v0.3 if signature mismatch (no active layer in old version), install v0.4 + disposable test APK; open test before enabling for baseline. Under Shizuku UID2000, opt in, observe layer, RESTORE SETTINGS IN MO BEFORE UNINSTALL/UPGRADE, and verify original renderer returned. Do not modify Outlanders.
+
+## Latest MO-20261107-CHAT-RELEASE-010 — User requested direct APK GitHub Releases
+- Changed MO build workflow: no more upload-artifact ZIP. On successful two-module tests/build, package two **raw APK Release assets**, prerelease tagged by version and run number; include SHA256 in release notes. GitHub CLI `gh release create` with workflow contents:write and token, or upload --clobber on rerun.
+- Current repo Releases was empty before this change. First build triggered by workflow update **must be checked** before claiming published URLs.
+- Important owner safety: P4 GLES developer layer settings snapshot is in MO app data. **Restore original settings before uninstall/update**, especially with CI per-run debug signing mismatch. No real game modified.
+- Docs: `docs/RELEASE_DISTRIBUTION_AR.md`.

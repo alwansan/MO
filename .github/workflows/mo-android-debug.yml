@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: mo-build-${{ github.ref }}
@@ -79,16 +79,67 @@ jobs:
       - name: Build debug APKs
         run: gradle --no-daemon --stacktrace :app:assembleDebug :probe:assembleDebug
 
-      - name: SHA-256
-        run: sha256sum app/build/outputs/apk/debug/app-debug.apk probe/build/outputs/apk/debug/probe-debug.apk | tee mo-debug-sha256.txt
+      - name: Prepare individual APK release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP_VERSION="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle | head -n 1)"
+          PROBE_VERSION="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" probe/build.gradle | head -n 1)"
+          test -n "$APP_VERSION"
+          test -n "$PROBE_VERSION"
+          mkdir -p release
+          cp app/build/outputs/apk/debug/app-debug.apk "release/MO-Graphics-Probe-v${APP_VERSION}.apk"
+          cp probe/build/outputs/apk/debug/probe-debug.apk "release/MO-Layer-Test-v${PROBE_VERSION}.apk"
+          unzip -t "release/MO-Graphics-Probe-v${APP_VERSION}.apk" > /dev/null
+          unzip -t "release/MO-Layer-Test-v${PROBE_VERSION}.apk" > /dev/null
+          sha256sum release/*.apk | tee release/SHA256SUMS.txt
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          echo "PROBE_VERSION=$PROBE_VERSION" >> "$GITHUB_ENV"
 
-      - name: Upload installable APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: MO-Graphics-Probe-debug-${{ github.run_number }}
-          path: |
-            app/build/outputs/apk/debug/app-debug.apk
-            probe/build/outputs/apk/debug/probe-debug.apk
-            mo-debug-sha256.txt
-          if-no-files-found: error
-          retention-days: 14
+      # Unlike actions/upload-artifact, GitHub Release assets download as raw APK files,
+      # not a ZIP wrapper. This step runs only after tests and both builds have passed.
+      - name: Publish APKs directly to GitHub Releases
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="mo-v${APP_VERSION}-run${GITHUB_RUN_NUMBER}"
+          TITLE="MO v${APP_VERSION} (experimental build #${GITHUB_RUN_NUMBER})"
+          cat > release-notes.md <<EOF
+          ## MO Android experimental build
+
+          - **MO Graphics Probe:** v${APP_VERSION} — main Android app
+          - **MO Layer Test:** v${PROBE_VERSION} — separate disposable GLES layer test
+
+          Download the **two .apk assets below**, not *Source code (zip)*.
+          Both are experimental debug-signed applications for testing on the owner's phone.
+
+          **Important:** If the owned GLES layer experiment is enabled in MO,
+          **restore the original GPU Debug settings from MO before uninstalling or updating it**.
+          CI debug signing keys can differ between runs; an in-place APK upgrade may fail.
+
+          The test does not alter Monster Hunter Outlanders, unlock real game FPS,
+          require root, unlock the bootloader, clone games, or run a VM.
+
+          Source commit: \`${GITHUB_SHA}\`
+          Build: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+
+          SHA-256 checksums:
+          \`\`\`text
+          $(cat release/SHA256SUMS.txt)
+          \`\`\`
+          EOF
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release/*.apk --clobber --repo "$GITHUB_REPOSITORY"
+            gh release edit "$TAG" --notes-file release-notes.md --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release/*.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "$TITLE" \
+              --notes-file release-notes.md \
+              --prerelease
+          fi
+          echo "Release URL: https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}"

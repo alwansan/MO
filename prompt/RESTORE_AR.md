@@ -55,3 +55,6 @@ Read docs/OWNED_GLES_LAYER_TEST_AR.md, app/src/main/java/com/alwansan/mo/OwnedLa
 
 ## P4 complete build, device test pending
 As of 2026-11-07 GitHub Actions run 42310714620 PASS. Artifact ID13547164678 MO-Graphics-Probe-debug-8 has two APKs. MO v0.4.0-alpha.4 SHA256 74e50eece4eae020d7a9808f97552cbc5d843bf37142b8818282ab106c71b8f7; owned MO Layer Test v0.1.0 SHA256 180c32ab62a06f8e26686d651ad274cf316eb2828a1e52a73a29bca98670b4d0. Read docs/OWNED_GLES_LAYER_TEST_AR.md and prompt/sessions/MO-20261107-CHAT-P4-LAYER-009.md. NEXT: get user's baseline GL_RENDERER, layer-enabled GL_RENDERER and post-restore GL_RENDERER **inside disposable test app**. Never claim Outlanders was altered, and **restore the four global debug settings from MO before uninstalling MO**.
+
+## Release distribution switch (MO-20261107-CHAT-RELEASE-010)
+Owner specifically requests https://github.com/alwansan/MO/releases hosting APK directly, not ZIP. Updated `.github/workflows/mo-android-debug.yml` to test+build two APKs and publish `MO-Graphics-Probe-v<version>.apk` and `MO-Layer-Test-v<version>.apk` in GitHub **prerelease** via gh. Read `docs/RELEASE_DISTRIBUTION_AR.md`; verify latest successful run and actual release assets. Never claim release created before checking. Restore P4 GPU debug settings before uninstalling/updating MO. Debug signing changes across CI runs.

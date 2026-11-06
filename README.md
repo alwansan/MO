@@ -14,7 +14,7 @@ The end goal is to understand why games such as **Monster Hunter Outlanders (`co
 - JUnit logic tests and GitHub Actions automatic debug APK artifact.
 
 ### Build
-[GitHub Actions → MO Android Debug APK](https://github.com/alwansan/MO/actions/workflows/mo-android-debug.yml). On successful run open the run → Artifacts → `MO-Graphics-Probe-debug-...` → download and install `app-debug.apk`. Debug-only, no signed release claimed.
+**Direct APK downloads:** [MO Releases](https://github.com/alwansan/MO/releases) — each successful main-branch build publishes two separate `.apk` release assets (MO Graphics Probe + MO Layer Test), without wrapping them in ZIP. These remain experimental **debug-signed** APKs; installer signatures may differ between builds.
 
 Locally with Android SDK 35, Java17 and Gradle8.11.1:
 ```
@@ -42,3 +42,7 @@ P3 POCO Vulkan results are in docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md.
 
 ## P4 test layer controls
 MO v0.4 has a user-confirmed native GLES layer trial ONLY for disposable MO Layer Test app (com.alwansan.mo.glesprobe). It backs up four developer GPU debug settings with exact presence and values and restores them after the trial. User must restore before uninstalling/updating MO. No change to Monster Hunter Outlanders or other games; unlocking mock FPS in test does not unlock real FPS. Docs: docs/OWNED_GLES_LAYER_TEST_AR.md.
+
+
+## Direct GitHub Releases distribution
+Workflow `.github/workflows/mo-android-debug.yml` runs Java tests, builds **both APKs**, verifies APK archives, and creates a pre-release tagged `mo-v<version>-run<number>`. GitHub Releases contains raw `.apk` assets only, not Actions ZIP artifacts. Restore GPU Debug settings **before uninstalling or updating MO** if its owned GLES experiment was enabled. See docs/RELEASE_DISTRIBUTION_AR.md.
