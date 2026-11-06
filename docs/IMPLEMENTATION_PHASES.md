@@ -50,3 +50,10 @@ Important limitation: without real root, cooperation, or modifying a target APK,
 - [ ] P2 CI result and user phone service connectivity: check latest GitHub Actions.
 - [ ] Real native Vulkan GPU metadata and owned-app GLES layer P3.
 See docs/DEVICE_FEEDBACK_2026-11-07.md. No claim of FPS unlock or game spoof.
+
+## P2 build gate — pass
+- [x] https://github.com/alwansan/MO/actions/runs/42307946638 SUCCESS all steps (unit tests, assembleDebug, checksum, upload).
+- [x] Valid APK artifact `MO-Graphics-Probe-debug-3` id13547166555, 125919 bytes sha256 7a98dbbb0393256210b76249c79505df34b89e34e98c3677545cd0d6b5e23d5b.
+- [ ] P2 Shizuku read-only UserService runs on POCO and returns Game Mode/ANGLE (owner install/report required).
+- [ ] Vulkan declared features returned on POCO.
+- [ ] Actual Outlanders graphics options unlock remains **not implemented** and may not be achievable with Shizuku under current stock device constraints.

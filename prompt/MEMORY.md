@@ -67,3 +67,6 @@ GitHub Actions first run 42305774716 failed because setup-android@v3 called miss
 
 ## User device proof and P2 MO-20261107-CHAT-P2-DEVICE-007
 MO v0.1.0-alpha.1 worked on POCO F5 Pro. Report: Shizuku API13 UID2000 permission GRANTED; Snapdragon8+Gen1 SM8475 Adreno730 GLES3.2 driver V@0615.95, display120Hz; Outlanders global com.tencent.mhadv version1.0.9.0.3308842. New v0.2.0-alpha.2 source adds AIDL UserService for *strict fixed read-only* GameMode and ANGLE settings, and Vulkan feature declarations. Wait for CI/P2 real-device test; no root, app clones or game edits.
+
+## P2 CI success 2026-11-07
+MO alpha2 built successfully, GitHub Actions run42307946638 artifact MO-Graphics-Probe-debug-3 ID13547166555 APK125919 bytes sha256 7a98dbbb0393256210b76249c79505df34b89e34e98c3677545cd0d6b5e23d5b. Read-only P2 app has limited Shizuku AIDL UserService and Vulkan declared capability screen; not yet tested on POCO. Direct APK shared in current chat, but future session should retrieve build artifact while retained. User P1 success evidence in docs/DEVICE_FEEDBACK_2026-11-07.md. Do not misreport FPS/quality unlocked in Outlanders.

@@ -60,3 +60,10 @@ P0 research only. Game clarified Outlanders com.tencent.mhadv, not Monster Hunte
 
 ## Latest MO-20261107-CHAT-P2-DEVICE-007
 User on-device proof confirms MO P1 success: Shizuku UID2000 permission GRANTED API13, Qualcomm Adreno730 GLES3.2 V@0615.95, Outlanders global com.tencent.mhadv v1.0.9.0.3308842, 120Hz. P2 source implements read-only Shizuku UserService + Android Vulkan declared features, version0.2.0-alpha.2. Build validation required from GitHub Actions. No on-device P2 test, no game spoof/unlock.
+
+## P2 CI verified 2026-11-07
+- GitHub Actions run https://github.com/alwansan/MO/actions/runs/42307946638 **COMPLETED SUCCESS** for commit 598fc91eb3324762765ef9e7a38fc2c7410e23ae.
+- JUnit tests including read-only allowlist passed; Android build and artifact upload passed.
+- Artifact `MO-Graphics-Probe-debug-3` ID `13547166555`, APK 125919 bytes, SHA256 `7a98dbbb0393256210b76249c79505df34b89e34e98c3677545cd0d6b5e23d5b`.
+- APK ZIP and artifact CRC checked after download; direct v0.2.0-alpha2 APK provided in current chat.
+- **Still untested on physical device:** Shizuku UserService connection, HyperOS cmd game list-modes/list-configs, ANGLE reads, Vulkan feature reporting. Need owner report before planning write operations.
