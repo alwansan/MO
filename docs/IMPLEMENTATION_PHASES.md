@@ -63,3 +63,12 @@ See docs/DEVICE_FEEDBACK_2026-11-07.md. No claim of FPS unlock or game spoof.
 - Android v0.2 certificate SHA256: `4d2e87fa998d2c8c901c6e8f21417fbe28ce6b2f8109e35cb8dd7ef46f1be365`.
 - The only safe immediate update path is uninstall **MO** only, install v0.2. Existing Shizuku and original Outlanders untouched.
 - Implement stable signing using owner-provisioned **GitHub Actions encrypted Secrets** before next release. Never publish private keystore in repo or chat. Changing keys later again means uninstall one final time unless managed signing key transition is available on OS and target.
+
+## P2 on-device success / P3 Vulkan MO-20261107-CHAT-P3-VULKAN-008
+- [x] User v0.2 real device UserService returned UID2000 + Game Mode: Outlanders [standard,custom], current standard, no interventions.
+- [x] ANGLE per-app selection null; debug layers 0; props taro/adreno/SM8475; declared Vulkan1.1/compute0/level1.
+- [x] Fixed literal \\n in report source.
+- [ ] P3 native VkPhysicalDeviceProperties on device (new v0.3 source; build/test required).
+- [ ] Own-app official GLES/Vulkan layer proof; not a general closed game hook.
+- [ ] Stable signing Secrets configuration (CI debug cert changes on each run, MO reinstall likely required).
+See docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md.

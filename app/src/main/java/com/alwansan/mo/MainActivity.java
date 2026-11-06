@@ -43,6 +43,7 @@ public final class MainActivity extends Activity {
     private TextView gpuOutput;
     private TextView gameOutput;
     private TextView vulkanOutput;
+    private TextView nativeVulkanOutput;
     private TextView shellOutput;
     private boolean probeBound = false;
     private boolean probeConnecting = false;
@@ -98,6 +99,7 @@ public final class MainActivity extends Activity {
         gameOutput.setText(GameInventory.inspect(this));
         refreshGraphics();
         vulkanOutput.setText(VulkanFeatures.inspect(this));
+        refreshNativeVulkan();
 
         try {
             Shizuku.addBinderReceivedListenerSticky(receivedListener);
@@ -141,7 +143,7 @@ public final class MainActivity extends Activity {
         root.addView(heading);
 
         TextView subtitle = text(
-                "النسخة التجريبية 0.2.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
+                "النسخة التجريبية 0.3.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
                 14, COLOR_MUTED, false);
         subtitle.setPadding(0, dp(6), 0, dp(18));
         root.addView(subtitle);
@@ -170,6 +172,13 @@ public final class MainActivity extends Activity {
         vulkanOutput = text("فحص Vulkan...", 14, COLOR_TEXT, false);
         vkCard.addView(vulkanOutput);
         vkCard.addView(action("تحديث دعم Vulkan", () -> vulkanOutput.setText(VulkanFeatures.inspect(this))));
+
+        LinearLayout nativeVkCard = card(root, "03C  /  VULKAN NATIVE GPU",
+                "قراءة فعلية من vkGetPhysicalDeviceProperties داخل MO، وليست عملية اللعبة.");
+        nativeVulkanOutput = text("جارٍ فحص Vulkan...", 14, COLOR_TEXT, false);
+        nativeVulkanOutput.setTextIsSelectable(true);
+        nativeVkCard.addView(nativeVulkanOutput);
+        nativeVkCard.addView(action("إعادة فحص Vulkan GPU", this::refreshNativeVulkan));
 
         LinearLayout gameCard = card(root, "04  /  GAME TARGETS",
                 "فحص وجود الألعاب والإصدارات فقط، بدون قراءة ملفاتها أو تشغيلها.");
@@ -356,15 +365,26 @@ public final class MainActivity extends Activity {
         }, "MO-GLES-ReadOnly").start();
     }
 
+    private void refreshNativeVulkan() {
+        nativeVulkanOutput.setText("جارٍ قراءة VkPhysicalDeviceProperties...");
+        new Thread(() -> {
+            String result = NativeVulkanProbe.inspect();
+            runOnUiThread(() -> {
+                if (!isFinishing() && !isDestroyed()) nativeVulkanOutput.setText(result);
+            });
+        }, "MO-Vulkan-Native-ReadOnly").start();
+    }
+
     private void copyReport() {
-        String report = "MO Graphics Probe v0.2.0-alpha.2\n"
+        String report = "MO Graphics Probe v0.3.0-alpha.3\n"
                 + "Local read-only diagnostics\n\n"
                 + "[SHIZUKU]\n" + shizukuOutput.getText() + "\n\n"
                 + "[DEVICE]\n" + deviceOutput.getText() + "\n\n"
                 + "[OPENGL ES]\n" + gpuOutput.getText() + "\n\n"
                 + "[GAMES]\n" + gameOutput.getText() + "\n\n"
-                + "[VULKAN SUPPORT]\\n" + vulkanOutput.getText() + "\\n\\n"
-                + "[SHIZUKU SYSTEM READ-ONLY]\\n" + shellOutput.getText() + "\\n\\n"
+                + "[VULKAN SUPPORT]\n" + vulkanOutput.getText() + "\n\n"
+                + "[SHIZUKU SYSTEM READ-ONLY]\n" + shellOutput.getText() + "\n\n"
+                + "[VULKAN NATIVE GPU]\n" + nativeVulkanOutput.getText() + "\n\n"
                 + "No game was modified. No root was used.";
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);

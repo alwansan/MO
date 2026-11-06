@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(mo_vulkan_probe LANGUAGES CXX)
+add_library(mo_vulkan SHARED native_vulkan.cpp)
+target_compile_features(mo_vulkan PRIVATE cxx_std_17)
+target_link_libraries(mo_vulkan vulkan)

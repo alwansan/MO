@@ -73,3 +73,8 @@ MO alpha2 built successfully, GitHub Actions run42307946638 artifact MO-Graphics
 
 ## APK signing compatibility 2026-11-07
 Android v0.1 to v0.2 debug certificates differ due to per-run GitHub Actions debug signing. v1 cert SHA256 6ea43d29063eae454fa7769c20392cd58effe4653585d79df5c5384b3ce7a2da, v2 4d2e87fa998d2c8c901c6e8f21417fbe28ce6b2f8109e35cb8dd7ef46f1be365. User must uninstall MO (only MO) before installing alpha2; no game data touched. Long-term stable signing requires private keystore via repo secret; never store signing key in public repository. Document in docs/IMPLEMENTATION_PHASES.md.
+
+## P2 confirmed and P3 native Vulkan MO-20261107-CHAT-P3-VULKAN-008
+- POCO test v0.2: Shizuku UserService worked UID2000. Outlanders com.tencent.mhadv v1.0.9.0.3308842: `cmd game list-modes` current standard available [standard,custom]; `list-configs` no interventions. ANGLE pkgs/values null, debug gpu layers 0, ro.board.platform taro, Vulkan hardware adreno, SoC SM8475. Android advertises Vulkan1.1. No actual game tier unlocked.
+- v0.3 source adds actual vkEnumeratePhysicalDevices/vkGetPhysicalDeviceProperties **only in MO**, NDK native ARM64; fixes report formatting and versions. Verify CI before reporting success.
+- Game Mode custom ≠ FPS unlock. ANGLE null means no driver selection, not absence of ANGLE.

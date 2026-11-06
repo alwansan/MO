@@ -32,3 +32,6 @@ All code here is independently written. Third-party iUnlockerGL proprietary bina
 
 ## P2 alpha.2
 Owner confirmed on POCO that Shizuku API13 UID2000 is GRANTED and Outlanders is installed. Version 0.2.0-alpha.2 adds fixed *read-only* UserService checking Android Game Mode and ANGLE global values for com.tencent.mhadv, plus declared Vulkan feature status (not actual Vulkan GPU driver properties). No settings or app changes. See docs/DEVICE_FEEDBACK_2026-11-07.md.
+
+## P3 v0.3 native Vulkan inspection (read only)
+2026-11-07 second POCO report verified Shizuku UserService UID2000, Game Mode [standard,custom] but **no configured intervention**, ANGLE selection null and declared Vulkan1.1. V0.3 adds original NDK C++ `vkEnumeratePhysicalDevices` and `vkGetPhysicalDeviceProperties` inside MO's own app to measure the actual Vulkan device, API/driver version and hardware limits. Android ROM/driver may expose different capability tiers in different applications; this does not spoof Outlanders or force new graphical modes. Report newline formatting fixed. APK CI validates build; user must validate Vulkan on device.

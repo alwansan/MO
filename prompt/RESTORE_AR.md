@@ -40,3 +40,6 @@ The GitHub Actions P2 run 42307946638 SUCCEEDED. Artifact ID13547166555, name MO
 
 ## Important debug install constraint
 v0.1 and v0.2 are signed by **different per-run GitHub Actions debug keys**, cannot upgrade in place. User advised uninstall MO only before alpha2; don't uninstall Shizuku or games. Future stable signing needs private keystore GitHub Secret, not public key source commit. See docs/IMPLEMENTATION_PHASES.md.
+
+## Session MO-20261107-CHAT-P3-VULKAN-008 — P2 verified and native Vulkan build
+Read docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md, app/src/main/cpp/native_vulkan.cpp and NativeVulkanProbe.java. User P2 report: Shizuku UID2000 works; Outlanders game mode [standard,custom] no interventions, ANGLE selection null, Vulkan declared1.1. New v0.3 source adds real native physical GPU properties in **MO process** only, NDK/CMake, and fixes literal \\n report. Check GitHub Actions results, repair compile problems, then get user device test. Never suggest this by itself unlocks FPS or changes game identity.

@@ -72,3 +72,9 @@ User on-device proof confirms MO P1 success: Shizuku UID2000 permission GRANTED 
 - Verified v2 APK signature certificate SHA256 `4d2e87fa998d2c8c901c6e8f21417fbe28ce6b2f8109e35cb8dd7ef46f1be365` differs from v1 `6ea43d29063eae454fa7769c20392cd58effe4653585d79df5c5384b3ce7a2da` because GitHub Actions uses ephemeral per-run debug keystore. Android in-place update therefore fails with signature mismatch.
 - Owner told to **uninstall MO Graphics Probe only**, then install alpha2; neither Shizuku nor games should be removed. P1 app had no persistent user/game data.
 - Future stable update signing must use private signing key stored in GitHub Actions Secrets (never commit private signing key to public MO). Add workflow support after secure credential setup; no key can be recovered from unsigned release bundles or APK.
+
+## Latest MO-20261107-CHAT-P3-VULKAN-008 — P2 device report verified; P3 native Vulkan source
+- User-supplied MO v0.2 report proves Shizuku UID2000 GRANTED, Game Mode standard/custom no intervention; ANGLE pkgs/values null; GPU debug layer 0; ro.board.platform taro and ro.hardware.vulkan adreno. Android declares Vulkan 1.1.
+- Stored evidence docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md. **No game identity modification or FPS unlock has occurred**.
+- New source v0.3.0-alpha.3: JNI Vulkan native GPU properties in own process, ARM64 NDK/CMake, fixed report literal \\n. Check latest GitHub Actions and device before claiming full success.
+- Still debug APK ephemeral signing; uninstall only MO to install update if signature mismatch, never game or Shizuku.

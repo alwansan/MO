@@ -49,6 +49,24 @@ jobs:
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" --install "platforms;android-35" "build-tools;35.0.0"
           echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
 
+      - name: Verify native build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          SDKMANAGER="$(command -v sdkmanager || true)"
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -name sdkmanager -type f | sort -V | tail -n 1)"
+          fi
+          if [ ! -d "$SDK_ROOT/ndk/27.3.13750724" ]; then
+            "$SDKMANAGER" --sdk_root="$SDK_ROOT" --install "ndk;27.3.13750724"
+          fi
+          if [ ! -d "$SDK_ROOT/cmake/3.31.5" ]; then
+            "$SDKMANAGER" --sdk_root="$SDK_ROOT" --install "cmake;3.31.5"
+          fi
+          test -x "$SDK_ROOT/ndk/27.3.13750724/ndk-build"
+          test -x "$SDK_ROOT/cmake/3.31.5/bin/cmake"
+
       - name: Gradle 8.11.1
         uses: gradle/actions/setup-gradle@v4
         with:
