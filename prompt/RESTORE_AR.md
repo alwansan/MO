@@ -28,3 +28,6 @@
 
 ## تنفيذ P1 — MO-20261107-CHAT-IMPLEMENT-006
 بدأ المستخدم التنفيذ رسميًا. اقرأ `docs/IMPLEMENTATION_PHASES.md`, `app/src/main/java/com/alwansan/mo/MainActivity.java`, `GraphicsProbe.java`, `PrivilegeGate.java`, `GameInventory.java`, و`.github/workflows/mo-android-debug.yml`. لا تعد الحالة P0 فقط. لا روت ولا VMOS ولا App Cloner. أول محاولة Actions رقم 42305774716 فشلت في إعداد Android SDK بسبب أداة 'tools' قديمة، وعدّل workflow؛ افحص أحدث run وحل الفشل التالي قبل إعلان APK جاهز. التطبيق P1 يشخّص ولا يحقن اللعبة.
+
+## البناء الأول نجح
+التشغيل Actions `42305983786` نجح بجميع الخطوات، Artifacts اسم `MO-Graphics-Probe-debug-2` ID `13545813166`. APK SHA256 `13c72cbb626e4ec6238df7e5c9262c5781b1f819487753c568c90befe2a2fba2`. لا تكرر مشكلة workflow رقم 42305774716، كانت SDK tools غير متاحة وقد أصلحناها. المهم: البناء ناجح فقط؛ ننتظر اختبار هاتف POCO وصلاحيات Shizuku. عند الاستعادة اطلب تقرير MO من المستخدم إذا لم يكن مرفقًا، ثم طور P2.

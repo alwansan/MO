@@ -61,3 +61,6 @@ User corrected exact title: Monster Hunter Outlanders com.tencent.mhadv, NOT Mon
 - Implemented original Android Java source as `com.alwansan.mo`: Shizuku API/provider 13.1.5 UID probe, EGL14 GLES glGetString in own process, Android device identity + 4 target package versions, local report, no network/manifest storage/privileged shell commands; P1 is a probe not a game unlocker.
 - AGP8.9.2/Gradle8.11.1/Java17, API35, official Shizuku deps; GitHub Actions workflow.
 - First CI failed in setup-android@v3 unavailable SDK package 'tools' before source compilation; workflow changed to use hosted runner SDK.
+
+## P1 CI result 2026-11-07
+GitHub Actions first run 42305774716 failed because setup-android@v3 called missing SDK package 'tools'. Fixed via hosted Android SDK. Successful run 42305983786 commit 817960c40d97ad5216224920ff1221ccc602c9f8 built 112,063-byte app-debug.apk, SHA256 13c72cbb626e4ec6238df7e5c9262c5781b1f819487753c568c90befe2a2fba2; artifact ID 13545813166, name MO-Graphics-Probe-debug-2. Unit tests passed. APK archive locally verified, not on-device. Owner can retrieve from run and install on POCO. Next task: read user's diagnostics before claiming any game spoof.

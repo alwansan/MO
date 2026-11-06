@@ -49,3 +49,11 @@ P0 research only. Game clarified Outlanders com.tencent.mhadv, not Monster Hunte
 - Source commit `ca3378fae3b2d5ae9f488486d7af0332856f869a` adds native Android read-only app + Shizuku 13.1.5, EGL probe, package inventory, JUnit, GitHub Action.
 - First CI attempt: https://github.com/alwansan/MO/actions/runs/42305774716 FAILED **before compilation** in android-actions/setup-android@v3 because it tried unavailable SDK package 'tools'. This follow-up corrects workflow to use preinstalled runner SDK. Check new run status; don't claim APK built until actual success.
 - Next: repair any compiler/dependency issues from CI; publish only debug artifact, ask user for on-device feedback.
+
+## P1 build verification — same session MO-20261107-CHAT-IMPLEMENT-006
+- **CI success confirmed**: https://github.com/alwansan/MO/actions/runs/42305983786 (push SHA 817960c40d97ad5216224920ff1221ccc602c9f8).
+- JUnit `testDebugUnitTest` success; `assembleDebug` success; APK hash step success; artifact uploaded.
+- Artifact name `MO-Graphics-Probe-debug-2`, artifact ID 13545813166. Installable APK `app-debug.apk`, 112,063 bytes, SHA256 `13c72cbb626e4ec6238df7e5c9262c5781b1f819487753c568c90befe2a2fba2`.
+- Connector artifact downloaded and exact bytes rechecked locally (APK ZIP CRC good, 3 DEX files). This is **not** a real-device UI test.
+- **Next waiting on POCO device evidence**: install debug APK, authorize Shizuku through its normal UI, confirm binder UID 2000/GLES renderer/game version, copy report.
+- No root, no game patches. Current P1 is diagnostics only. Further P2 code should build against this successful baseline.

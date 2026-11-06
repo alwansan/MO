@@ -31,3 +31,15 @@ P4 exploratory:
 - Do not integrate iUnlockerGL proprietary components into public MO.
 
 Important limitation: without real root, cooperation, or modifying a target APK, no general third-party game process hooks are available from Shizuku shell UID2000. Do not claim otherwise.
+
+## Verified build — 2026-11-07
+- [x] Build workflow SDK fix after obsolete tools package failure.
+- [x] Run https://github.com/alwansan/MO/actions/runs/42305983786 **SUCCESS**.
+- [x] `:app:testDebugUnitTest` and `:app:assembleDebug` both success.
+- [x] Artifact uploaded: `MO-Graphics-Probe-debug-2` (ID `13545813166`).
+- [x] APK bytes locally tested as ZIP after downloading GitHub artifact.
+- [x] SHA256: `13c72cbb626e4ec6238df7e5c9262c5781b1f819487753c568c90befe2a2fba2`.
+- [ ] UI, permissions and GLES results verified by user on POCO F5 Pro.
+- [ ] Shizuku read-only UserService and supported settings diagnostics P2.
+- [ ] In-process graphics instrumentation proof in our own app only P3.
+**Never turn build success into an assertion of rootless GPU spoof inside a commercial title.**
