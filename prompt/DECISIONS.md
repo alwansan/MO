@@ -29,3 +29,18 @@
 
 ## ADR-010 — Public GitHub != private binary storage
 **Accepted.** User's intention is personal but alwansan/MO visibility is public; store original research reports only, no third-party proprietary code/assets.
+
+## ADR-011 (MO-20261107-CHAT-ECOSYSTEM-003) — Layered rootless strategies
+**Accepted.** Classify every mechanism: developer graphics settings, eligible GLES/VK layer, app-owned library, APK rewrite, virtual container, root-only hook. Show different prerequisites. Shizuku is a shell bridge only.
+
+## ADR-012 — Never automatically uninstall a user's app
+**Accepted.** Upstream KaosGFX includes uninstall on signature mismatch, with inadequate preservation of app-private data. Our implementation must stop on mismatch and only experiment with own disposable test packages.
+
+## ADR-013 — No accidental third-party publication
+**Accepted.** Keep original third-party binaries, REA/JADX/Node uploads and future private APKs out of public MO. External MIT/BSD/GPL/AGPL reference links only until an actual license-compliant import is necessary and reviewed.
+
+## ADR-014 — Hardware-specific evidence before claims
+**Accepted.** Adreno 750 rootless README results do not prove Adreno 730/HyperOS Android 15 success. Require on-device Vulkan renderer proof for every driver change.
+
+## ADR-015 — Prioritize independent APK-internal bootstrap research
+**Accepted as next-phase design only.** Own Android test app first; never silent patch of stock third-party game. Test first-party GLES/VK layers, then optional app-owned component factory without root.

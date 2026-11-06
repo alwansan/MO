@@ -15,3 +15,8 @@
 - `sessions/`: سجلات الدورات المنفصلة؛ لا تفترض أن STATUS أحدث من كل جلسة.
 
 إذا تعارضت الملاحظات، افحص الأدلة والتاريخ وHEAD في GitHub؛ لا تدمج افتراضات مع نتائج مختبرة.
+
+## أبحاث جديدة 2026-11-07
+- `../research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md` مصفوفة المشاريع والطرق والمخاطر.
+- `../research/POC_TEST_MATRIX_AR.md` تجارب إثبات التحميل والحقن المسموح دون روت.
+- `../research/UPLOADED_TOOLING_INVENTORY.md` بيانات أدوات REA/JADX/Node المرفوعة (بصمات، من دون تشغيل).

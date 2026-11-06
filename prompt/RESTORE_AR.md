@@ -16,3 +16,6 @@
 ## إلزامي بعد جلسة MO-20261107-CHAT-STATIC-002
 اقرأ `prompt/sessions/MO-20261107-CHAT-STATIC-002.md` و`docs/ROOTLESS_GRAPHICS_LAYERS_AR.md` و`docs/IUNLOCKER_STATIC_ARCHITECTURE_AR.md` و`research/reports/2026-11-07-static-audit.md`.
 المسار الجديد: تجربة طبقات GLES/Vulkan الخارجية على **تطبيق تجريبي debug أو opt-in فقط**؛ لا تقول إن الحقن يعمل في ألعاب الإنتاج المغلقة مع Shizuku. الملفات المرفوعة الأصلية لا تُنسخ إلى MO العام. لا تُفعّل ANGLE عام لكل التطبيقات. التجارب المحلية الحالية فقط: فحص أرشيفات واختبارات بايثون؛ لا اختبار حقيقي لهاتف أو APK.
+
+## آخر توسعة بحثية (MO-20261107-CHAT-ECOSYSTEM-003)
+اقرأ أيضًا `prompt/sessions/MO-20261107-CHAT-ECOSYSTEM-003.md`, `research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md`, `research/POC_TEST_MATRIX_AR.md`, `research/UPLOADED_TOOLING_INVENTORY.md`. لا تخلط GAMA (HWUI switch) مع spoof GL/Vulkan داخل لعبة. KaosGFX يحقق مساره المعلن بدون روت عبر **تعديل APK وإعادة توقيعه**، وليس Shizuku يحقن العملية الأصلية. لا تعيد تثبيت أي لعبة أصلية أو تحذفها عند اختلاف التوقيع؛ قد تضيع بياناتها الداخلية. الثلاثة أدوات المرفوعة موجودة فقط في محادثة اليوم، وقد تحتاج إعادة رفعها مستقبلاً عند التحليل الثنائي. الحالة P0؛ لم يُبنَ APK أو يُختبر على الجهاز.

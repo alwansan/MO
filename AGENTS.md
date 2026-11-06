@@ -18,3 +18,8 @@
 - External GLES/Vulkan layer proof is authorized for **eligible debuggable/opt-in** apps during an implementation phase; Android forbids unconsented injection in stock nondebuggable apps. Do not claim Shizuku bypasses this restriction.
 - For P0 research experiments, pure static read-only tools and local test fixtures are allowed; Android builds/privileged device changes remain off until phase change.
 - Never set `angle_gl_driver_all_angle=1` (documented boot failure risk).
+
+## Addendum MO-20261107-CHAT-ECOSYSTEM-003
+- Read `research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md` and `research/POC_TEST_MATRIX_AR.md` after restore. Don't conflate GAMA HWUI Skia setting with GPU spoofing.
+- Protect original installed games and internal app data: NEVER use third-party APK patcher auto-uninstall/re-sign-and-replace flow on them. Only self-owned disposable test APK and explicit device-owner operation in later phase.
+- Source review of GPLv3/AGPLv3/BSD/MIT projects is allowed; imports and redistribution demand compatibility compliance, attribution and testing. Public MO is publication.

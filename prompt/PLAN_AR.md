@@ -75,3 +75,16 @@ Source URL + date/version, before/after device logs, adb identity, screenshots a
 6. سجل نتائج الألعاب التي **تتيح طبقات خارجية** فقط. الألعاب المغلقة non-debuggable التي لا تتيحها: حظر مسار الحقن الخارجي بوضوح.
 الدليل: `docs/ROOTLESS_GRAPHICS_LAYERS_AR.md` و`docs/IUNLOCKER_STATIC_ARCHITECTURE_AR.md`.
 الاختبار الفعلي الآن: بايثون read-only للمصادر، 2/2 اختبارات ناجحة؛ لم يُجرّب حقن حي على الجهاز ولم يُبنَ APK.
+
+## ملحق 2026-11-07 — مقارنة مشاريع الطرف الثالث (MO-20261107-CHAT-ECOSYSTEM-003)
+المراجع الأساسية الجديدة: `research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md` و`research/POC_TEST_MATRIX_AR.md`.
+
+**تحديث الخيارات حسب قدرة التنفيذ الحقيقي:**
+- GAMA مفيد لبنية Shizuku والأوامر المقيدة والتراجع؛ يغير `debug.hwui.renderer` لواجهة النظام Skia وليس معرف GPU داخل لعبة Vulkan.
+- KaosGFX يثبت إمكانية *تصميم* حقن مدمج في APK جديد بتعديل `AppComponentFactory` وإضافة native hooks وتعريفات Adreno؛ Shizuku هنا مساعد في تثبيت APK المعدّل. لم يتحقق نجاحه على الجهاز الحالي. **لا يستخدم على الألعاب الأصلية**؛ نسخ التوقيع المختلف قد يضيع بياناتها، وكود upstream قد يزيلها تلقائيا.
+- libadrenotools منصة أصيلة للتطبيقات المتعاونة؛ نختبرها في تطبيق نملكه بعد التحقق من معماريّة GPU والـdriver ونتيجة Vulkan الحقيقية.
+- LSPatch/Frida Gadget نموذج لتعديل APK مملوك/مصرح به، وليس حقن أي تطبيق موجود بدون تعديل أو روت.
+- CatSmoker يوضح اختلاف تحرير إعدادات الألعاب عبر Shizuku عن hooks داخل العملية عبر LSPosed.
+- Android Game Mode Intervention API + ANGLE per-app + GLES/VK layers مسارات رسمية قابلة للقياس، وفق دعم OEM وrollback.
+- الاستبعاد: Zygisk/KernelSU وGlobal GPU spoof للعمليات غير المتعاونة؛ container للألعاب التجارية يبقى بحثًا ضعيف الثقة.
+تُدرج تجربة PoC جديدة بعد GLES layers: `AppComponentFactory` داخل تطبيق disposable تجريبي خاص بـMO، بدون إعادة استخدام مصدر iUnlocker ولا كسر توقيع برنامج موجود.
