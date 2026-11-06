@@ -98,3 +98,12 @@ v0.5 source introduces native-vs-Java GLES, manual ELF load test, process PID, a
 - Shows **manifest prerequisites only**, not guarantee hook works. Debuggable or opted-in+targetSdk30+ is candidate; otherwise official external GLES debugging layers cannot be assumed available on stock nonroot Android. Actual com.tencent.mhadv flag values are UNKNOWN until owner's device report.
 - Scans package-visible installed games from explicit queries; no game file modifications or privacy-sensitive access.
 - Released after CI verification, and **user must restore GPU debug settings from v0.5 before any install**.
+
+## P7 CI and raw APK release closeout — 2026-11-07
+- Built source commit `0111eb311d32305de0ed83db016a4fed1252e115` with GitHub Actions run `42314365656`. Java unit tests, both APK builds, native NDK build, APK verification and GitHub Release upload have all **passed**.
+- Published prerelease: https://github.com/alwansan/MO/releases/tag/mo-v0.7.0-alpha.7-run14 .
+- Confirmed uploaded raw assets:
+  - `MO-Graphics-Probe-v0.7.0-alpha.7.apk` (1,118,830 bytes).
+  - `MO-Layer-Test-v0.3.0.apk` (155,196 bytes).
+- New capabilities: user-visible installed-game debug/opt-in/target-SDK flags (read only); owned test separates Java/native/eglGetProcAddress and EGL_ANDROID_GLES_layers extension; removes explicit System.loadLibrary layer manual button to avoid conflating loader evidence.
+- **No on-device P7 result yet**. The last observed owner's phone state was GPU Debug layers enabled. First action remains restoration from **existing MO v0.5** before uninstall/upgrade. Do not claim stock Outlanders FPS unlock.
