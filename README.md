@@ -1,25 +1,31 @@
-# MO — Shizuku-first Graphics & Module Inspector
+# MO — Android graphics identity research & diagnostics
 
-**State: Planning / research only (2026-11-07). No build or root changes.**
+**Active phase: P1 development.** Native Android app for POCO F5 Pro Android 15, locked bootloader, without root. This repo contains original code and research only.
 
-MO is an original Android utility designed for a **locked-bootloader, non-rooted** phone. It inspects Android module ZIPs safely, explains privilege requirements, can extract normal APKs without executing installer scripts, and plans opt-in diagnostics and supported per-app graphics settings using Shizuku.
+The end goal is to understand why games such as **Monster Hunter Outlanders (`com.tencent.mhadv`)** lock FPS/graphics choices and explore supported non-root options. There is no verified Shizuku-only technique that globally spoofs Android Build/GL/Vulkan properties inside unmodified commercial games.
 
-**Hard reality:** Shizuku running as ADB shell (UID 2000) is not root (UID 0). It cannot install KernelSU into the kernel, run Zygisk, hook unrelated games, load untrusted kernel modules, or turn a Magisk/KernelSU ZIP into a functioning root module. MO must never claim otherwise.
+## What works in P1 source
+- Arabic-first local diagnostic UI, no network/storage permission.
+- Official Shizuku API/provider **13.1.5**; reports binder, permission and actual service UID. Rejects any root path.
+- Android model/SoC/ABI/RAM, current screen refresh.
+- **Actual EGL14 GLES2 `GL_VENDOR` / `GL_RENDERER` / `GL_VERSION` read in MO's own process**, not a global game spoof.
+- Shows installation/version of `com.tencent.mhadv`, `com.garena.game.mho`, PUBG and BGMI.
+- Copies an optional local evidence report (no account or Android ID).
+- JUnit logic tests and GitHub Actions automatic debug APK artifact.
 
-**Target test device:** POCO F5 Pro (mondrian), Android 15, HyperOS OS3.0.5.0.VMNMIXM, kernel 5.10.236-android12-9 (as shown in supplied screenshots; recheck on device). No PC, no bootloader unlock, no rooting; Shizuku via wireless debugging; GitHub Actions for CI.
+### Build
+[GitHub Actions → MO Android Debug APK](https://github.com/alwansan/MO/actions/workflows/mo-android-debug.yml). On successful run open the run → Artifacts → `MO-Graphics-Probe-debug-...` → download and install `app-debug.apk`. Debug-only, no signed release claimed.
 
-## Start here
-- [Project plan — Arabic](prompt/PLAN_AR.md)
-- [Research and feasibility](prompt/RESEARCH_AR.md)
-- [Architecture](prompt/ARCHITECTURE.md)
-- [Capability matrix](docs/SHIZUKU_CAPABILITY_MATRIX.md)
-- [Licensing and safety](docs/LEGAL_AND_SECURITY.md)
-- [Current memory / decisions](prompt/MEMORY.md)
-- [Status / next action](prompt/STATUS.md)
-- **[Restore instructions for a new session](prompt/RESTORE_AR.md)**
-- [Agent instructions](AGENTS.md)
+Locally with Android SDK 35, Java17 and Gradle8.11.1:
+```
+gradle :app:testDebugUnitTest :app:assembleDebug
+```
 
-Upstream references (not vendored or modified): [iUnlockerGL](https://github.com/i-Taylo/iUnlockerGL), [KernelSU](https://github.com/tiann/KernelSU), [Shizuku](https://github.com/RikkaApps/Shizuku). Original third-party licenses remain with their owners.
+Test: start Shizuku via Android Wireless Debugging, open MO and authorize; verify UID **2000** and the actual GLES output. If the server is not available the app should still show device/GPU information.
 
-## Phase gates
-P0 research & planning -> P1 independent Kotlin skeleton -> P2 Shizuku permission/status probe -> P3 ZIP inspector and safe APK extraction -> P4 opt-in ANGLE per-app experiment with rollback -> P5 real-device validation and CI release. **P0 only is authorized in this session.**
+## Hard limits
+We will NOT root your phone, unlock the bootloader, run Zygisk, run VMs, clone apps, uninstall original games, or change protected GPU drivers. Shizuku via wireless debugging has ADB shell UID2000 and **cannot hook arbitrary non-debuggable games**.
+
+Next P2 research: Shizuku read-only UserService capability checks; no action altering games until tested. See [phase plan](docs/IMPLEMENTATION_PHASES.md), [original research](research/), [restore prompt](prompt/RESTORE_AR.md), and [agent instructions](AGENTS.md).
+
+All code here is independently written. Third-party iUnlockerGL proprietary binaries are not vendored; source references remain in research docs.
