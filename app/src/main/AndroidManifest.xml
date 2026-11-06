@@ -4,6 +4,7 @@
     <!-- Package visibility is limited to the game packages we explicitly inspect. -->
     <queries>
         <package android:name="com.tencent.mhadv" />
+        <package android:name="com.alwansan.mo.glesprobe" />
         <package android:name="com.garena.game.mho" />
         <package android:name="com.tencent.ig" />
         <package android:name="com.pubg.imobile" />

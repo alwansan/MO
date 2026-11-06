@@ -84,3 +84,8 @@ Run42308837332 finished success. Artifact MO-Graphics-Probe-debug-4 (ID135477313
 
 ## v0.3 P3 PASS and P4 probe MO-20261107-CHAT-P4-LAYER-009
 Owner on-device MO v0.3 proves Vulkan Adreno730 API1.1.128 vendor0x5143 device0x7030002 driver0x8026705F; native Vulkan query works only inside MO; doesn't show Outlanders detection policy. P4 proof designed using **separate** MO-owned debuggable `com.alwansan.mo.glesprobe` app and original libMOGlesProofLayer.so intercepting glGetString(GL_RENDERER) for simulated value, explicitly fake mock 120fps option. Code doesn't change target games, root, unlock or enable system debug settings. Need build and safe per-app apply/restore controls.
+
+## P4 v0.4 original safe mutation controller
+- Shizuku UserService UID2000-only methods capture/enable/restore 4 GPU developer settings exclusively for com.alwansan.mo.glesprobe; no arbitrary shell, no user-selectable target. Captures global setting presence and value via settings list global, stores snapshot in MO SharedPreferences via synchronous commit BEFORE first write. Refuses active debugger of different app; verifies and rolls back; refuses restoring if another app modified values.
+- Owned layer intercepts glGetString renderer in disposable test app. Changes must be explicitly approved. Always press restore before uninstalling/updating MO; debug CI signs each run with different key.
+- No proof of actual layer intercept until user device report; absolutely not Outlanders FPS unlocked.

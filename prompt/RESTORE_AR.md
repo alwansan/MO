@@ -49,3 +49,6 @@ GitHub Actions `42308837332` SUCCESS for source `eef8fb46f8ab49412ab4ab04554128e
 
 ## Latest MO-20261107-CHAT-P4-LAYER-009: Vulkan success, graphics layer PoC source
 Read docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md, probe/src/main/cpp/mo_gles_layer.cpp, probe/src/main/java/com/alwansan/mo/glesprobe/ProbeActivity.java, prompt/sessions/MO-20261107-CHAT-P4-LAYER-009.md. P3 native Vulkan on POCO passed: Adreno730 API1.1.128 vendor0x5143. P4 separate disposable owned test app contains official GLES Layer intercept and mock tier; cannot affect Outlanders. Check CI. Next build reversible Shizuku developer per-app GPU debug layer activation **only for com.alwansan.mo.glesprobe**, then test in that app; no broad game injection.
+
+## P4 v0.4 (current)
+Read docs/OWNED_GLES_LAYER_TEST_AR.md, app/src/main/java/com/alwansan/mo/OwnedLayerSettings.java, MainActivity.java, probe/ source. The version 0.4 MO permits activation/restore via Shizuku of GPU debug layers for ONLY our disposable test app com.alwansan.mo.glesprobe. Four settings backed up in MO app-local data before changes; IMPORTANT restore before deleting/updating MO. Confirm build status and wait for user proof GL_RENDERER changed within test app. Neither game nor protected files are modified.

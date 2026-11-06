@@ -2,11 +2,14 @@ package com.alwansan.mo;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -45,12 +48,18 @@ public final class MainActivity extends Activity {
     private TextView vulkanOutput;
     private TextView nativeVulkanOutput;
     private TextView shellOutput;
+    private TextView layerOutput;
+    private IReadOnlyProbe layerService;
+    private boolean layerBusy = false;
+    private int pendingLayerAction = 0; // 1=enable; 2=restore
+    private static final String LAYER_PREFS = "mo_layer_backups";
+    private static final String LAYER_BACKUP = "gpu_debug_original";
     private boolean probeBound = false;
     private boolean probeConnecting = false;
 
     private final Shizuku.UserServiceArgs probeArgs = new Shizuku.UserServiceArgs(
             new ComponentName("com.alwansan.mo", ReadOnlyProbeService.class.getName()))
-            .daemon(false).processNameSuffix("probe-readonly").version(2);
+            .daemon(false).processNameSuffix("probe-readonly").version(3);
 
     private final ServiceConnection probeConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -61,6 +70,12 @@ public final class MainActivity extends Activity {
                 return;
             }
             IReadOnlyProbe service = IReadOnlyProbe.Stub.asInterface(binder);
+            layerService = service;
+            if (pendingLayerAction != 0) {
+                int action = pendingLayerAction;
+                pendingLayerAction = 0;
+                runLayerAction(action);
+            }
             shellOutput.setText("فحص إعدادات Outlanders عبر Shizuku...");
             new Thread(() -> {
                 String result;
@@ -75,6 +90,9 @@ public final class MainActivity extends Activity {
         @Override public void onServiceDisconnected(ComponentName name) {
             probeBound = false;
             probeConnecting = false;
+            layerService = null;
+            layerBusy = false;
+            pendingLayerAction = 0;
             if (shellOutput != null) shellOutput.setText("خدمة Shizuku غير متصلة؛ لم نغيّر شيئاً");
         }
     };
@@ -125,6 +143,7 @@ public final class MainActivity extends Activity {
         } catch (RuntimeException ignored) {
             // Provider may not be running; no privileged action.
         }
+        layerService = null;
         super.onDestroy();
     }
 
@@ -143,7 +162,7 @@ public final class MainActivity extends Activity {
         root.addView(heading);
 
         TextView subtitle = text(
-                "النسخة التجريبية 0.3.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
+                "النسخة التجريبية 0.4.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
                 14, COLOR_MUTED, false);
         subtitle.setPadding(0, dp(6), 0, dp(18));
         root.addView(subtitle);
@@ -194,7 +213,19 @@ public final class MainActivity extends Activity {
         shellCard.addView(shellOutput);
         shellCard.addView(action("فحص Game Mode وANGLE", this::readSystemSettings));
 
-        LinearLayout reportCard = card(root, "06  /  TEST REPORT",
+        LinearLayout layerCard = card(root, "06  /  OWNED GLES LAYER TEST",
+                "تجربة على تطبيق MO منفصل فقط. تحفظ الإعدادات القديمة قبل التفعيل. لا تمس Outlanders.");
+        layerOutput = text(layerPrefs().contains(LAYER_BACKUP)
+                ? "يوجد إعداد محفوظ بحاجة للاستعادة. لا تحذف MO قبل الاستعادة!"
+                : "ثبّت تطبيق الاختبار المنفصل ثم فعّل تجربة GLES اختياريًا.",
+                14, COLOR_TEXT, false);
+        layerOutput.setTextIsSelectable(true);
+        layerCard.addView(layerOutput);
+        layerCard.addView(action("تفعيل تجربة GLES للتطبيق المملوك لـMO", this::confirmLayerEnable));
+        layerCard.addView(action("استعادة إعدادات GPU Debug القديمة", this::confirmLayerRestore));
+        layerCard.addView(action("فتح MO Layer Test", this::openOwnedProbe));
+
+        LinearLayout reportCard = card(root, "07  /  TEST REPORT",
                 "نسخ تشخيص خالٍ من معرفات الحساب والموقع؛ أنت تقرر متى تشاركه.");
         reportCard.addView(action("نسخ التقرير", this::copyReport));
 
@@ -307,7 +338,128 @@ public final class MainActivity extends Activity {
         }
     }
 
+    private SharedPreferences layerPrefs() {
+        return getSharedPreferences(LAYER_PREFS, MODE_PRIVATE);
+    }
+
+    private void openOwnedProbe() {
+        Intent launch = getPackageManager().getLaunchIntentForPackage(OwnedLayerSettings.TARGET);
+        if (launch == null) {
+            layerOutput.setText("تطبيق الاختبار غير مثبت. نزّله من GitHub Actions وثبّته أولًا.");
+            return;
+        }
+        startActivity(launch);
+    }
+
+    private void confirmLayerEnable() {
+        new AlertDialog.Builder(this)
+                .setTitle("تفعيل تجربة GLES Layer")
+                .setMessage("سيغير MO أربعة مفاتيح GPU Debug عالمية لطبقة تخص التطبيق الاختباري "
+                        + "com.alwansan.mo.glesprobe فقط، وليس Outlanders. "
+                        + "سيحفظ القيم السابقة ويتيح استعادتها. "
+                        + "يجب الضغط على استعادة قبل حذف أو تحديث MO. "
+                        + "قد لا يدعم HyperOS التحميل الفعلي للطبقة.")
+                .setNegativeButton("إلغاء", null)
+                .setPositiveButton("تفعيل الاختبار", (dialog, which) -> requestLayerAction(1))
+                .show();
+    }
+
+    private void confirmLayerRestore() {
+        new AlertDialog.Builder(this)
+                .setTitle("استعادة الإعدادات السابقة")
+                .setMessage("سيعيد MO القيم الأربع الأصلية، إلا إذا تغيرت من تطبيق آخر.")
+                .setNegativeButton("إلغاء", null)
+                .setPositiveButton("استعادة", (dialog, which) -> requestLayerAction(2))
+                .show();
+    }
+
+    private void requestLayerAction(int action) {
+        if (layerBusy) {
+            layerOutput.setText("عملية تفعيل أو استعادة قيد التنفيذ.");
+            return;
+        }
+        if (action == 1 && layerPrefs().contains(LAYER_BACKUP)) {
+            layerOutput.setText("توجد نسخة احتياطية سابقة. استعدها أولاً قبل التفعيل.");
+            return;
+        }
+        if (action == 2 && !layerPrefs().contains(LAYER_BACKUP)) {
+            layerOutput.setText("لا توجد نسخة احتياطية محفوظة لدى MO.");
+            return;
+        }
+        try {
+            if (!Shizuku.pingBinder() || Shizuku.getUid() != PrivilegeGate.ADB_SHELL_UID
+                    || Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
+                layerOutput.setText("تحتاج Shizuku ADB UID 2000 مع إذن GRANTED.");
+                return;
+            }
+            layerBusy = true;
+            layerOutput.setText("جارٍ الاتصال بخدمة Shizuku...");
+            if (probeBound && layerService != null) {
+                runLayerAction(action);
+            } else {
+                pendingLayerAction = action;
+                if (!probeConnecting) {
+                    probeConnecting = true;
+                    Shizuku.bindUserService(probeArgs, probeConnection);
+                }
+            }
+        } catch (RuntimeException | LinkageError e) {
+            layerBusy = false;
+            pendingLayerAction = 0;
+            layerOutput.setText("فشل الاتصال: " + e.getClass().getSimpleName());
+        }
+    }
+
+    private void runLayerAction(int action) {
+        final IReadOnlyProbe service = layerService;
+        new Thread(() -> {
+            String outcome;
+            try {
+                if (service == null) {
+                    outcome = "ERROR: Shizuku UserService disconnected";
+                } else if (action == 1) {
+                    String backup = service.captureLayerSettings();
+                    if (backup == null || backup.startsWith("ERROR:")) {
+                        outcome = "لم يتم حفظ الإعدادات: " + backup;
+                    } else if (!layerPrefs().edit().putString(LAYER_BACKUP, backup).commit()) {
+                        outcome = "تعذّر حفظ النسخة الاحتياطية؛ لم يحدث أي تغيير";
+                    } else {
+                        outcome = service.activateOwnedLayer(backup);
+                    }
+                } else {
+                    String backup = layerPrefs().getString(LAYER_BACKUP, null);
+                    if (backup == null) {
+                        outcome = "لا توجد إعدادات محفوظة";
+                    } else {
+                        outcome = service.restoreOwnedLayer(backup);
+                        if (outcome != null && outcome.startsWith("OK:")) {
+                            if (!layerPrefs().edit().remove(LAYER_BACKUP).commit()) {
+                                outcome += "\nWarning: backup record may remain";
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                outcome = "فشلت العملية: " + e.getClass().getSimpleName();
+            }
+            String display = outcome;
+            runOnUiThread(() -> {
+                layerBusy = false;
+                if (!isFinishing() && !isDestroyed()) {
+                    layerOutput.setText(display + "\n"
+                            + (layerPrefs().contains(LAYER_BACKUP)
+                            ? "تنبيه: يجب استعادة إعدادات GPU قبل حذف أو تحديث MO."
+                            : "لا توجد تغييرات معلقة مسجلة لدى MO."));
+                }
+            });
+        }, "MO-OwnedLayer-Transaction").start();
+    }
+
     private void readSystemSettings() {
+        if (layerBusy) {
+            shellOutput.setText("هناك عملية ضبط GPU قيد التنفيذ. أعد المحاولة لاحقًا.");
+            return;
+        }
         if (probeConnecting) { shellOutput.setText("جارٍ الاتصال بخدمة القراءة..."); return; }
         if (probeBound) {
             try { Shizuku.unbindUserService(probeArgs, probeConnection, true); }
@@ -376,7 +528,7 @@ public final class MainActivity extends Activity {
     }
 
     private void copyReport() {
-        String report = "MO Graphics Probe v0.3.0-alpha.3\n"
+        String report = "MO Graphics Probe v0.4.0-alpha.4\n"
                 + "Local read-only diagnostics\n\n"
                 + "[SHIZUKU]\n" + shizukuOutput.getText() + "\n\n"
                 + "[DEVICE]\n" + deviceOutput.getText() + "\n\n"
@@ -385,6 +537,7 @@ public final class MainActivity extends Activity {
                 + "[VULKAN SUPPORT]\n" + vulkanOutput.getText() + "\n\n"
                 + "[SHIZUKU SYSTEM READ-ONLY]\n" + shellOutput.getText() + "\n\n"
                 + "[VULKAN NATIVE GPU]\n" + nativeVulkanOutput.getText() + "\n\n"
+                + "[OWNED GLES LAYER TEST]\n" + layerOutput.getText() + "\n\n"
                 + "No game was modified. No root was used.";
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);

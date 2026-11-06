@@ -89,3 +89,8 @@ User on-device proof confirms MO P1 success: Shizuku UID2000 permission GRANTED 
 ## Latest MO-20261107-CHAT-P4-LAYER-009: v0.3 native Vulkan confirmed; P4 owned-app layer proof in source
 User report proves native Vulkan API1.1.128 GPU Adreno730 vendor0x5143 device0x7030002 driver0x8026705F in MO process, P3 real device PASS. See docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md.
 P4 owns disposable debug app `com.alwansan.mo.glesprobe`, original GLES interception library for glGetString(GL_RENDERER) and clearly marked synthetic frame-tier profile. No system settings or games changed yet; next controlled Shizuku per-app settings and rollback, source in probe/. Need CI compile + on-device test before declaring injection success. No root/boot unlock/VM/clone.
+
+## P4 v0.4 UI and controller completed in source
+- Typed Shizuku Service now has captureLayerSettings/activateOwnedLayer/restoreOwnedLayer, fixed only to disposable com.alwansan.mo.glesprobe. Four exact Settings.Global keys with before/after presence/value and rollback backup in MO app data.
+- UI explicit opt-in, restore and launch test app. No changes on user's phone yet, test app does not touch Outlanders.
+- Need verify latest GitHub Actions run; then test both APKs on POCO and restore settings before updating/removing MO.

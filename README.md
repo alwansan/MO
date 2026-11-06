@@ -39,3 +39,6 @@ Owner confirmed on POCO that Shizuku API13 UID2000 is GRANTED and Outlanders is 
 ## P4 disposable GLES layer probe (in progress)
 A second **separate** APK is built from `probe/`: `com.alwansan.mo.glesprobe`. It's a disposable owned target, not a clone of Outlanders, and never reads game data. It includes an original Android GLES debug layer intercepting `glGetString(GL_RENDERER)` and returning `MO-GLES-LAYER-PROOF (SIMULATED)` **only when officially enabled for this debuggable test app**. Its Mock 120 FPS indicator is a demonstration, not real FPS or graphics quality unlock. Settings activation/rollback UI remains next step.
 P3 POCO Vulkan results are in docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md.
+
+## P4 test layer controls
+MO v0.4 has a user-confirmed native GLES layer trial ONLY for disposable MO Layer Test app (com.alwansan.mo.glesprobe). It backs up four developer GPU debug settings with exact presence and values and restores them after the trial. User must restore before uninstalling/updating MO. No change to Monster Hunter Outlanders or other games; unlocking mock FPS in test does not unlock real FPS. Docs: docs/OWNED_GLES_LAYER_TEST_AR.md.

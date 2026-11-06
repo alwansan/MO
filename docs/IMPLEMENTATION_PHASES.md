@@ -88,3 +88,11 @@ See docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md.
 - [ ] Add transactional Shizuku global GPU debug settings controller for **test app only**, with per-key backup and rollback; no writes until user action.
 - [ ] Prove layer loader intercept on POCO. This proof does not grant permission to hook an unmodified nondebuggable Outlanders game.
 Official GLES layer docs: https://developer.android.com/ndk/guides/rootless-debug-gles
+
+## P4 controlled layer transaction
+- MO v0.4 implements a confirmation-only GPU debug layer test for disposable app com.alwansan.mo.glesprobe.
+- Shizuku UID2000 service captures exact presence/value for four Settings.Global keys before writing and stores rollback in MO app-private SharedPreferences; rejects another active debugger, verifies writes, restores exact old state and prevents overwriting external edits.
+- Never accepts a third-party game as target; no VM, root or APK cloning.
+- Requires separate test APK from GitHub Actions, and actual device testing before claiming GLES interception.
+- **Restore settings before uninstalling/updating MO** due per-run Debug signing changes.
+- Guide: docs/OWNED_GLES_LAYER_TEST_AR.md.
