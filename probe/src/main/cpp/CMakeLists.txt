@@ -8,4 +8,4 @@ target_link_libraries(MOGlesProofLayer log)
 # without loading the proof layer by hand.
 add_library(MOProbeRenderer SHARED mo_probe_renderer.cpp)
 target_compile_features(MOProbeRenderer PRIVATE cxx_std_17)
-target_link_libraries(MOProbeRenderer GLESv2)
+target_link_libraries(MOProbeRenderer GLESv2 EGL)

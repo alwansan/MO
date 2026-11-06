@@ -64,23 +64,13 @@ public final class ProbeActivity extends Activity {
         refresh.setOnClickListener(v -> queryAsync());
         column.addView(refresh);
 
-        Button binary = new Button(this);
-        binary.setText("اختبار إمكانية تحميل مكتبة GLES (فقط)");
-        binary.setAllCaps(false);
-        binary.setOnClickListener(v -> {
-            new android.app.AlertDialog.Builder(this)
-                    .setTitle("فحص المكتبة بشكل مستقل")
-                    .setMessage("يحاول تحميل المكتبة الموجودة في تطبيق الاختبار فقط. نجاح هذا الفحص لا يثبت أن Android فعّل الطبقة عند تشغيل OpenGL.")
-                    .setNegativeButton("إلغاء", null)
-                    .setPositiveButton("اختبار", (dialog, which) ->
-                            new android.app.AlertDialog.Builder(this)
-                                    .setTitle("نتيجة فحص المكتبة")
-                                    .setMessage(LayerLibrarySelfCheck.check())
-                                    .setPositiveButton("موافق", null)
-                                    .show())
-                    .show();
-        });
-        column.addView(binary);
+        // v0.6 deliberately does not use System.loadLibrary on the GLES layer
+        // during diagnostics: loading it manually can obscure loader evidence.
+        Button refreshEgl = new Button(this);
+        refreshEgl.setText("فحص مسارات EGL وGLES");
+        refreshEgl.setAllCaps(false);
+        refreshEgl.setOnClickListener(v -> queryAsync());
+        column.addView(refreshEgl);
 
         TextView instructions = new TextView(this);
         instructions.setText("عند تغيير إعدادات طبقات GLES من تطبيق MO، أغلق تطبيق الاختبار وافتحه مجددًا.\nهذا التطبيق لا يكتب أي إعداد للنظام.");
@@ -127,23 +117,31 @@ public final class ProbeActivity extends Activity {
             String vendor = safe(GLES20.glGetString(GLES20.GL_VENDOR));
             String renderer = safe(GLES20.glGetString(GLES20.GL_RENDERER));
             String nativeRenderer = ProbeNativeRenderer.inspect();
+            String eglEvidence = ProbeNativeRenderer.eglEvidence();
             boolean javaIntercept = MockGraphicsTier.isProofLayerRenderer(renderer);
             boolean nativeIntercept = MockGraphicsTier.isProofLayerRenderer(nativeRenderer);
-            boolean sampleTier = javaIntercept || nativeIntercept;
+            // Explicitly model a synthetic NATIVE engine profile. Java's
+            // GL_RENDERER is separately reported, never silently conflated.
+            boolean sampleTier = nativeIntercept;
             return "Android Build.MODEL: " + Build.MODEL
                     + "\nGL_VENDOR: " + vendor
                     + "\nGL_RENDERER: " + renderer
                     + "\nGL_RENDERER (NDK): " + nativeRenderer
                     + "\nProcess PID: " + Process.myPid()
                     + "\nDebuggable APK: " + (BuildConfig.DEBUG ? "YES" : "NO")
+                    + "\n" + eglEvidence
                     + "\nGL_VERSION: " + safe(GLES20.glGetString(GLES20.GL_VERSION))
                     + "\n\n"
-                    + (sampleTier ? "Mock 120 FPS: UNLOCKED (simulation)" :
-                            "Mock 120 FPS: LOCKED (simulation)")
+                    + (sampleTier ? "Mock Native FPS tier: UNLOCKED (simulation)" :
+                            "Mock Native FPS tier: LOCKED (simulation)")
                     + "\n\nLayer intercepted (Java): " + (javaIntercept ? "YES" : "NO")
                     + "\nLayer intercepted (Native): " + (nativeIntercept ? "YES" : "NO")
-                    + "\nLayer intercepted: " + (sampleTier ? "YES" : "NO")
-                    + "\n\nNo real GPU capabilities or game settings were modified.";
+                    + "\nObserved scope: "
+                    + (javaIntercept && nativeIntercept ? "Java + Native" :
+                            nativeIntercept ? "NATIVE ONLY" :
+                                    javaIntercept ? "JAVA ONLY" : "Not intercepted")
+                    + "\n\nOfficial GLES layers can apply only to debuggable or opted-in apps."
+                    + "\nNo real GPU capabilities, FPS, or game settings were modified.";
         } catch (RuntimeException | LinkageError e) {
             return "GL query error: " + e.getClass().getSimpleName();
         } finally {

@@ -46,3 +46,9 @@ MO v0.4 has a user-confirmed native GLES layer trial ONLY for disposable MO Laye
 
 ## Direct GitHub Releases distribution
 Workflow `.github/workflows/mo-android-debug.yml` runs Java tests, builds **both APKs**, verifies APK archives, and creates a pre-release tagged `mo-v<version>-run<number>`. GitHub Releases contains raw `.apk` assets only, not Actions ZIP artifacts. Restore GPU Debug settings **before uninstalling or updating MO** if its owned GLES experiment was enabled. See docs/RELEASE_DISTRIBUTION_AR.md.
+
+## P6 owned test path isolation (source, device test pending)
+- Probe v0.3 separates Java GLES20, NDK direct glGetString, and eglGetProcAddress lookup under SAME EGL context, records EGL_ANDROID_GLES_layers extension support and process PID.
+- Replaced manually loading the layer (System.loadLibrary) with ordinary re-query so results won't be muddied by developer-forced library load. Existing LayerLibrarySelfCheck class is unused and must not be treated as injection proof.
+- Mock tier explicitly marked **Mock Native FPS tier (simulation)** based on NDK only, NOT real game FPS; no ambiguous aggregate "Layer intercepted YES" when Java is still unaffected.
+- Main MO v0.6 updated for versioned Release. **Do NOT install before restoring GPU Debug settings via CURRENT MO v0.5** — private rollback snapshot will be lost if debug signing requires uninstall. Device P6 runtime proof pending.

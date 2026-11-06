@@ -15,6 +15,16 @@ public final class ProbeNativeRenderer {
     }
     private ProbeNativeRenderer() {}
     private static native String nativeRenderer();
+    private static native String nativeEglEvidence();
+    public static String eglEvidence() {
+        if (!READY) return "EGL evidence: NDK module unavailable";
+        try {
+            return nativeEglEvidence();
+        } catch (RuntimeException | LinkageError ex) {
+            return "EGL evidence unavailable: " + ex.getClass().getSimpleName();
+        }
+    }
+
     public static String inspect() {
         if (!READY) return "(MO native GLES test library unavailable)";
         try {
