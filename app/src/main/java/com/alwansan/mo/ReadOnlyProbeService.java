@@ -25,6 +25,18 @@ public final class ReadOnlyProbeService extends IReadOnlyProbe.Stub {
         b.append("هذه قيم إعدادات النظام، وليست القيم التي تقرؤها اللعبة بالضرورة.");
         return b.toString();
     }
+    @Override public String captureLayerSettings() throws RemoteException {
+        return OwnedLayerSettings.snapshot();
+    }
+
+    @Override public String activateOwnedLayer(String saved) throws RemoteException {
+        return OwnedLayerSettings.activate(saved);
+    }
+
+    @Override public String restoreOwnedLayer(String saved) throws RemoteException {
+        return OwnedLayerSettings.restore(saved);
+    }
+
     private static String run(String[] args) {
         Process process = null;
         try {
