@@ -96,3 +96,6 @@ Source URL + date/version, before/after device logs, adb identity, screenshots a
 - شغّل Shizuku فقط لقراءة UID2000 وSettings/Device Config المسموحة؛ قيّم تطبيقات GFX Tool كتحرير ملف config (شرط الوصول/الحفظ وغياب كسر الحماية)، وليس GPU spoof.
 - كل لعبة تحتاج تشخيصًا منفصلًا: PUBG سياسة دعم الشريحة في 2026 (Snapdragon 8Gen3+ first batch)، Monster Hunter Now إتاحة 60fps أثناء الصيد والروت غير المدعوم. انظر `research/POCO_GAME_COMPATIBILITY_AR.md`.
 - منع أي تعديل تلقائي لألعاب حية/حسابات PUBG، وانتحال عتاد غير مدعوم على لعبة تستخدم anticheat، أو auto-uninstall حفاظًا على بيانات المستخدم. وثّق مخاطر الحساب والنسخ الاحتياطي.
+
+## مرحلة قبل التنفيذ MO-20261107-CHAT-BUY-VS-BUILD-005
+لا نبدأ بناء MO قبل مراجعة حلول جاهزة: App Cloner (يعدل ويمضي نسخة APK، لا يعمل على الأصل)، VMOS+ Android15 الافتراضي (يمكنه Magisk/Zygisk/LSPosed داخل الضيف لكنه ليس Shizuku فقط)، ShizukuPlus (قراءة الشيفرة تثبت فقط محاكاة استجابة getprop في عميل الخدمة)، وGFX Tool/PGT+ (إعدادات PUBG لا Outlanders). اللعبة الصحيحة Outlanders com.tencent.mhadv. أولًا تصوير واجهة Graphics الأصلية وتسجيل الخيارات المقفلة في Graphics Quality, High Frame Rate, Field FPS, Free Hunt/Arena FPS مع الإصدار؛ ثم قياسات read-only؛ لا تعديل تطبيق تجاري أو حساب. راجع research/READY_APP_DECISION_AR.md. إن فشل الجاهز يمكن بناء MO اختبار محدود على تطبيق خاص بنا، وليس ادعاء أنه يتجاوز صلاحيات Android.

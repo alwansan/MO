@@ -22,3 +22,6 @@
 
 ## جلسة أحدث MO-20261107-CHAT-GAME-PROFILES-004 — هدف الألعاب الفعلي
 اقرأ `research/GAME_PROFILE_SPOOFING_AR.md`, `research/POCO_GAME_COMPATIBILITY_AR.md`, `prompt/sessions/MO-20261107-CHAT-GAME-PROFILES-004.md`. المالك يريد تغيير الهوية المرئية للألعاب لفتح إعدادات FPS/Graphics، لا تبديل الدريفير فقط. Game-Unlocker الحقيقي Xposed يغيّر Java Build (لا يثبت GL/Vulkan)، أما GFX عبر Shizuku يبدّل ملفات إعدادات UE4. POCO F5 Pro Snapdragon **8+ Gen1**, 120Hz/Adreno 730. دعم PUBG 120fps وفق سياسة الشريحة وليس اسم جهاز فقط؛ Monster Hunter Now 60fps hunting رسمياً. لا تغيّر لعبة حية أو نظام الهاتف؛ لا root/unlock. الحالة بحثية P0 ولم يُبنَ APK.
+
+## استعادة أحدث جلسة MO-20261107-CHAT-BUY-VS-BUILD-005
+اقرأ prompt/sessions/MO-20261107-CHAT-BUY-VS-BUILD-005.md وresearch/READY_APP_DECISION_AR.md وresearch/MHO_OUTLANDERS_SPECIFIC_AR.md وresearch/SHIZUKUPLUS_SPOOF_CODE_AUDIT_AR.md. التصحيح الأهم: Monster Hunter Outlanders com.tencent.mhadv وليس Monster Hunter Now. المستخدم يريد حلًا جاهزًا قبل بناء MO. App Cloner يعيد توقيع clone، VMOS+ يتيح root/Zygisk داخل النظام الافتراضي فقط، وShizukuPlus spoof يبدل ناتج getprop في أوامر الخدمة لا داخل عملية اللعبة. الحالة P0، لا تجارب جهاز ولا بناء APK.

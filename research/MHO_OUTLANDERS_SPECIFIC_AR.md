@@ -1,0 +1,9 @@
+# Monster Hunter Outlanders (not Monster Hunter Now)
+Date: 2026-11-07, MO-20261107-CHAT-BUY-VS-BUILD-005.
+Global Android package: com.tencent.mhadv, Level Infinite/TiMi. Garena regional package: com.garena.game.mho; don't mix. Capcom announced Sep29 and launch was Oct29 2026: https://www.capcom.co.jp/ir/english/news/html/e260929.html . Official FAQ https://monsterhunteroutlanders.com/en/news-monster-hunter-outlanders-official-launch-faq.html recommends Android12+ and 6GB+ memory. Market listings observed v1.0.9.0.3308842 dated Oct28; verify installed version from phone, not a download mirror. Play link: https://play.google.com/store/apps/details?id=com.tencent.mhadv .
+
+Current third-party gameplay guide updated Oct30 https://gamewith.ai/monster-hunter-outlanders/en/articles/best-settings reports Graphics Quality presets, High Frame Rate Mode, independent Frame Rate (Field), Frame Rate (Free Hunt/Arena), anti-aliasing, Device Load gauge. Some choices have padlock. https://monsterhunterhq.com/gaming/monster-hunter-outlanders-best-settings-to-change-for-a-classic-mh-experience/ suggests high frame rate sometimes forces Low quality. Third-party guidance not internal source code; do not invent game's detection path.
+
+**Unknown** whether locks derive from Android Build.MODEL, native system props, GPU GLES/Vulkan values, driver/CPU, benchmark/performance, preprogrammed profile, device list or server. No independently validated no-root specific MHO unlock APK or config patch was found. An experimental virtual or cloned copy may not pass anti-tamper. Do not assume PUBG's Active.sav path works with this game.
+
+Current POCO F5 Pro: Snapdragon 8+ Gen1, Adreno730, 120Hz display, Android15 from owner screenshots. 120Hz screen is not 120 FPS game. Record real options locked and exact game version before any customization.

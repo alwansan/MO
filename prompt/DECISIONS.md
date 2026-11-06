@@ -51,3 +51,12 @@
 **Accepted.** Build/props, GLES, Vulkan, CPU, display, app configs and server policy are separate read channels. No generic Shizuku 'set GPU model' command. Build-field Xposed hooks do not prove native spoof.
 ## ADR-018 — Live competitive game safety
 **Accepted.** No automatic modification/patching of installed PUBG/online games; official account penalties possible. Use independent mock game before any user-owned optional tests.
+
+## ADR-019 MO-20261107-CHAT-BUY-VS-BUILD-005: Ready app before build
+Accepted. Compare off-the-shelf options before committing to full MO app.
+## ADR-020: ShizukuPlus spoof is process-command scoped
+Accepted. Its newProcess getprop replacement does not rewrite target game native GPU/Java properties.
+## ADR-021: Virtual root is distinct from host root
+VMOS+ guest-root can leave physical phone unrooted, but is NOT a Shizuku-only solution and requires separate explicit approval to try. Game compatibility unverified.
+## ADR-022: Monster Hunter Outlanders identity
+Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster Hunter Now.
