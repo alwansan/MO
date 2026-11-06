@@ -153,6 +153,53 @@ public final class OwnedLayerSettings {
         if (!equal(readCurrent(), old)) throw new IllegalStateException("Restore mismatch");
     }
 
+    /** Read-only diagnosis, limited to the MO-owned test and filtered loader tags. */
+    public static String diagnose() {
+        try {
+            requireShell();
+            Map<String, String> state = readCurrent();
+            StringBuilder out = new StringBuilder("Shizuku UID: " + Os.getuid() + "\n");
+            for (String key : KEYS) {
+                out.append(key).append(" = ")
+                        .append(state.containsKey(key) ? state.get(key) : "(not present)")
+                        .append("\n");
+            }
+            Outcome pm = exec("pm", "path", TARGET);
+            out.append("MO Layer Test installed: ")
+                    .append(pm.code == 0 && pm.value.contains("package:") ? "YES" : "NO")
+                    .append("\n");
+            Outcome prop = exec("getprop", "debug.gles.layers");
+            out.append("debug.gles.layers global property: ")
+                    .append(prop.code == 0 ? (prop.value.isEmpty() ? "(empty)" : prop.value)
+                            : "(unavailable)").append("\n");
+
+            Outcome logs = exec("logcat", "-d", "-v", "brief", "-t", "400", "-s",
+                    "MO-GLES-PROOF:V", "LayerLoader:V",
+                    "GraphicsEnvironment:V", "libEGL:V", "*:S");
+            out.append("\nFiltered MO GLES loader log:\n");
+            boolean found = false;
+            if (logs.code == 0) {
+                int lines = 0;
+                for (String line : logs.value.split("\n")) {
+                    if (line.contains("MO-GLES-PROOF") || line.contains("MOGlesProofLayer")
+                            || line.contains(TARGET)) {
+                        if (line.length() > 550) line = line.substring(0, 550);
+                        out.append(line).append("\n");
+                        found = true;
+                        if (++lines >= 30) break;
+                    }
+                }
+            } else {
+                out.append("(logcat inaccessible)\n");
+            }
+            if (!found) out.append("No matching layer messages; this is inconclusive.\n");
+            out.append("\nThis is a READ-ONLY test of MO's disposable app.");
+            return out.toString();
+        } catch (Exception error) {
+            return "ERROR: GLES diagnosis failed: " + error.getClass().getSimpleName();
+        }
+    }
+
     public static String snapshot() {
         try {
             requireShell();

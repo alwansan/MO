@@ -37,6 +37,10 @@ public final class ReadOnlyProbeService extends IReadOnlyProbe.Stub {
         return OwnedLayerSettings.restore(saved);
     }
 
+    @Override public String diagnoseOwnedLayer() throws RemoteException {
+        return OwnedLayerSettings.diagnose();
+    }
+
     private static String run(String[] args) {
         Process process = null;
         try {

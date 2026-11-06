@@ -51,7 +51,7 @@ public final class MainActivity extends Activity {
     private TextView layerOutput;
     private IReadOnlyProbe layerService;
     private boolean layerBusy = false;
-    private int pendingLayerAction = 0; // 1=enable; 2=restore
+    private int pendingLayerAction = 0; // 1=enable; 2=restore; 3=read-only diagnose
     private static final String LAYER_PREFS = "mo_layer_backups";
     private static final String LAYER_BACKUP = "gpu_debug_original";
     private boolean probeBound = false;
@@ -162,7 +162,7 @@ public final class MainActivity extends Activity {
         root.addView(heading);
 
         TextView subtitle = text(
-                "النسخة التجريبية 0.4.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
+                "النسخة التجريبية 0.5.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
                 14, COLOR_MUTED, false);
         subtitle.setPadding(0, dp(6), 0, dp(18));
         root.addView(subtitle);
@@ -224,6 +224,7 @@ public final class MainActivity extends Activity {
         layerCard.addView(action("تفعيل تجربة GLES للتطبيق المملوك لـMO", this::confirmLayerEnable));
         layerCard.addView(action("استعادة إعدادات GPU Debug القديمة", this::confirmLayerRestore));
         layerCard.addView(action("فتح MO Layer Test", this::openOwnedProbe));
+        layerCard.addView(action("تشخيص GLES (قراءة فقط)", () -> requestLayerAction(3)));
 
         LinearLayout reportCard = card(root, "07  /  TEST REPORT",
                 "نسخ تشخيص خالٍ من معرفات الحساب والموقع؛ أنت تقرر متى تشاركه.");
@@ -426,7 +427,7 @@ public final class MainActivity extends Activity {
                     } else {
                         outcome = service.activateOwnedLayer(backup);
                     }
-                } else {
+                } else if (action == 2) {
                     String backup = layerPrefs().getString(LAYER_BACKUP, null);
                     if (backup == null) {
                         outcome = "لا توجد إعدادات محفوظة";
@@ -438,6 +439,8 @@ public final class MainActivity extends Activity {
                             }
                         }
                     }
+                } else {
+                    outcome = service.diagnoseOwnedLayer();
                 }
             } catch (Exception e) {
                 outcome = "فشلت العملية: " + e.getClass().getSimpleName();
@@ -528,7 +531,7 @@ public final class MainActivity extends Activity {
     }
 
     private void copyReport() {
-        String report = "MO Graphics Probe v0.4.0-alpha.4\n"
+        String report = "MO Graphics Probe v0.5.0-alpha.5\n"
                 + "Local read-only diagnostics\n\n"
                 + "[SHIZUKU]\n" + shizukuOutput.getText() + "\n\n"
                 + "[DEVICE]\n" + deviceOutput.getText() + "\n\n"

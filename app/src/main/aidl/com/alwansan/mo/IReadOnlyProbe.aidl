@@ -5,4 +5,5 @@ interface IReadOnlyProbe {
     String captureLayerSettings() = 2;
     String activateOwnedLayer(String saved) = 3;
     String restoreOwnedLayer(String saved) = 4;
+    String diagnoseOwnedLayer() = 5;
 }
