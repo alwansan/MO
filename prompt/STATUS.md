@@ -118,3 +118,9 @@ P4 owns disposable debug app `com.alwansan.mo.glesprobe`, original GLES intercep
 - No ZIP Release asset. GitHub automatically provides Source code ZIP/tar links; separate from APK release assets.
 - On future source/workflow pushes, building both APKs and publishing a unique experimental release is automatic after CI success. Actions Artifacts ZIP step removed.
 - Debug signature remains unstable: **restore P4 debug GPU settings before uninstalling/updating MO**. No actual Outlanders FPS unlock or P4 device hook proven.
+
+## Latest MO-20261107-CHAT-P4-FEEDBACK-011 — owned GLES real device FAIL, diagnostics implemented
+- Owner supplied v0.4 owned `MO Layer Test` baseline+after screenshots. With Shizuku `enable_gpu_debug_layers=1`, `gpu_debug_app=com.alwansan.mo.glesprobe`, app still `GL_RENDERER=Adreno (TM) 730`, mock FPS LOCKED, `Layer intercepted: NO`. Settings write PASSED, actual layer injection NOT CONFIRMED/failed in observed trial. See docs/DEVICE_FEEDBACK_ALPHA4_2026-11-07.md.
+- **Owner has not shown restoration**. First priority: use currently installed v0.4 to restore original GPU Debug keys BEFORE uninstall/update. Avoid losing SharedPreferences snapshot due changing signing key.
+- New source v0.5 app+probe: diagnostic read-only Shizuku method, exact keys/logcat filtered, native vs Java GLES, PID, explicit ELF loadability test. GitHub Actions run must be checked and user must test after safe restore.
+- No root/unlock/VM/clone, no games modified. Distinguish settings activated from GLES layer actually intercepting.

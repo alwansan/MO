@@ -112,3 +112,11 @@ Guide docs/OWNED_GLES_LAYER_TEST_AR.md.
 - Each release is tagged `mo-v<appVersion>-run<runNumber>` and contains separate MO Graphics Probe and MO Layer Test APKs.
 - Verify repository Releases API actually shows both APK files after workflow run. `--prerelease` until device test and stable signing.
 - Release documentation `docs/RELEASE_DISTRIBUTION_AR.md`.
+
+## P4 real device status / P5 diagnosis MO-20261107-CHAT-P4-FEEDBACK-011
+- [x] Shizuku UID2000 writes developer GPU debug settings for *owned test* only.
+- [ ] GLES layer actually intercepts `glGetString`: **NO on user screenshots**, still Adreno730/Mock FPS LOCKED.
+- [ ] Owner restoration of exact original GPU debug settings **NOT YET CONFIRMED**; must happen before upgrading/installing next MO.
+- [x] Added P5 device diagnostics in source: Java vs native glGetString / PID / manual ELF load test / Shizuku read-only EGL log filter.
+- [ ] Check P5 GitHub Actions and direct Release assets; after restoration test app's new process behavior.
+See docs/GLES_LAYER_TROUBLESHOOTING_AR.md.

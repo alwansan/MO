@@ -67,3 +67,7 @@ Owner specifically requests https://github.com/alwansan/MO/releases hosting APK 
 - No ZIP Release asset. GitHub automatically provides Source code ZIP/tar links; separate from APK release assets.
 - On future source/workflow pushes, building both APKs and publishing a unique experimental release is automatic after CI success. Actions Artifacts ZIP step removed.
 - Debug signature remains unstable: **restore P4 debug GPU settings before uninstalling/updating MO**. No actual Outlanders FPS unlock or P4 device hook proven.
+
+## Highest priority MO-20261107-CHAT-P4-FEEDBACK-011: restore settings on real phone first
+Owner v0.4 experiment got Settings.Global changed successfully (enable_gpu_debug_layers=1 gpu_debug_app=com.alwansan.mo.glesprobe), but GL_RENDERER unchanged Adreno730, Layer intercepted NO in owned test. **No confirmation of old settings restored yet**. The v0.4 app has the exact snapshot in private SharedPreferences. Ask for/use Restore GPU Debug in installed v0.4 before any uninstall/upgrade. Read docs/DEVICE_FEEDBACK_ALPHA4_2026-11-07.md and docs/GLES_LAYER_TROUBLESHOOTING_AR.md.
+v0.5 source introduces native-vs-Java GLES, manual ELF load test, process PID, and Shizuku readonly current layer settings/filtered EGL logs. GitHub Releases autopublish debug APKs; do not interpret success as proof of hook or game unlock.

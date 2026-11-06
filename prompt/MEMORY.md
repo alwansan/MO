@@ -104,3 +104,6 @@ Owner requests GitHub Releases direct APK attachments instead of GitHub Actions 
 - No ZIP Release asset. GitHub automatically provides Source code ZIP/tar links; separate from APK release assets.
 - On future source/workflow pushes, building both APKs and publishing a unique experimental release is automatic after CI success. Actions Artifacts ZIP step removed.
 - Debug signature remains unstable: **restore P4 debug GPU settings before uninstalling/updating MO**. No actual Outlanders FPS unlock or P4 device hook proven.
+
+## P4 device failure MO-20261107-CHAT-P4-FEEDBACK-011
+User tested two APKs v0.4 on POCO. Shizuku UID2000 successfully wrote GPU Debug enable=1 and gpu_debug_app=com.alwansan.mo.glesprobe. Original `GL_RENDERER=Adreno (TM) 730` persisted inside owned debug test; `Layer intercepted: NO`; no observed mock 120fps unlock. **Status = layer not proven, diagnosis required**. Backup stored in MO private SharedPreferences; user has NOT confirmed Restore. NEVER instruct upgrading/deleting MO before pressing Restore GPU Debug and getting OK. New v0.5 source compares Java/NDK GLES same process and PID, offers explicit layer library ELF load test and Shizuku read-only filtered logcat diagnostics. Evidence docs/DEVICE_FEEDBACK_ALPHA4_2026-11-07.md and docs/GLES_LAYER_TROUBLESHOOTING_AR.md.
