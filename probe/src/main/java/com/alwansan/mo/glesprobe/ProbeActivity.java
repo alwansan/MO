@@ -10,6 +10,7 @@ import android.opengl.EGLDisplay;
 import android.opengl.EGLSurface;
 import android.opengl.GLES20;
 import android.os.Build;
+import android.os.Process;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.Button;
@@ -63,6 +64,24 @@ public final class ProbeActivity extends Activity {
         refresh.setOnClickListener(v -> queryAsync());
         column.addView(refresh);
 
+        Button binary = new Button(this);
+        binary.setText("اختبار إمكانية تحميل مكتبة GLES (فقط)");
+        binary.setAllCaps(false);
+        binary.setOnClickListener(v -> {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("فحص المكتبة بشكل مستقل")
+                    .setMessage("يحاول تحميل المكتبة الموجودة في تطبيق الاختبار فقط. نجاح هذا الفحص لا يثبت أن Android فعّل الطبقة عند تشغيل OpenGL.")
+                    .setNegativeButton("إلغاء", null)
+                    .setPositiveButton("اختبار", (dialog, which) ->
+                            new android.app.AlertDialog.Builder(this)
+                                    .setTitle("نتيجة فحص المكتبة")
+                                    .setMessage(LayerLibrarySelfCheck.check())
+                                    .setPositiveButton("موافق", null)
+                                    .show())
+                    .show();
+        });
+        column.addView(binary);
+
         TextView instructions = new TextView(this);
         instructions.setText("عند تغيير إعدادات طبقات GLES من تطبيق MO، أغلق تطبيق الاختبار وافتحه مجددًا.\nهذا التطبيق لا يكتب أي إعداد للنظام.");
         instructions.setTextColor(Color.rgb(177, 192, 219));
@@ -107,15 +126,23 @@ public final class ProbeActivity extends Activity {
                 return "eglMakeCurrent failed";
             String vendor = safe(GLES20.glGetString(GLES20.GL_VENDOR));
             String renderer = safe(GLES20.glGetString(GLES20.GL_RENDERER));
-            boolean sampleTier = MockGraphicsTier.isProofLayerRenderer(renderer);
+            String nativeRenderer = ProbeNativeRenderer.inspect();
+            boolean javaIntercept = MockGraphicsTier.isProofLayerRenderer(renderer);
+            boolean nativeIntercept = MockGraphicsTier.isProofLayerRenderer(nativeRenderer);
+            boolean sampleTier = javaIntercept || nativeIntercept;
             return "Android Build.MODEL: " + Build.MODEL
                     + "\nGL_VENDOR: " + vendor
                     + "\nGL_RENDERER: " + renderer
+                    + "\nGL_RENDERER (NDK): " + nativeRenderer
+                    + "\nProcess PID: " + Process.myPid()
+                    + "\nDebuggable APK: " + (BuildConfig.DEBUG ? "YES" : "NO")
                     + "\nGL_VERSION: " + safe(GLES20.glGetString(GLES20.GL_VERSION))
                     + "\n\n"
                     + (sampleTier ? "Mock 120 FPS: UNLOCKED (simulation)" :
                             "Mock 120 FPS: LOCKED (simulation)")
-                    + "\n\nLayer intercepted: " + (sampleTier ? "YES" : "NO")
+                    + "\n\nLayer intercepted (Java): " + (javaIntercept ? "YES" : "NO")
+                    + "\nLayer intercepted (Native): " + (nativeIntercept ? "YES" : "NO")
+                    + "\nLayer intercepted: " + (sampleTier ? "YES" : "NO")
                     + "\n\nNo real GPU capabilities or game settings were modified.";
         } catch (RuntimeException | LinkageError e) {
             return "GL query error: " + e.getClass().getSimpleName();
