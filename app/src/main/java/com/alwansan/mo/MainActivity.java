@@ -200,7 +200,7 @@ public final class MainActivity extends Activity {
         nativeVkCard.addView(action("إعادة فحص Vulkan GPU", this::refreshNativeVulkan));
 
         LinearLayout gameCard = card(root, "04  /  GAME TARGETS",
-                "فحص وجود الألعاب والإصدارات فقط، بدون قراءة ملفاتها أو تشغيلها.");
+                "فحص الحزم والإصدارات وعلامات السماح الرسمية بطبقات GLES دون فتح ملفات الألعاب.");
         gameOutput = text("جارٍ الفحص...", 14, COLOR_TEXT, false);
         gameCard.addView(gameOutput);
         gameCard.addView(action("إعادة فحص الألعاب", 
