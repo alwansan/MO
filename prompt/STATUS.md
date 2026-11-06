@@ -109,3 +109,12 @@ P4 owns disposable debug app `com.alwansan.mo.glesprobe`, original GLES intercep
 - Current repo Releases was empty before this change. First build triggered by workflow update **must be checked** before claiming published URLs.
 - Important owner safety: P4 GLES developer layer settings snapshot is in MO app data. **Restore original settings before uninstall/update**, especially with CI per-run debug signing mismatch. No real game modified.
 - Docs: `docs/RELEASE_DISTRIBUTION_AR.md`.
+
+## Release publishing confirmed — 2026-11-07
+- GitHub Actions run https://github.com/alwansan/MO/actions/runs/42311901394: **completed success**. Commit `58de082ab63a797087f827633ba4dbd35fb5aa2f`.
+- GitHub prerelease https://github.com/alwansan/MO/releases/tag/mo-v0.4.0-alpha.4-run9 created, id 437174044, public (draft=false), two raw APK assets, state=uploaded:
+  1. `MO-Graphics-Probe-v0.4.0-alpha.4.apk` (1,118,830 bytes) https://github.com/alwansan/MO/releases/download/mo-v0.4.0-alpha.4-run9/MO-Graphics-Probe-v0.4.0-alpha.4.apk
+  2. `MO-Layer-Test-v0.1.0.apk` (17,463 bytes) https://github.com/alwansan/MO/releases/download/mo-v0.4.0-alpha.4-run9/MO-Layer-Test-v0.1.0.apk
+- No ZIP Release asset. GitHub automatically provides Source code ZIP/tar links; separate from APK release assets.
+- On future source/workflow pushes, building both APKs and publishing a unique experimental release is automatic after CI success. Actions Artifacts ZIP step removed.
+- Debug signature remains unstable: **restore P4 debug GPU settings before uninstalling/updating MO**. No actual Outlanders FPS unlock or P4 device hook proven.
