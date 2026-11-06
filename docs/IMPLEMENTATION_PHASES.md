@@ -72,3 +72,11 @@ See docs/DEVICE_FEEDBACK_2026-11-07.md. No claim of FPS unlock or game spoof.
 - [ ] Own-app official GLES/Vulkan layer proof; not a general closed game hook.
 - [ ] Stable signing Secrets configuration (CI debug cert changes on each run, MO reinstall likely required).
 See docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md.
+
+## P3 CI pass, pending on-device Vulkan proof
+- [x] Workflow run 42308837332 success incl tests, CMake/NDK 27.3 and Java/Android APK build.
+- [x] ARM64 libmo_vulkan.so included, verified via APK ZIP inspection.
+- [x] APK v0.3.0-alpha3 SHA256 `203b8c47d3da67cca1e6ffe212682824d67a864a556b6cd12d7717b7f14dbe92`, artifact ID13547731335, 1102410 bytes.
+- [ ] Verify native Vulkan GPU query on POCO, user screenshot/report.
+- [ ] Stable signing Secrets in CI (debug keys change each run).
+- [ ] Actual gameplay option unlock is not implemented and not guaranteed possible with shell-level Shizuku.

@@ -78,3 +78,10 @@ User on-device proof confirms MO P1 success: Shizuku UID2000 permission GRANTED 
 - Stored evidence docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md. **No game identity modification or FPS unlock has occurred**.
 - New source v0.3.0-alpha.3: JNI Vulkan native GPU properties in own process, ARM64 NDK/CMake, fixed report literal \\n. Check latest GitHub Actions and device before claiming full success.
 - Still debug APK ephemeral signing; uninstall only MO to install update if signature mismatch, never game or Shizuku.
+
+## P3 build success — 2026-11-07
+- GitHub Actions https://github.com/alwansan/MO/actions/runs/42308837332 SUCCESS on source commit `eef8fb46f8ab49412ab4ab04554128e56b0dad36`.
+- `testDebugUnitTest`, `assembleDebug`, SHA-256, artifact upload successful. Native ARM64 `libmo_vulkan.so` present in APK.
+- Artifact `MO-Graphics-Probe-debug-4` ID `13547731335`; APK SHA-256 `203b8c47d3da67cca1e6ffe212682824d67a864a556b6cd12d7717b7f14dbe92`, APK 1,102,410 bytes. Downloaded, ZIP CRC and native library checked.
+- Direct user APK provided in chat as `MO-Graphics-Probe-v0.3.0-alpha3.apk`. **Device Vulkan runtime test still pending**; v0.3 compile success is not native runtime success.
+- CI per-run debug signing may require reinstall of MO only. Do not uninstall Shizuku or game. Next: user's copied Vulkan Native GPU section, plus entire report.

@@ -43,3 +43,6 @@ v0.1 and v0.2 are signed by **different per-run GitHub Actions debug keys**, can
 
 ## Session MO-20261107-CHAT-P3-VULKAN-008 — P2 verified and native Vulkan build
 Read docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md, app/src/main/cpp/native_vulkan.cpp and NativeVulkanProbe.java. User P2 report: Shizuku UID2000 works; Outlanders game mode [standard,custom] no interventions, ANGLE selection null, Vulkan declared1.1. New v0.3 source adds real native physical GPU properties in **MO process** only, NDK/CMake, and fixes literal \\n report. Check GitHub Actions results, repair compile problems, then get user device test. Never suggest this by itself unlocks FPS or changes game identity.
+
+## P3 APK built successfully (2026-11-07)
+GitHub Actions `42308837332` SUCCESS for source `eef8fb46f8ab49412ab4ab04554128e56b0dad36`; artifact `MO-Graphics-Probe-debug-4`, ID13547731335, APK v0.3.0-alpha3 SHA256 `203b8c47d3da67cca1e6ffe212682824d67a864a556b6cd12d7717b7f14dbe92` 1102410 bytes. Native libmo_vulkan.so ARM64 verified. Owner received APK in chat, **but phone Vulkan runtime test pending**. Ask for MO 'Vulkan Native GPU' report if absent. Do not claim it changes game GPU or unlocks options.

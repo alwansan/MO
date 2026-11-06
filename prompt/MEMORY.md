@@ -78,3 +78,6 @@ Android v0.1 to v0.2 debug certificates differ due to per-run GitHub Actions deb
 - POCO test v0.2: Shizuku UserService worked UID2000. Outlanders com.tencent.mhadv v1.0.9.0.3308842: `cmd game list-modes` current standard available [standard,custom]; `list-configs` no interventions. ANGLE pkgs/values null, debug gpu layers 0, ro.board.platform taro, Vulkan hardware adreno, SoC SM8475. Android advertises Vulkan1.1. No actual game tier unlocked.
 - v0.3 source adds actual vkEnumeratePhysicalDevices/vkGetPhysicalDeviceProperties **only in MO**, NDK native ARM64; fixes report formatting and versions. Verify CI before reporting success.
 - Game Mode custom ≠ FPS unlock. ANGLE null means no driver selection, not absence of ANGLE.
+
+## P3 CI proof 2026-11-07
+Run42308837332 finished success. Artifact MO-Graphics-Probe-debug-4 (ID13547731335) includes ARM64 libmo_vulkan.so, APK1,102,410 bytes, SHA256 203b8c47d3da67cca1e6ffe212682824d67a864a556b6cd12d7717b7f14dbe92. Original C++ reads vkGetPhysicalDeviceProperties only in MO; v0.3 new sections fixed \n formatting. User has direct APK, runtime test not done yet. Earlier v0.2 read-only Shizuku UserService proven on POCO, Game Mode standard/custom no interventions, ANGLE unset. Build success does not imply FPS unlock.
