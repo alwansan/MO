@@ -57,3 +57,9 @@ See docs/DEVICE_FEEDBACK_2026-11-07.md. No claim of FPS unlock or game spoof.
 - [ ] P2 Shizuku read-only UserService runs on POCO and returns Game Mode/ANGLE (owner install/report required).
 - [ ] Vulkan declared features returned on POCO.
 - [ ] Actual Outlanders graphics options unlock remains **not implemented** and may not be achievable with Shizuku under current stock device constraints.
+
+## Signing migration issue
+- GitHub-hosted ephemeral build keys vary per run. Android v0.1 certificate SHA256: `6ea43d29063eae454fa7769c20392cd58effe4653585d79df5c5384b3ce7a2da`.
+- Android v0.2 certificate SHA256: `4d2e87fa998d2c8c901c6e8f21417fbe28ce6b2f8109e35cb8dd7ef46f1be365`.
+- The only safe immediate update path is uninstall **MO** only, install v0.2. Existing Shizuku and original Outlanders untouched.
+- Implement stable signing using owner-provisioned **GitHub Actions encrypted Secrets** before next release. Never publish private keystore in repo or chat. Changing keys later again means uninstall one final time unless managed signing key transition is available on OS and target.

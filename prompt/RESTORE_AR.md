@@ -37,3 +37,6 @@ Read docs/DEVICE_FEEDBACK_2026-11-07.md and prompt/sessions/MO-20261107-CHAT-P2-
 
 ## Verify P2 CI and continue
 The GitHub Actions P2 run 42307946638 SUCCEEDED. Artifact ID13547166555, name MO-Graphics-Probe-debug-3, app-debug.apk SHA256 7a98dbbb0393256210b76249c79505df34b89e34e98c3677545cd0d6b5e23d5b, 125919 bytes, provided to user as MO-Graphics-Probe-v0.2.0-alpha2.apk. Ask for P2 'فحص Game Mode وANGLE' result when user tests. Keep no root/VM/clone, no game mods.
+
+## Important debug install constraint
+v0.1 and v0.2 are signed by **different per-run GitHub Actions debug keys**, cannot upgrade in place. User advised uninstall MO only before alpha2; don't uninstall Shizuku or games. Future stable signing needs private keystore GitHub Secret, not public key source commit. See docs/IMPLEMENTATION_PHASES.md.

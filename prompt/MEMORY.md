@@ -70,3 +70,6 @@ MO v0.1.0-alpha.1 worked on POCO F5 Pro. Report: Shizuku API13 UID2000 permissio
 
 ## P2 CI success 2026-11-07
 MO alpha2 built successfully, GitHub Actions run42307946638 artifact MO-Graphics-Probe-debug-3 ID13547166555 APK125919 bytes sha256 7a98dbbb0393256210b76249c79505df34b89e34e98c3677545cd0d6b5e23d5b. Read-only P2 app has limited Shizuku AIDL UserService and Vulkan declared capability screen; not yet tested on POCO. Direct APK shared in current chat, but future session should retrieve build artifact while retained. User P1 success evidence in docs/DEVICE_FEEDBACK_2026-11-07.md. Do not misreport FPS/quality unlocked in Outlanders.
+
+## APK signing compatibility 2026-11-07
+Android v0.1 to v0.2 debug certificates differ due to per-run GitHub Actions debug signing. v1 cert SHA256 6ea43d29063eae454fa7769c20392cd58effe4653585d79df5c5384b3ce7a2da, v2 4d2e87fa998d2c8c901c6e8f21417fbe28ce6b2f8109e35cb8dd7ef46f1be365. User must uninstall MO (only MO) before installing alpha2; no game data touched. Long-term stable signing requires private keystore via repo secret; never store signing key in public repository. Document in docs/IMPLEMENTATION_PHASES.md.
