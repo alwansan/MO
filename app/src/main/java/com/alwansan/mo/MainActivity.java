@@ -162,7 +162,7 @@ public final class MainActivity extends Activity {
         root.addView(heading);
 
         TextView subtitle = text(
-                "النسخة التجريبية 0.5.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
+                "النسخة التجريبية " + BuildConfig.VERSION_NAME + " — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
                 14, COLOR_MUTED, false);
         subtitle.setPadding(0, dp(6), 0, dp(18));
         root.addView(subtitle);
@@ -531,7 +531,7 @@ public final class MainActivity extends Activity {
     }
 
     private void copyReport() {
-        String report = "MO Graphics Probe v0.5.0-alpha.5\n"
+        String report = "MO Graphics Probe v" + BuildConfig.VERSION_NAME + "\n"
                 + "Local read-only diagnostics\n\n"
                 + "[SHIZUKU]\n" + shizukuOutput.getText() + "\n\n"
                 + "[DEVICE]\n" + deviceOutput.getText() + "\n\n"

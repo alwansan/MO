@@ -34,7 +34,7 @@ android {
         }
     }
 
-    buildFeatures { aidl true }
+    buildFeatures { aidl true; buildConfig true }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
