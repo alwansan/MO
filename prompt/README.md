@@ -20,3 +20,6 @@
 - `../research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md` مصفوفة المشاريع والطرق والمخاطر.
 - `../research/POC_TEST_MATRIX_AR.md` تجارب إثبات التحميل والحقن المسموح دون روت.
 - `../research/UPLOADED_TOOLING_INVENTORY.md` بيانات أدوات REA/JADX/Node المرفوعة (بصمات، من دون تشغيل).
+
+- `../research/GAME_PROFILE_SPOOFING_AR.md` مقارنة تخصصية لتزييف هوية الجهاز وفتح FPS في الألعاب، مع الملفات المقروءة من المشاريع.
+- `../research/POCO_GAME_COMPATIBILITY_AR.md` معلومات شريحة POCO وسياسات PUBG وMonster Hunter Now ومحددات الاختبار.

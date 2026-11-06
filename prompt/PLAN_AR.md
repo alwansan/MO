@@ -88,3 +88,11 @@ Source URL + date/version, before/after device logs, adb identity, screenshots a
 - Android Game Mode Intervention API + ANGLE per-app + GLES/VK layers مسارات رسمية قابلة للقياس، وفق دعم OEM وrollback.
 - الاستبعاد: Zygisk/KernelSU وGlobal GPU spoof للعمليات غير المتعاونة؛ container للألعاب التجارية يبقى بحثًا ضعيف الثقة.
 تُدرج تجربة PoC جديدة بعد GLES layers: `AppComponentFactory` داخل تطبيق disposable تجريبي خاص بـMO، بدون إعادة استخدام مصدر iUnlocker ولا كسر توقيع برنامج موجود.
+
+## ملحق MO-20261107-CHAT-GAME-PROFILES-004: التشخيص حسب هوية الجهاز التي تقرؤها الألعاب
+- أول سؤال في كل تجربة: هل الهدف مجرد إظهار خيار FPS مقفل؟ أم تغيّر معدل الإطارات المقاس فعليًا؟ أم رفع جودة الصورة؟ نفصل هذه المؤشرات ولا نفترض تساويها.
+- أنشئ أولًا **MO Identity Probe** (في مرحلة التنفيذ) يعرض Java Build، native `__system_property_get`, GLES `glGetString`, Vulkan `vkGetPhysicalDeviceProperties`, CPU and physical display modes. لا تغيّر هوية الهاتف عالميًا.
+- أنشئ لعبة اختبار مستقلة بسلم وهمي لخيارات FPS تتدرج حسب Build vs GL vs Vulkan؛ أثبت الفرق بين تغيير `Build.MODEL` داخل برنامج نملكه وتغيير GL_VENDOR/RENDERER، وبين Game Mode/settings. لا تجارب على PUBG الحقيقي.
+- شغّل Shizuku فقط لقراءة UID2000 وSettings/Device Config المسموحة؛ قيّم تطبيقات GFX Tool كتحرير ملف config (شرط الوصول/الحفظ وغياب كسر الحماية)، وليس GPU spoof.
+- كل لعبة تحتاج تشخيصًا منفصلًا: PUBG سياسة دعم الشريحة في 2026 (Snapdragon 8Gen3+ first batch)، Monster Hunter Now إتاحة 60fps أثناء الصيد والروت غير المدعوم. انظر `research/POCO_GAME_COMPATIBILITY_AR.md`.
+- منع أي تعديل تلقائي لألعاب حية/حسابات PUBG، وانتحال عتاد غير مدعوم على لعبة تستخدم anticheat، أو auto-uninstall حفاظًا على بيانات المستخدم. وثّق مخاطر الحساب والنسخ الاحتياطي.

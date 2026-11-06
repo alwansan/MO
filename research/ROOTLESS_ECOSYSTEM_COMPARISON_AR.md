@@ -59,3 +59,6 @@ C. Containers and broad third-party game patching: exploratory only, needs devic
 D. Zygisk/KernelSU route permanently outside user's constraints.
 
 All capabilities are hypothesis/provenance-coded until tested on the user's POCO F5 Pro. Public MO repository contains only this independent analysis.
+
+## 2026-11-07 Focused FPS/game-identity extension
+See `research/GAME_PROFILE_SPOOFING_AR.md` (16+ project implementations/products), `research/POCO_GAME_COMPATIBILITY_AR.md`. Important distinction: Game-Unlocker (Rushi) implements **per-package Android Build field spoof with Xposed**, ULTRA-EXTREME-UNLOCKER only static `ro.product.*` values, Shizuku PUBG GFX tools overwrite `.sav/.ini`, and COPG/iUnlocker claim GLES/Vulkan runtime spoof but need Root/Zygisk. PUBG v4.4 supports 120fps on chipset/whitelist policy, not necessarily model alone. No unmodified game injection via Shizuku shell on production device.

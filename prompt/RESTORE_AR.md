@@ -19,3 +19,6 @@
 
 ## آخر توسعة بحثية (MO-20261107-CHAT-ECOSYSTEM-003)
 اقرأ أيضًا `prompt/sessions/MO-20261107-CHAT-ECOSYSTEM-003.md`, `research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md`, `research/POC_TEST_MATRIX_AR.md`, `research/UPLOADED_TOOLING_INVENTORY.md`. لا تخلط GAMA (HWUI switch) مع spoof GL/Vulkan داخل لعبة. KaosGFX يحقق مساره المعلن بدون روت عبر **تعديل APK وإعادة توقيعه**، وليس Shizuku يحقن العملية الأصلية. لا تعيد تثبيت أي لعبة أصلية أو تحذفها عند اختلاف التوقيع؛ قد تضيع بياناتها الداخلية. الثلاثة أدوات المرفوعة موجودة فقط في محادثة اليوم، وقد تحتاج إعادة رفعها مستقبلاً عند التحليل الثنائي. الحالة P0؛ لم يُبنَ APK أو يُختبر على الجهاز.
+
+## جلسة أحدث MO-20261107-CHAT-GAME-PROFILES-004 — هدف الألعاب الفعلي
+اقرأ `research/GAME_PROFILE_SPOOFING_AR.md`, `research/POCO_GAME_COMPATIBILITY_AR.md`, `prompt/sessions/MO-20261107-CHAT-GAME-PROFILES-004.md`. المالك يريد تغيير الهوية المرئية للألعاب لفتح إعدادات FPS/Graphics، لا تبديل الدريفير فقط. Game-Unlocker الحقيقي Xposed يغيّر Java Build (لا يثبت GL/Vulkan)، أما GFX عبر Shizuku يبدّل ملفات إعدادات UE4. POCO F5 Pro Snapdragon **8+ Gen1**, 120Hz/Adreno 730. دعم PUBG 120fps وفق سياسة الشريحة وليس اسم جهاز فقط؛ Monster Hunter Now 60fps hunting رسمياً. لا تغيّر لعبة حية أو نظام الهاتف؛ لا root/unlock. الحالة بحثية P0 ولم يُبنَ APK.

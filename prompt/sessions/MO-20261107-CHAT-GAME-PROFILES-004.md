@@ -1,0 +1,13 @@
+# Session MO-20261107-CHAT-GAME-PROFILES-004
+- origin: chat; date 2026-11-07 Asia/Baghdad; repo alwansan/MO main; phase P0 research only.
+- User clarified priority: unlock FPS and quality options by changing identity detected by PUBG Mobile, Monster Hunter Now and other games, without root/unlock, Shizuku only.
+- Research: OpenGL ES GL_RENDERER/GL_VENDOR, Android Build, native system props, Vulkan names, CPU, config files, refresh modes, server whitelists; their difference documented.
+- Inspected code with GitHub connected app: rushiranpise/Game-Unlocker GAMEUNLOCKER.java, yadavnikhil03/GameUnlocker Xposed hook files, shakilxt/ULTRA-EXTREME-UNLOCKER system.prop, princezakirx/battlegrounds_gfx MainActivity2 and ShizukuHelper, Proprince11/gfxtool GfxConfig+FileWriter+Shell.
+- Key results: Xposed Game-Unlocker maps PUBG package `com.tencent.ig` to OnePlus 8 Pro using Java Build field reflection; does not prove GLES native spoof. ULTRA system.prop is model-only root spoof. Shizuku GFX tools write UE4 sav/ini presets, not GPU driver return values. Marketing claims and runtime proof separated.
+- Hardware verified from Xiaomi: POCO F5 Pro **Snapdragon 8+ Gen 1**, 120 Hz display, Adreno 730 from phone specifications. User Android 15 shown in screenshots.
+- PUBG Mobile v4.4 2026 announcement: 120fps policy chipset-based, first-batch Qualcomm reference Snapdragon 8 Gen 3+, separate testing for others; eligibility may change. BGMI official instructions say show Ultra Extreme only on supported.
+- Monster Hunter Now official 60fps hunting option, rooted unsupported; do not assume 120fps unlock parallels PUBG.
+- Official PUBG Mobile policy warns modified game clients can cause account suspension; no live game patches or anti-cheat evasion in tests.
+- Deliverables: research/GAME_PROFILE_SPOOFING_AR.md and research/POCO_GAME_COMPATIBILITY_AR.md; updated status/memory/restore/plan/decisions/ecosystem index.
+- Tests: source and public documentation read-only; **no local APK built, phone rooted, game modified or Shizuku executed**.
+- Next: demonstrate each identity channel inside own debuggable graphics probe; decide what user-selectable settings are actually exposed by Shizuku, evaluate Game Mode and official GLES layers, then safe rollback.
