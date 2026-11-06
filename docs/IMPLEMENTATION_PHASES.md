@@ -80,3 +80,11 @@ See docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md.
 - [ ] Verify native Vulkan GPU query on POCO, user screenshot/report.
 - [ ] Stable signing Secrets in CI (debug keys change each run).
 - [ ] Actual gameplay option unlock is not implemented and not guaranteed possible with shell-level Shizuku.
+
+## P3 on-device PASS / P4 owned test app source — MO-20261107-CHAT-P4-LAYER-009
+- [x] Native Vulkan loader/device query passed on real POCO: Adreno730, Vulkan1.1.128, vendor0x5143, device0x7030002, driver0x8026705F. Evidence docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md.
+- [x] Created disposable debuggable app `com.alwansan.mo.glesprobe` and own GLES intercept library `libMOGlesProofLayer.so`. Synthetic FPS tier toggles on *simulated renderer string* ONLY in test app.
+- [ ] Verify GitHub CI builds two separate APKs.
+- [ ] Add transactional Shizuku global GPU debug settings controller for **test app only**, with per-key backup and rollback; no writes until user action.
+- [ ] Prove layer loader intercept on POCO. This proof does not grant permission to hook an unmodified nondebuggable Outlanders game.
+Official GLES layer docs: https://developer.android.com/ndk/guides/rootless-debug-gles

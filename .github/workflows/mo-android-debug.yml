@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'app/**'
+      - 'probe/**'
       - 'build.gradle'
       - 'settings.gradle'
       - 'gradle.properties'
@@ -73,13 +74,13 @@ jobs:
           gradle-version: '8.11.1'
 
       - name: Run unit tests
-        run: gradle --no-daemon --stacktrace :app:testDebugUnitTest
+        run: gradle --no-daemon --stacktrace :app:testDebugUnitTest :probe:testDebugUnitTest
 
-      - name: Build debug APK
-        run: gradle --no-daemon --stacktrace :app:assembleDebug
+      - name: Build debug APKs
+        run: gradle --no-daemon --stacktrace :app:assembleDebug :probe:assembleDebug
 
       - name: SHA-256
-        run: sha256sum app/build/outputs/apk/debug/app-debug.apk | tee mo-debug-sha256.txt
+        run: sha256sum app/build/outputs/apk/debug/app-debug.apk probe/build/outputs/apk/debug/probe-debug.apk | tee mo-debug-sha256.txt
 
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
@@ -87,6 +88,7 @@ jobs:
           name: MO-Graphics-Probe-debug-${{ github.run_number }}
           path: |
             app/build/outputs/apk/debug/app-debug.apk
+            probe/build/outputs/apk/debug/probe-debug.apk
             mo-debug-sha256.txt
           if-no-files-found: error
           retention-days: 14

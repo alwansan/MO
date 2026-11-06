@@ -46,3 +46,6 @@ Read docs/DEVICE_FEEDBACK_ALPHA2_2026-11-07.md, app/src/main/cpp/native_vulkan.c
 
 ## P3 APK built successfully (2026-11-07)
 GitHub Actions `42308837332` SUCCESS for source `eef8fb46f8ab49412ab4ab04554128e56b0dad36`; artifact `MO-Graphics-Probe-debug-4`, ID13547731335, APK v0.3.0-alpha3 SHA256 `203b8c47d3da67cca1e6ffe212682824d67a864a556b6cd12d7717b7f14dbe92` 1102410 bytes. Native libmo_vulkan.so ARM64 verified. Owner received APK in chat, **but phone Vulkan runtime test pending**. Ask for MO 'Vulkan Native GPU' report if absent. Do not claim it changes game GPU or unlocks options.
+
+## Latest MO-20261107-CHAT-P4-LAYER-009: Vulkan success, graphics layer PoC source
+Read docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md, probe/src/main/cpp/mo_gles_layer.cpp, probe/src/main/java/com/alwansan/mo/glesprobe/ProbeActivity.java, prompt/sessions/MO-20261107-CHAT-P4-LAYER-009.md. P3 native Vulkan on POCO passed: Adreno730 API1.1.128 vendor0x5143. P4 separate disposable owned test app contains official GLES Layer intercept and mock tier; cannot affect Outlanders. Check CI. Next build reversible Shizuku developer per-app GPU debug layer activation **only for com.alwansan.mo.glesprobe**, then test in that app; no broad game injection.

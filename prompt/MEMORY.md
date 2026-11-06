@@ -81,3 +81,6 @@ Android v0.1 to v0.2 debug certificates differ due to per-run GitHub Actions deb
 
 ## P3 CI proof 2026-11-07
 Run42308837332 finished success. Artifact MO-Graphics-Probe-debug-4 (ID13547731335) includes ARM64 libmo_vulkan.so, APK1,102,410 bytes, SHA256 203b8c47d3da67cca1e6ffe212682824d67a864a556b6cd12d7717b7f14dbe92. Original C++ reads vkGetPhysicalDeviceProperties only in MO; v0.3 new sections fixed \n formatting. User has direct APK, runtime test not done yet. Earlier v0.2 read-only Shizuku UserService proven on POCO, Game Mode standard/custom no interventions, ANGLE unset. Build success does not imply FPS unlock.
+
+## v0.3 P3 PASS and P4 probe MO-20261107-CHAT-P4-LAYER-009
+Owner on-device MO v0.3 proves Vulkan Adreno730 API1.1.128 vendor0x5143 device0x7030002 driver0x8026705F; native Vulkan query works only inside MO; doesn't show Outlanders detection policy. P4 proof designed using **separate** MO-owned debuggable `com.alwansan.mo.glesprobe` app and original libMOGlesProofLayer.so intercepting glGetString(GL_RENDERER) for simulated value, explicitly fake mock 120fps option. Code doesn't change target games, root, unlock or enable system debug settings. Need build and safe per-app apply/restore controls.

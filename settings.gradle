@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = 'MO'
 include ':app'
+
+// Isolated disposable test app. Never install over Monster Hunter Outlanders.
+include ':probe'

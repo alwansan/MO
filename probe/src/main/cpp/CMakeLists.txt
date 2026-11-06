@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(mo_gles_test_layer LANGUAGES CXX)
+add_library(MOGlesProofLayer SHARED mo_gles_layer.cpp)
+target_compile_features(MOGlesProofLayer PRIVATE cxx_std_17)
+target_link_libraries(MOGlesProofLayer log)

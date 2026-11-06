@@ -35,3 +35,7 @@ Owner confirmed on POCO that Shizuku API13 UID2000 is GRANTED and Outlanders is 
 
 ## P3 v0.3 native Vulkan inspection (read only)
 2026-11-07 second POCO report verified Shizuku UserService UID2000, Game Mode [standard,custom] but **no configured intervention**, ANGLE selection null and declared Vulkan1.1. V0.3 adds original NDK C++ `vkEnumeratePhysicalDevices` and `vkGetPhysicalDeviceProperties` inside MO's own app to measure the actual Vulkan device, API/driver version and hardware limits. Android ROM/driver may expose different capability tiers in different applications; this does not spoof Outlanders or force new graphical modes. Report newline formatting fixed. APK CI validates build; user must validate Vulkan on device.
+
+## P4 disposable GLES layer probe (in progress)
+A second **separate** APK is built from `probe/`: `com.alwansan.mo.glesprobe`. It's a disposable owned target, not a clone of Outlanders, and never reads game data. It includes an original Android GLES debug layer intercepting `glGetString(GL_RENDERER)` and returning `MO-GLES-LAYER-PROOF (SIMULATED)` **only when officially enabled for this debuggable test app**. Its Mock 120 FPS indicator is a demonstration, not real FPS or graphics quality unlock. Settings activation/rollback UI remains next step.
+P3 POCO Vulkan results are in docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md.
