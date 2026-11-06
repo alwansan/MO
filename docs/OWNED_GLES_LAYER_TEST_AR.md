@@ -15,3 +15,11 @@
 
 الطبقات الرسمية تُحمَّل للتطبيقات debuggable أو opt-in فحسب. هذه التجربة لا تفعّل FPS فعليًا ولا تتجاوز حماية الألعاب الإنتاجية.
 المرجع: https://developer.android.com/ndk/guides/rootless-debug-gles
+
+## Build evidence 2026-11-07
+Full GitHub Actions: https://github.com/alwansan/MO/actions/runs/42310714620
+Artifacts: MO-Graphics-Probe-debug-8, contains:
+- app-debug.apk (MO v0.4, SHA256 74e50eece4eae020d7a9808f97552cbc5d843bf37142b8818282ab106c71b8f7)
+- probe-debug.apk (MO Layer Test v0.1, SHA256 180c32ab62a06f8e26686d651ad274cf316eb2828a1e52a73a29bca98670b4d0)
+Both built and ZIP integrity checked; **not yet tested** as an active GLES layer on POCO F5 Pro.
+For testing, force-stop **only** MO Layer Test after enabling/restoring, then reopen to ensure new process initializes EGL loader.

@@ -29,3 +29,9 @@
 - Do not run root, VMOS, App Cloner, APK re-signing of games, or Shizuku writes to game files. Owner explicitly rejected cloning/VMs.
 - Verify GitHub Actions CI result, not just successful workflow dispatch. Before claiming APK exists, require successful uploaded artifact.
 - New source lives in `app/`; CI in `.github/workflows/mo-android-debug.yml`; check `docs/IMPLEMENTATION_PHASES.md` and latest session.
+
+## 2026-11-07 P4 scope
+- Owner authorized continuous MO engineering with Shizuku only. P4 is a **consenting, reversible Android Developer GPU debug settings experiment** for MO-owned disposable test package com.alwansan.mo.glesprobe.
+- Apply/restore actions are limited to exactly four allowlisted Settings.Global keys, UID2000, and only this owned package; never accept arbitrary commands, game package or enable global ANGLE forcing.
+- Activation may leave persistent settings until restored. Warn to RESTORE inside MO before uninstall/upgrade, as backup is in app private data and CI debug signing changes every run.
+- A successful build or settings write does not prove hook loading; require actual on-device GL_RENDERER change inside owned probe and subsequent rollback before marking P4 passed.

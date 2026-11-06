@@ -94,3 +94,12 @@ P4 owns disposable debug app `com.alwansan.mo.glesprobe`, original GLES intercep
 - Typed Shizuku Service now has captureLayerSettings/activateOwnedLayer/restoreOwnedLayer, fixed only to disposable com.alwansan.mo.glesprobe. Four exact Settings.Global keys with before/after presence/value and rollback backup in MO app data.
 - UI explicit opt-in, restore and launch test app. No changes on user's phone yet, test app does not touch Outlanders.
 - Need verify latest GitHub Actions run; then test both APKs on POCO and restore settings before updating/removing MO.
+
+## P4 build complete — 2026-11-07
+- Final source commit 00558159502af56d8451ee03dac57e04d9bd34d3; GitHub Actions https://github.com/alwansan/MO/actions/runs/42310714620 SUCCESS (tests and both APK builds).
+- Artifact MO-Graphics-Probe-debug-8 ID 13547164678; contains app/build/outputs/apk/debug/app-debug.apk and probe/build/outputs/apk/debug/probe-debug.apk.
+- Main APK v0.4.0-alpha.4 1,118,830 bytes SHA256 74e50eece4eae020d7a9808f97552cbc5d843bf37142b8818282ab106c71b8f7.
+- Separate MO Layer Test v0.1.0 17,463 bytes SHA256 180c32ab62a06f8e26686d651ad274cf316eb2828a1e52a73a29bca98670b4d0, contains lib/arm64-v8a/libMOGlesProofLayer.so.
+- Both APKs extracted and ZIP CRC checked. **No real-device P4 activation/injection test yet.**
+- P4.0 first Actions run 42309871683 failed due missing probe JUnit dependency. Corrected at cdb8f29f99985b4e0893db2466990856107cbc5f; later run 42309995020 succeeded probe build, 42310714620 succeeded full v0.4 controls.
+- Owner instructions: uninstall old MO v0.3 if signature mismatch (no active layer in old version), install v0.4 + disposable test APK; open test before enabling for baseline. Under Shizuku UID2000, opt in, observe layer, RESTORE SETTINGS IN MO BEFORE UNINSTALL/UPGRADE, and verify original renderer returned. Do not modify Outlanders.

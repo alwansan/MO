@@ -52,3 +52,6 @@ Read docs/DEVICE_FEEDBACK_ALPHA3_2026-11-07.md, probe/src/main/cpp/mo_gles_layer
 
 ## P4 v0.4 (current)
 Read docs/OWNED_GLES_LAYER_TEST_AR.md, app/src/main/java/com/alwansan/mo/OwnedLayerSettings.java, MainActivity.java, probe/ source. The version 0.4 MO permits activation/restore via Shizuku of GPU debug layers for ONLY our disposable test app com.alwansan.mo.glesprobe. Four settings backed up in MO app-local data before changes; IMPORTANT restore before deleting/updating MO. Confirm build status and wait for user proof GL_RENDERER changed within test app. Neither game nor protected files are modified.
+
+## P4 complete build, device test pending
+As of 2026-11-07 GitHub Actions run 42310714620 PASS. Artifact ID13547164678 MO-Graphics-Probe-debug-8 has two APKs. MO v0.4.0-alpha.4 SHA256 74e50eece4eae020d7a9808f97552cbc5d843bf37142b8818282ab106c71b8f7; owned MO Layer Test v0.1.0 SHA256 180c32ab62a06f8e26686d651ad274cf316eb2828a1e52a73a29bca98670b4d0. Read docs/OWNED_GLES_LAYER_TEST_AR.md and prompt/sessions/MO-20261107-CHAT-P4-LAYER-009.md. NEXT: get user's baseline GL_RENDERER, layer-enabled GL_RENDERER and post-restore GL_RENDERER **inside disposable test app**. Never claim Outlanders was altered, and **restore the four global debug settings from MO before uninstalling MO**.

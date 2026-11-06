@@ -96,3 +96,13 @@ Official GLES layer docs: https://developer.android.com/ndk/guides/rootless-debu
 - Requires separate test APK from GitHub Actions, and actual device testing before claiming GLES interception.
 - **Restore settings before uninstalling/updating MO** due per-run Debug signing changes.
 - Guide: docs/OWNED_GLES_LAYER_TEST_AR.md.
+
+## P4 build / rollout gate
+- [x] Owned separate test package + ARM64 native lib built and validated ZIP.
+- [x] Version v0.4 UI+Shizuku AIDL scoped global debug settings activation/restoration, fixed target and user confirmation.
+- [x] CI run 42310714620 passed unit tests, compiled two Android APKs and native C++.
+- [ ] On POCO prove baseline Adreno730 -> MO-GLES-LAYER-PROOF (SIMULATED) -> Adreno730 after exact rollback. No other target app selected.
+- [ ] Check HyperOS respects official GLES external layer config. A successful Settings.Global write is NOT proof the layer loaded.
+- [ ] Stable APK signing secret for future same-package upgrades (no public signing key).
+- [ ] No rootless integration with stock Outlanders; original FPS/graphics locks unchanged.
+Guide docs/OWNED_GLES_LAYER_TEST_AR.md.
