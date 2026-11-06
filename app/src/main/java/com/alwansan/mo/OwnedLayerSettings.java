@@ -215,6 +215,10 @@ public final class OwnedLayerSettings {
             Map<String, String> baseline = decode(backup);
             Map<String, String> actual = readCurrent();
             if (!equal(baseline, actual)) return "ERROR: settings changed since snapshot";
+            if (!OwnedLayerRecoveryPolicy.canStartNewExperiment(actual)) {
+                return "ERROR: GPU debug settings were already configured/active before this test. "
+                        + "Refusing to overwrite or save a false baseline; restore or inspect first.";
+            }
             String previousTarget = actual.get("gpu_debug_app");
             if ("1".equals(actual.get("enable_gpu_debug_layers"))
                     && previousTarget != null && !TARGET.equals(previousTarget)) {
@@ -246,10 +250,54 @@ public final class OwnedLayerSettings {
         }
     }
 
+    /**
+     * Conservative fallback when private pre-test backup was lost across APK reinstall.
+     * Removes ONLY our exact four-key fingerprint, never other apps' configurations.
+     * Restores known enable=0 baseline from device reports, and deletes our three
+     * owned markers. This is CLEANUP, not a reconstruction of unknown old settings.
+     * The caller MUST persist a full snapshot before calling this method.
+     */
+    public static String cleanupStaleOwnedLayer(String snapshot) {
+        try {
+            requireShell();
+            Map<String, String> before = decode(snapshot);
+            Map<String, String> actual = readCurrent();
+            if (!equal(before, actual)) return "ERROR: settings changed since saved snapshot; no write";
+            if (!OwnedLayerRecoveryPolicy.exactlyOurActiveLayer(actual))
+                return "ERROR: all four keys must exactly match the MO test profile; no write";
+            try {
+                // Disable first, then clear only the three identifiers that we own.
+                write("enable_gpu_debug_layers", "0");
+                write("gpu_debug_app", null);
+                write("gpu_debug_layers_gles", null);
+                write("gpu_debug_layer_app", null);
+                if (!OwnedLayerRecoveryPolicy.cleanupVerified(readCurrent())) {
+                    throw new IllegalStateException("post-cleanup verification failed");
+                }
+                return "OK: MO test settings cleaned, GPU debugging disabled (0). "
+                        + "This is safe cleanup, not recovery of unknown old values.";
+            } catch (Exception failed) {
+                try {
+                    restoreInternal(before);
+                    return "ERROR: cleanup failed; exact pre-cleanup test state restored";
+                } catch (Exception rollbackFailure) {
+                    return "ERROR: cleanup and rollback failed; retain diagnostic snapshot and "
+                            + "do not re-enable tests. Manual recovery needed.";
+                }
+            }
+        } catch (Exception error) {
+            return "ERROR: cleanup refused: " + error.getClass().getSimpleName();
+        }
+    }
+
     public static String restore(String backup) {
         try {
             requireShell();
             Map<String, String> baseline = decode(backup);
+            if (OwnedLayerRecoveryPolicy.exactlyOurActiveLayer(baseline)) {
+                return "ERROR: saved baseline is itself the active MO test profile. "
+                        + "It cannot recover original values; use explicit owned-layer cleanup.";
+            }
             Map<String, String> current = readCurrent();
             for (String key : KEYS) {
                 boolean isOriginal = current.containsKey(key) == baseline.containsKey(key)

@@ -6,4 +6,5 @@ interface IReadOnlyProbe {
     String activateOwnedLayer(String saved) = 3;
     String restoreOwnedLayer(String saved) = 4;
     String diagnoseOwnedLayer() = 5;
+    String cleanupStaleOwnedLayer(String snapshot) = 6;
 }

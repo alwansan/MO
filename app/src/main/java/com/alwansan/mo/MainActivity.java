@@ -51,15 +51,17 @@ public final class MainActivity extends Activity {
     private TextView layerOutput;
     private IReadOnlyProbe layerService;
     private boolean layerBusy = false;
-    private int pendingLayerAction = 0; // 1=enable; 2=restore; 3=read-only diagnose
+    private int pendingLayerAction = 0; // 1=enable; 2=restore; 3=diagnose; 4=owned cleanup
     private static final String LAYER_PREFS = "mo_layer_backups";
     private static final String LAYER_BACKUP = "gpu_debug_original";
+    private static final String LAYER_RECOVERY = "mo_owned_precleanup_snapshot";
+    private static final String LAYER_BACKUP_ARCHIVE = "previous_backup_archived";
     private boolean probeBound = false;
     private boolean probeConnecting = false;
 
     private final Shizuku.UserServiceArgs probeArgs = new Shizuku.UserServiceArgs(
             new ComponentName("com.alwansan.mo", ReadOnlyProbeService.class.getName()))
-            .daemon(false).processNameSuffix("probe-readonly").version(3);
+            .daemon(false).processNameSuffix("probe-readonly").version(4);
 
     private final ServiceConnection probeConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -223,6 +225,7 @@ public final class MainActivity extends Activity {
         layerCard.addView(layerOutput);
         layerCard.addView(action("تفعيل تجربة GLES للتطبيق المملوك لـMO", this::confirmLayerEnable));
         layerCard.addView(action("استعادة إعدادات GPU Debug القديمة", this::confirmLayerRestore));
+        layerCard.addView(action("تنظيف طبقة MO العالقة (عند فقدان الأصل)", this::confirmOwnedCleanup));
         layerCard.addView(action("فتح MO Layer Test", this::openOwnedProbe));
         layerCard.addView(action("تشخيص GLES (قراءة فقط)", () -> requestLayerAction(3)));
 
@@ -374,6 +377,20 @@ public final class MainActivity extends Activity {
                 .show();
     }
 
+    private void confirmOwnedCleanup() {
+        new AlertDialog.Builder(this)
+                .setTitle("تنظيف بقايا طبقة MO فقط")
+                .setMessage("استعمل زر الاستعادة العادي أولًا إذا كانت عندك نسخة أصلية سليمة. "
+                        + "هذا خيار إنقاذ عند ضياع النسخة أو حفظ نسخة وهي أصلًا مفعّلة. "
+                        + "لن يغيّر شيئًا إلا إذا طابقت أربع قيم نظامية بصمة اختبار MO تمامًا. "
+                        + "سيحفظ نسخة للحالة الحالية قبل التنظيف، ثم يعطّل GPU Debug إلى 0 "
+                        + "ويزيل أسماء طبقة MO. هذه ليست استعادة مضمونة لأي إعدادات قديمة مجهولة. "
+                        + "لا يمس اللعبة أو ملفاتها.")
+                .setNegativeButton("إلغاء", null)
+                .setPositiveButton("تنظيف اختبار MO فقط", (dialog, which) -> requestLayerAction(4))
+                .show();
+    }
+
     private void requestLayerAction(int action) {
         if (layerBusy) {
             layerOutput.setText("عملية تفعيل أو استعادة قيد التنفيذ.");
@@ -437,6 +454,22 @@ public final class MainActivity extends Activity {
                             if (!layerPrefs().edit().remove(LAYER_BACKUP).commit()) {
                                 outcome += "\nWarning: backup record may remain";
                             }
+                        }
+                    }
+                } else if (action == 4) {
+                    String before = service.captureLayerSettings();
+                    if (before == null || before.startsWith("ERROR:")) {
+                        outcome = "ERROR: unable to snapshot current GPU settings: " + before;
+                    } else if (!layerPrefs().edit().putString(LAYER_RECOVERY, before).commit()) {
+                        outcome = "ERROR: could not persist recovery snapshot; no settings changed";
+                    } else {
+                        outcome = service.cleanupStaleOwnedLayer(before);
+                        if (outcome != null && outcome.startsWith("OK:")) {
+                            SharedPreferences.Editor e = layerPrefs().edit();
+                            String old = layerPrefs().getString(LAYER_BACKUP, null);
+                            if (old != null) e.putString(LAYER_BACKUP_ARCHIVE, old);
+                            e.remove(LAYER_BACKUP);
+                            if (!e.commit()) outcome += "\nWARNING: could not clear stale backup flag";
                         }
                     }
                 } else {
