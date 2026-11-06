@@ -124,3 +124,12 @@ P4 owns disposable debug app `com.alwansan.mo.glesprobe`, original GLES intercep
 - **Owner has not shown restoration**. First priority: use currently installed v0.4 to restore original GPU Debug keys BEFORE uninstall/update. Avoid losing SharedPreferences snapshot due changing signing key.
 - New source v0.5 app+probe: diagnostic read-only Shizuku method, exact keys/logcat filtered, native vs Java GLES, PID, explicit ELF loadability test. GitHub Actions run must be checked and user must test after safe restore.
 - No root/unlock/VM/clone, no games modified. Distinguish settings activated from GLES layer actually intercepting.
+
+## v0.5 CI build verification (2026-11-07)
+- Source commit `79ae93392461f03b0fe5a5d33b2c59be328a3345` from ongoing P5 diagnostic effort.
+- GitHub Actions run [42312793163](https://github.com/alwansan/MO/actions/runs/42312793163): **completed SUCCESS**, all tests and builds and Release upload.
+- Direct GitHub prerelease: https://github.com/alwansan/MO/releases/tag/mo-v0.5.0-alpha.5-run11
+- Raw assets: `MO-Graphics-Probe-v0.5.0-alpha.5.apk` (1,118,826 bytes) and `MO-Layer-Test-v0.2.0.apk` (23,952 bytes).
+- P5 adds native-vs-Java renderer comparisons, PID, explicit self-test of layer library loadability, and Shizuku read-only inspection of exact GPU debug keys and filtered layer-related logs.
+- **Not yet device tested.** Most recent P4 owner evidence still layer intercepted NO; do not claim FPS unlock or hooking succeeded.
+- **Critical**: the user still has not confirmed restoring GPU Debug settings in installed MO v0.4. The prior backup is stored in v0.4 private app data. User must press Restore and confirm original values BEFORE uninstalling/updating MO or installing v0.5. If restore fails, retain v0.4 and ask for exact error instead of overwriting settings.
