@@ -3,6 +3,8 @@ package com.alwansan.mo;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ClipData;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -11,6 +13,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +42,41 @@ public final class MainActivity extends Activity {
     private TextView deviceOutput;
     private TextView gpuOutput;
     private TextView gameOutput;
+    private TextView vulkanOutput;
+    private TextView shellOutput;
+    private boolean probeBound = false;
+    private boolean probeConnecting = false;
+
+    private final Shizuku.UserServiceArgs probeArgs = new Shizuku.UserServiceArgs(
+            new ComponentName("com.alwansan.mo", ReadOnlyProbeService.class.getName()))
+            .daemon(false).processNameSuffix("probe-readonly").version(2);
+
+    private final ServiceConnection probeConnection = new ServiceConnection() {
+        @Override public void onServiceConnected(ComponentName name, IBinder binder) {
+            probeBound = true;
+            probeConnecting = false;
+            if (binder == null || !binder.pingBinder()) {
+                shellOutput.setText("خدمة القراءة غير متاحة");
+                return;
+            }
+            IReadOnlyProbe service = IReadOnlyProbe.Stub.asInterface(binder);
+            shellOutput.setText("فحص إعدادات Outlanders عبر Shizuku...");
+            new Thread(() -> {
+                String result;
+                try { result = service.getSnapshot("com.tencent.mhadv"); }
+                catch (RemoteException | RuntimeException e) {
+                    result = "تعذّرت القراءة: " + e.getClass().getSimpleName();
+                }
+                final String output = result;
+                runOnUiThread(() -> { if (!isFinishing() && !isDestroyed()) shellOutput.setText(output); });
+            }, "MO-ReadOnly-Shell").start();
+        }
+        @Override public void onServiceDisconnected(ComponentName name) {
+            probeBound = false;
+            probeConnecting = false;
+            if (shellOutput != null) shellOutput.setText("خدمة Shizuku غير متصلة؛ لم نغيّر شيئاً");
+        }
+    };
 
     private final Shizuku.OnBinderReceivedListener receivedListener =
             () -> runOnUiThread(this::refreshShizuku);
@@ -58,6 +97,7 @@ public final class MainActivity extends Activity {
         refreshDevice();
         gameOutput.setText(GameInventory.inspect(this));
         refreshGraphics();
+        vulkanOutput.setText(VulkanFeatures.inspect(this));
 
         try {
             Shizuku.addBinderReceivedListenerSticky(receivedListener);
@@ -70,6 +110,12 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (probeBound || probeConnecting) {
+            try { Shizuku.unbindUserService(probeArgs, probeConnection, true); }
+            catch (RuntimeException ignored) { /* server may have stopped */ }
+            probeBound = false;
+            probeConnecting = false;
+        }
         try {
             Shizuku.removeBinderReceivedListener(receivedListener);
             Shizuku.removeBinderDeadListener(deadListener);
@@ -95,7 +141,7 @@ public final class MainActivity extends Activity {
         root.addView(heading);
 
         TextView subtitle = text(
-                "النسخة التجريبية 0.1.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
+                "النسخة التجريبية 0.2.0 — فحص هوية GPU وCPU والألعاب عبر Shizuku بدون روت.",
                 14, COLOR_MUTED, false);
         subtitle.setPadding(0, dp(6), 0, dp(18));
         root.addView(subtitle);
@@ -119,6 +165,12 @@ public final class MainActivity extends Activity {
         gpuCard.addView(gpuOutput);
         gpuCard.addView(action("إعادة فحص GPU", this::refreshGraphics));
 
+        LinearLayout vkCard = card(root, "03B  /  VULKAN SUPPORT",
+                "معلومات Vulkan التي يعلنها النظام؛ لا تعني تغيير تعريف GPU داخل اللعبة.");
+        vulkanOutput = text("فحص Vulkan...", 14, COLOR_TEXT, false);
+        vkCard.addView(vulkanOutput);
+        vkCard.addView(action("تحديث دعم Vulkan", () -> vulkanOutput.setText(VulkanFeatures.inspect(this))));
+
         LinearLayout gameCard = card(root, "04  /  GAME TARGETS",
                 "فحص وجود الألعاب والإصدارات فقط، بدون قراءة ملفاتها أو تشغيلها.");
         gameOutput = text("جارٍ الفحص...", 14, COLOR_TEXT, false);
@@ -126,7 +178,14 @@ public final class MainActivity extends Activity {
         gameCard.addView(action("إعادة فحص الألعاب", 
                 () -> gameOutput.setText(GameInventory.inspect(this))));
 
-        LinearLayout reportCard = card(root, "05  /  TEST REPORT",
+        LinearLayout shellCard = card(root, "05  /  SHIZUKU SYSTEM INSPECTOR",
+                "قراءة فقط: Game Mode وANGLE وخصائص النظام. لا توجد أوامر كتابة.");
+        shellOutput = text("اضغط فحص إعدادات Outlanders عبر Shizuku.", 14, COLOR_TEXT, false);
+        shellOutput.setTextIsSelectable(true);
+        shellCard.addView(shellOutput);
+        shellCard.addView(action("فحص Game Mode وANGLE", this::readSystemSettings));
+
+        LinearLayout reportCard = card(root, "06  /  TEST REPORT",
                 "نسخ تشخيص خالٍ من معرفات الحساب والموقع؛ أنت تقرر متى تشاركه.");
         reportCard.addView(action("نسخ التقرير", this::copyReport));
 
@@ -239,6 +298,32 @@ public final class MainActivity extends Activity {
         }
     }
 
+    private void readSystemSettings() {
+        if (probeConnecting) { shellOutput.setText("جارٍ الاتصال بخدمة القراءة..."); return; }
+        if (probeBound) {
+            try { Shizuku.unbindUserService(probeArgs, probeConnection, true); }
+            catch (RuntimeException ignored) { }
+            probeBound = false;
+        }
+        try {
+            if (!Shizuku.pingBinder() || Shizuku.getUid() != PrivilegeGate.ADB_SHELL_UID
+                    || Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
+                shellOutput.setText("يتطلب Shizuku متصلاً بوضع ADB وصلاحية GRANTED");
+                return;
+            }
+            if (Shizuku.getVersion() < 10) {
+                shellOutput.setText("خدمة الفحص تتطلب Shizuku API 10 أو أعلى");
+                return;
+            }
+            probeConnecting = true;
+            shellOutput.setText("جارٍ الاتصال لخدمة الفحص المحدودة...");
+            Shizuku.bindUserService(probeArgs, probeConnection);
+        } catch (RuntimeException | LinkageError e) {
+            probeConnecting = false;
+            shellOutput.setText("تعذّر الاتصال: " + e.getClass().getSimpleName());
+        }
+    }
+
     private void refreshDevice() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo memory = new ActivityManager.MemoryInfo();
@@ -272,12 +357,14 @@ public final class MainActivity extends Activity {
     }
 
     private void copyReport() {
-        String report = "MO Graphics Probe v0.1.0-alpha.1\n"
+        String report = "MO Graphics Probe v0.2.0-alpha.2\n"
                 + "Local read-only diagnostics\n\n"
                 + "[SHIZUKU]\n" + shizukuOutput.getText() + "\n\n"
                 + "[DEVICE]\n" + deviceOutput.getText() + "\n\n"
                 + "[OPENGL ES]\n" + gpuOutput.getText() + "\n\n"
                 + "[GAMES]\n" + gameOutput.getText() + "\n\n"
+                + "[VULKAN SUPPORT]\\n" + vulkanOutput.getText() + "\\n\\n"
+                + "[SHIZUKU SYSTEM READ-ONLY]\\n" + shellOutput.getText() + "\\n\\n"
                 + "No game was modified. No root was used.";
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);

@@ -43,3 +43,10 @@ Important limitation: without real root, cooperation, or modifying a target APK,
 - [ ] Shizuku read-only UserService and supported settings diagnostics P2.
 - [ ] In-process graphics instrumentation proof in our own app only P3.
 **Never turn build success into an assertion of rootless GPU spoof inside a commercial title.**
+
+## P1 device verified, P2 added MO-20261107-CHAT-P2-DEVICE-007
+- [x] P1 tested on POCO: Shizuku UID2000 GRANTED API13; Adreno730 GLES3.2; com.tencent.mhadv v1.0.9.0.3308842.
+- [x] Read-only P2 Shizuku UserService source, explicit allowlist, no external arbitrary shell; Vulkan declared features.
+- [ ] P2 CI result and user phone service connectivity: check latest GitHub Actions.
+- [ ] Real native Vulkan GPU metadata and owned-app GLES layer P3.
+See docs/DEVICE_FEEDBACK_2026-11-07.md. No claim of FPS unlock or game spoof.

@@ -29,3 +29,6 @@ We will NOT root your phone, unlock the bootloader, run Zygisk, run VMs, clone a
 Next P2 research: Shizuku read-only UserService capability checks; no action altering games until tested. See [phase plan](docs/IMPLEMENTATION_PHASES.md), [original research](research/), [restore prompt](prompt/RESTORE_AR.md), and [agent instructions](AGENTS.md).
 
 All code here is independently written. Third-party iUnlockerGL proprietary binaries are not vendored; source references remain in research docs.
+
+## P2 alpha.2
+Owner confirmed on POCO that Shizuku API13 UID2000 is GRANTED and Outlanders is installed. Version 0.2.0-alpha.2 adds fixed *read-only* UserService checking Android Game Mode and ANGLE global values for com.tencent.mhadv, plus declared Vulkan feature status (not actual Vulkan GPU driver properties). No settings or app changes. See docs/DEVICE_FEEDBACK_2026-11-07.md.

@@ -31,3 +31,6 @@
 
 ## البناء الأول نجح
 التشغيل Actions `42305983786` نجح بجميع الخطوات، Artifacts اسم `MO-Graphics-Probe-debug-2` ID `13545813166`. APK SHA256 `13c72cbb626e4ec6238df7e5c9262c5781b1f819487753c568c90befe2a2fba2`. لا تكرر مشكلة workflow رقم 42305774716، كانت SDK tools غير متاحة وقد أصلحناها. المهم: البناء ناجح فقط؛ ننتظر اختبار هاتف POCO وصلاحيات Shizuku. عند الاستعادة اطلب تقرير MO من المستخدم إذا لم يكن مرفقًا، ثم طور P2.
+
+## Latest MO-20261107-CHAT-P2-DEVICE-007 — device feedback / P2 code
+Read docs/DEVICE_FEEDBACK_2026-11-07.md and prompt/sessions/MO-20261107-CHAT-P2-DEVICE-007.md. P1 device confirmed Shizuku UID2000 GRANTED API13, Adreno730 GLES3.2 driver V@0615.95, Outlanders com.tencent.mhadv v1.0.9.0.3308842. P2 code includes app/src/main/aidl/com/alwansan/mo/IReadOnlyProbe.aidl, ReadOnlyProbeService.java, ReadOnlyCommandPolicy.java, VulkanFeatures.java. Build status requires checking latest Actions; no proof of game FPS unlock or P2 runtime yet.

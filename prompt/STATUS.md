@@ -57,3 +57,6 @@ P0 research only. Game clarified Outlanders com.tencent.mhadv, not Monster Hunte
 - Connector artifact downloaded and exact bytes rechecked locally (APK ZIP CRC good, 3 DEX files). This is **not** a real-device UI test.
 - **Next waiting on POCO device evidence**: install debug APK, authorize Shizuku through its normal UI, confirm binder UID 2000/GLES renderer/game version, copy report.
 - No root, no game patches. Current P1 is diagnostics only. Further P2 code should build against this successful baseline.
+
+## Latest MO-20261107-CHAT-P2-DEVICE-007
+User on-device proof confirms MO P1 success: Shizuku UID2000 permission GRANTED API13, Qualcomm Adreno730 GLES3.2 V@0615.95, Outlanders global com.tencent.mhadv v1.0.9.0.3308842, 120Hz. P2 source implements read-only Shizuku UserService + Android Vulkan declared features, version0.2.0-alpha.2. Build validation required from GitHub Actions. No on-device P2 test, no game spoof/unlock.
