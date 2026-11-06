@@ -25,3 +25,11 @@
 - No hidden auto-apply, no persistent accessibility service required.
 - No vendor's proprietary classes/assets/scripts copied into app.
 - Trust model: untrusted ZIP bytes, untrusted installed app metadata, controlled Shizuku broker with identity check.
+
+## Future controlled proof-of-concept: GraphicsProbe + external layer
+- `feature-probe/` (new, original code in future implementation phase): debuggable test GLES target, measures glGetString GL_VENDOR/RENDERER/VERSION and logs actual layer presence.
+- `graphics-layer-gles/` (future, original NDK C/C++): passive layer passes through all calls at first. May intercept in **own** eligible app only after proven.
+- Shizuku `GpuLayerSettingsBroker`: read-only capability probe; consent; exact settings snapshot; per-app write; logcat check; rollback on failure.
+- Only whitelisted settings keys: `enable_gpu_debug_layers`, `gpu_debug_app`, `gpu_debug_layers_gles`, `gpu_debug_layer_app` (and Vulkan `gpu_debug_layers` separately). Never unbounded shell injection.
+- Eligibility check: app debuggable OR manifest opt-in on API/target-supported versions. No attempt to bypass nondebuggable process policy.
+- This POC does NOT provide a universal GLTool replacement for closed third-party games.

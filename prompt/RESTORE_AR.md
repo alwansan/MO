@@ -12,3 +12,7 @@
 7. بعد كل دورة، اكتب `prompt/sessions/<session_id>.md`، وحدّث STATUS وMEMORY والقرارات وروابط الأدلة مع commit SHA، وقدّم تقريرًا عربيًا: ما ثبت، ما تغير، ما تعذر، والخطوة التالية.
 
 **معايير لا تتغير:** لا روت، لا فتح bootloader، لا flash boot/init_boot، لا insmod، لا تعليمات كسر حماية، لا فرض adb root، لا تشغيل سكربتات ZIP الخارجية، لا ادعاء بأن Shizuku بديل Zygisk. استخدم GitHub Actions للتجميع لاحقًا بعد الانتقال لمرحلة التنفيذ.
+
+## إلزامي بعد جلسة MO-20261107-CHAT-STATIC-002
+اقرأ `prompt/sessions/MO-20261107-CHAT-STATIC-002.md` و`docs/ROOTLESS_GRAPHICS_LAYERS_AR.md` و`docs/IUNLOCKER_STATIC_ARCHITECTURE_AR.md` و`research/reports/2026-11-07-static-audit.md`.
+المسار الجديد: تجربة طبقات GLES/Vulkan الخارجية على **تطبيق تجريبي debug أو opt-in فقط**؛ لا تقول إن الحقن يعمل في ألعاب الإنتاج المغلقة مع Shizuku. الملفات المرفوعة الأصلية لا تُنسخ إلى MO العام. لا تُفعّل ANGLE عام لكل التطبيقات. التجارب المحلية الحالية فقط: فحص أرشيفات واختبارات بايثون؛ لا اختبار حقيقي لهاتف أو APK.

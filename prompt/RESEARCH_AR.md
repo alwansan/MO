@@ -45,3 +45,11 @@ Sources: https://developer.android.com/games/develop/vulkan/overview and https:/
 - Shizuku setup: https://shizuku.rikka.app/guide/setup/
 - Android ANGLE: https://developer.android.com/games/develop/vulkan/overview
 - Android settings rollback examples: https://developer.android.com/agi/troubleshooting
+
+## إضافات مؤكدة MO-20261107-CHAT-STATIC-002
+- Existing APK installed by user: UI works; says No root permission, revision null. This is evidence of missing root integration but not exact IPC failure.
+- release/module ZIP, upstream GitHub main ZIP and tag tar.gz: 98 files each; APK+Zygisk+installer scripts same. Static installer lists 4 absent filenames; `research/reports/2026-11-07-static-audit.md`.
+- New *important* rootless path: official Android GLES external layers and Vulkan validation layers for debuggable/manifest-opt-in apps, not ordinary nondebuggable commercial games.
+- AOSP disallows external code injection into third-party nondebuggable processes on production devices. Shizuku shell UID2000 does not remove that policy.
+- Docs https://developer.android.com/ndk/guides/rootless-debug-gles ; https://developer.android.com/ndk/guides/graphics/validation-layer ; https://source.android.com/docs/core/graphics/implement-vulkan .
+- AOSP ANGLE warns `angle_gl_driver_all_angle=1` can render device unbootable; forbidden in MO. https://github.com/google/angle/blob/main/src/android_system_settings/README.md

@@ -12,3 +12,9 @@
 10. Language: user communication and restore in Arabic (Iraqi Arabic is fine); technical terms and code may remain English. Never solicit secrets or personally identifying info.
 11. Do not promise automatic restart of Shizuku after every reboot. Wireless debugging on non-root devices ordinarily requires manual start again.
 12. Acceptance always includes clean rollback for any optional change, explicit confirmation for writes, and tests against stock device without elevated privilege.
+
+## Addendum MO-20261107-CHAT-STATIC-002
+- User approves *private static evaluation* of uploaded binaries/source. Treat this as permission to analyze artifacts, **not a license to publish/distribute modified proprietary files**, especially because MO is public. Independent reimplementation and documented APIs only.
+- External GLES/Vulkan layer proof is authorized for **eligible debuggable/opt-in** apps during an implementation phase; Android forbids unconsented injection in stock nondebuggable apps. Do not claim Shizuku bypasses this restriction.
+- For P0 research experiments, pure static read-only tools and local test fixtures are allowed; Android builds/privileged device changes remain off until phase change.
+- Never set `angle_gl_driver_all_angle=1` (documented boot failure risk).

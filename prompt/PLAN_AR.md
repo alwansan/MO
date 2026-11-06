@@ -64,3 +64,14 @@ Prioritize functional correctness over invented dates. Unknowns: HyperOS permiss
 
 ## 4) Evidence required per feature
 Source URL + date/version, before/after device logs, adb identity, screenshots and APK checksum, rollback test, attribution/license status. Unsupported kernel features remain permanently 'not available' without a change to user's no-root constraints.
+
+## ملحق P0.2 — تجربة الحقن الرسمية الممكنة (MO-20261107-CHAT-STATIC-002)
+تحليل المستودع الجديد كشف طريق Android GLES/Vulkan debug layers المسموح رسميًا للتطبيقات `debuggable` أو تلك التي تفعل `com.android.graphics.injectLayers.enable` (target API 30+)؛ هذا **ليس حقنًا عالميًا**. خطة التجربة اللاحقة:
+1. بناء تطبيق اختبار GLES أصلي يعلن `debuggable` في Debug فقط؛ تسجيل نتائج glGetString قبل/بعد.
+2. بناء layer أصلية no-op (لا تغيّر القيم) تُثبت أنها محمّلة؛ بدون أي مكونات مشتقة من iUnlockerGL.
+3. Shizuku يقرأ UID ويطبّق فقط allowed developer settings لتطبيق الاختبار بعد حفظ القيم؛ اختبار التحميل الفعلي + rollback.
+4. فقط عند النجاح يمكن اختبار تغيير قيمة مرجعة في التطبيق المملوك للمشروع؛ لا تنسب دعم ميزات حقيقية زائفة.
+5. اختبر Vulkan منفصلًا بشروطه، وANGLE كاختيار driver وليس hook عام. لا تُفعّل angle_gl_driver_all_angle؛ خطر bootloop مذكور رسميًا.
+6. سجل نتائج الألعاب التي **تتيح طبقات خارجية** فقط. الألعاب المغلقة non-debuggable التي لا تتيحها: حظر مسار الحقن الخارجي بوضوح.
+الدليل: `docs/ROOTLESS_GRAPHICS_LAYERS_AR.md` و`docs/IUNLOCKER_STATIC_ARCHITECTURE_AR.md`.
+الاختبار الفعلي الآن: بايثون read-only للمصادر، 2/2 اختبارات ناجحة؛ لم يُجرّب حقن حي على الجهاز ولم يُبنَ APK.

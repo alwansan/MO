@@ -26,3 +26,9 @@ Licenses:
 - Original third-party APK/ZIP files were **not pushed into MO**. If a future session needs binary inspection, user can supply them again; do not pretend they are in the repo.
 
 Do not confuse sha256 (content checksum) with Git SHA1 for repository blobs/commits.
+
+## Additional personally supplied snapshots (2026-11-07)
+- `iUnlockerGL-main.zip` — SHA-256 `e90c8d8b30d5cbc08bf2262fb13a8b1bd35856b0368c9ca5a90aaf070b5b00da`, 26,069,456 bytes, 118 entries incl. directories, 98 files.
+- `iUnlockerGL-1.1.5-r4.tar.gz` — SHA-256 `65059a131d29728dbcaf1142987bffe5e7912aa2ddf44acf3a4294f6251b9620`, 26,051,423 bytes, 118 TAR members incl. directories, 98 files.
+- Module ZIP earlier: 123 ZIP entries incl. directories, **98 actual files**. All three share identical APK and ARM64 Zygisk file content.
+- `sepolicy.rule`, `system.prop`, `plugin_flasher.sh`, `service.sh` are named in installer required file list but absent in all archives; see static audit.

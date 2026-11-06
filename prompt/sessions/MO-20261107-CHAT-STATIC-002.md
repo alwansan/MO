@@ -1,0 +1,15 @@
+# Session MO-20261107-CHAT-STATIC-002
+- origin: chat
+- date: 2026-11-07 Asia/Baghdad
+- repo/branch: alwansan/MO main
+- mode: P0 investigation & read-only local static experiment; **no APK build**.
+- user device screenshots show iUnlockerGL APK installed but error `No root permission`, `revision null`, `ROOT NOT GRANTED`.
+- uploaded artifacts: original release ZIP plus `iUnlockerGL-main.zip` and `iUnlockerGL-1.1.5-r4.tar.gz`.
+- static comparison: identical `iUnlockerGL.apk`, `zygisk/arm64-v8a.so` and main installer scripts; 98 files per archive.
+- missing installer literal paths in all: `sepolicy.rule`, `system.prop`, `plugin_flasher.sh`, `service.sh`. Potential installer defect; runtime effect untested.
+- official Android docs discovered: GLES/Vulkan external layering possible for app debuggable or manifest opt-in (target API >=30); Shizuku can write permitted developer options but cannot override target process security policy.
+- AOSP explicitly rules out injecting arbitrary external layers into normal nondebuggable release apps on stock production phones.
+- experiment run: independent read-only Python archive audit and 2 passing synthetic tests, three supplied archives; no privileged execution or Android runtime.
+- third-party license still restrictive; public MO repo isn't private use.
+- new plan: independent GLES probe + own test layer for eligible app (future build phase); ANGLE optional and separate; no global ANGLE force or boot risk.
+- next: Android probe implementation only when app implementation phase authorized; collect Shizuku UID and GLES/ANGLE device evidence via future APK.

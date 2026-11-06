@@ -18,3 +18,14 @@
 **Implementation rule:** display error/unsupported clearly on failed proof-of-permission, never silently retry with other privilege escalations.
 
 Authoritative: https://github.com/RikkaApps/Shizuku/blob/master/README.md ; https://kernelsu.org/guide/faq ; https://developer.android.com/games/develop/vulkan/overview .
+
+## Clarification MO-20261107-CHAT-STATIC-002: Android graphics external layers
+| Target | Shizuku non-root |
+|---|---|
+| Debuggable Android GLES/Vulkan app, with documented settings and valid layer APK | **Potentially yes**, real device test needed |
+| targetSdk>=30 app with opt-in `com.android.graphics.injectLayers.enable=true` | **Potentially yes**, only if target developer consented |
+| Stock nondebuggable release app with no external layer consent | **No** external code injection via official layer loader |
+| ANGLE per-app selection | **Conditional**: changes rendering driver for GLES, no generic spoofing |
+| `angle_gl_driver_all_angle=1` | **Never use**: documented bootloop risk |
+
+Reference: https://developer.android.com/ndk/guides/rootless-debug-gles ; https://source.android.com/docs/core/graphics/implement-vulkan .
