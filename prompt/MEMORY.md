@@ -55,3 +55,9 @@ MO مستقل: ZIP inspector + safe APK extraction + package install via documen
 
 ## MO-20261107-CHAT-BUY-VS-BUILD-005
 User corrected exact title: Monster Hunter Outlanders com.tencent.mhadv, NOT Monster Hunter Now. Need decide if ready apps eliminate build. App Cloner 4.0.12 Nov6 added CPU/GPU device profile matching in 4.0.11 Nov5 but clones/re-signs apps; games may reject. VMOS+ 1.1.4 Nov1 guest Android15 OS20013 supports Magisk/ZygiskNext/LSPosed inside virtual machine; host unrooted but guest rooted, not Shizuku-only. ShizukuPlus spoof_device by code only fakes getprop ro.product/ro.build responses to ShizukuPlus newProcess clients; no original game's Build/GL/Vulkan spoof. GFX Tool tsoml and PGT+ specialize in PUBG config, no Outlanders proof. In-game MHO options include Graphics Quality and High Frame Rate, independent Field/Arena frame rate padlocks. No verified off-the-shelf no-root no-repack full solution. See research/READY_APP_DECISION_AR.md and research/MHO_OUTLANDERS_SPECIFIC_AR.md and research/SHIZUKUPLUS_SPOOF_CODE_AUDIT_AR.md.
+
+## Implementation MO-20261107-CHAT-IMPLEMENT-006
+- User switched from planning to development explicitly, disallowing VMOS/App Cloner and insisting on no root/unlock/game cloning.
+- Implemented original Android Java source as `com.alwansan.mo`: Shizuku API/provider 13.1.5 UID probe, EGL14 GLES glGetString in own process, Android device identity + 4 target package versions, local report, no network/manifest storage/privileged shell commands; P1 is a probe not a game unlocker.
+- AGP8.9.2/Gradle8.11.1/Java17, API35, official Shizuku deps; GitHub Actions workflow.
+- First CI failed in setup-android@v3 unavailable SDK package 'tools' before source compilation; workflow changed to use hosted runner SDK.

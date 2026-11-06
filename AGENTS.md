@@ -23,3 +23,9 @@
 - Read `research/ROOTLESS_ECOSYSTEM_COMPARISON_AR.md` and `research/POC_TEST_MATRIX_AR.md` after restore. Don't conflate GAMA HWUI Skia setting with GPU spoofing.
 - Protect original installed games and internal app data: NEVER use third-party APK patcher auto-uninstall/re-sign-and-replace flow on them. Only self-owned disposable test APK and explicit device-owner operation in later phase.
 - Source review of GPLv3/AGPLv3/BSD/MIT projects is allowed; imports and redistribution demand compatibility compliance, attribution and testing. Public MO is publication.
+
+## 2026-11-07 explicit phase transition
+- Owner authorized starting actual original Android implementation. Replace old P0-only restriction: **P1 source + CI APK builds and read-only device diagnostics are now permitted**. All other safety, source, privacy and root restrictions remain.
+- Do not run root, VMOS, App Cloner, APK re-signing of games, or Shizuku writes to game files. Owner explicitly rejected cloning/VMs.
+- Verify GitHub Actions CI result, not just successful workflow dispatch. Before claiming APK exists, require successful uploaded artifact.
+- New source lives in `app/`; CI in `.github/workflows/mo-android-debug.yml`; check `docs/IMPLEMENTATION_PHASES.md` and latest session.

@@ -99,3 +99,6 @@ Source URL + date/version, before/after device logs, adb identity, screenshots a
 
 ## مرحلة قبل التنفيذ MO-20261107-CHAT-BUY-VS-BUILD-005
 لا نبدأ بناء MO قبل مراجعة حلول جاهزة: App Cloner (يعدل ويمضي نسخة APK، لا يعمل على الأصل)، VMOS+ Android15 الافتراضي (يمكنه Magisk/Zygisk/LSPosed داخل الضيف لكنه ليس Shizuku فقط)، ShizukuPlus (قراءة الشيفرة تثبت فقط محاكاة استجابة getprop في عميل الخدمة)، وGFX Tool/PGT+ (إعدادات PUBG لا Outlanders). اللعبة الصحيحة Outlanders com.tencent.mhadv. أولًا تصوير واجهة Graphics الأصلية وتسجيل الخيارات المقفلة في Graphics Quality, High Frame Rate, Field FPS, Free Hunt/Arena FPS مع الإصدار؛ ثم قياسات read-only؛ لا تعديل تطبيق تجاري أو حساب. راجع research/READY_APP_DECISION_AR.md. إن فشل الجاهز يمكن بناء MO اختبار محدود على تطبيق خاص بنا، وليس ادعاء أنه يتجاوز صلاحيات Android.
+
+## التنفيذ الفعلي بعد موافقة المالك (MO-20261107-CHAT-IMPLEMENT-006)
+تم فتح P1: تطبيق Android أصلي `com.alwansan.mo` يتصل بـShizuku ويقرأ Build وGLES ويكتشف نسخة Outlanders. `docs/IMPLEMENTATION_PHASES.md` المرجع للتسليم الحالي. CI على GitHub Actions، يتحقق من اختبارات JUnit ويُصدر debug APK. لا توهم بأن هذه النسخة فتحت FPS، ولا تغيّر تطبيقًا أصليًا أو ملفاته. عند نجاح CI، المستخدم يختبر التطبيق في POCO F5 Pro ويرسل تقريره، وبعدها يبدأ P2.

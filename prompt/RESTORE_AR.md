@@ -25,3 +25,6 @@
 
 ## استعادة أحدث جلسة MO-20261107-CHAT-BUY-VS-BUILD-005
 اقرأ prompt/sessions/MO-20261107-CHAT-BUY-VS-BUILD-005.md وresearch/READY_APP_DECISION_AR.md وresearch/MHO_OUTLANDERS_SPECIFIC_AR.md وresearch/SHIZUKUPLUS_SPOOF_CODE_AUDIT_AR.md. التصحيح الأهم: Monster Hunter Outlanders com.tencent.mhadv وليس Monster Hunter Now. المستخدم يريد حلًا جاهزًا قبل بناء MO. App Cloner يعيد توقيع clone، VMOS+ يتيح root/Zygisk داخل النظام الافتراضي فقط، وShizukuPlus spoof يبدل ناتج getprop في أوامر الخدمة لا داخل عملية اللعبة. الحالة P0، لا تجارب جهاز ولا بناء APK.
+
+## تنفيذ P1 — MO-20261107-CHAT-IMPLEMENT-006
+بدأ المستخدم التنفيذ رسميًا. اقرأ `docs/IMPLEMENTATION_PHASES.md`, `app/src/main/java/com/alwansan/mo/MainActivity.java`, `GraphicsProbe.java`, `PrivilegeGate.java`, `GameInventory.java`, و`.github/workflows/mo-android-debug.yml`. لا تعد الحالة P0 فقط. لا روت ولا VMOS ولا App Cloner. أول محاولة Actions رقم 42305774716 فشلت في إعداد Android SDK بسبب أداة 'tools' قديمة، وعدّل workflow؛ افحص أحدث run وحل الفشل التالي قبل إعلان APK جاهز. التطبيق P1 يشخّص ولا يحقن اللعبة.

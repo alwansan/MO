@@ -32,11 +32,22 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android 35
-        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+      # Ubuntu hosted runner already ships the Android command-line SDK.
+      # android-actions/setup-android@v3 currently asks sdkmanager for
+      # obsolete package "tools" and fails before compilation.
+      - name: Use runner Android SDK and install API 35
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          SDKMANAGER="$(command -v sdkmanager || true)"
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -name sdkmanager -type f | sort -V | tail -n 1)"
+          fi
+          test -x "$SDKMANAGER"
+          echo "SDK=$SDK_ROOT  sdkmanager=$SDKMANAGER"
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" --install "platforms;android-35" "build-tools;35.0.0"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
 
       - name: Gradle 8.11.1
         uses: gradle/actions/setup-gradle@v4
