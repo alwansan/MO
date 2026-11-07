@@ -123,6 +123,8 @@ public final class GameIdentityLabActivity extends Activity {
                 + "شاشة 120Hz لا تضمن محرك لعبة 120FPS.\n"
                 + "لا يوجد زر تفعيل للطبقات في هذا المختبر، ولا يلزم Shizuku أو Root.",
                 13, MUTED, false));
+        DiagnosticLogUi.attach(this, column);
+        DiagnosticLog.log("IDENTITY_LAB_OPEN", "Owned identity lab; no Android system spoof");
         refreshReal();
     }
 
@@ -138,6 +140,7 @@ public final class GameIdentityLabActivity extends Activity {
 
     private void refreshReal() {
         if (reading) return;
+        DiagnosticLog.log("IDENTITY_REFRESH", "Beginning own-process Build/GLES/Vulkan read");
         reading = true;
         originalView.setText("قراءة EGL وVulkan في عملية MO الحالية...");
         double hz = getWindowManager().getDefaultDisplay().getRefreshRate();
@@ -162,6 +165,7 @@ public final class GameIdentityLabActivity extends Activity {
                         + "\nCurrent display Hz: "
                         + String.format(Locale.US, "%.1f", result.displayHz)
                         + "\nكل هذه قراءات داخل تطبيق الاختبار المملوك لـMO.");
+                DiagnosticLog.log("IDENTITY_MEASURED", originalView.getText().toString());
                 renderSimulated();
             });
         }, "MO-Owned-Identity-ReadOnly").start();
@@ -180,6 +184,9 @@ public final class GameIdentityLabActivity extends Activity {
         IdentityLabPolicy.Mode mode = IdentityLabPolicy.Mode.values()[position];
         IdentityLabPolicy.Decision d = IdentityLabPolicy.evaluate(measured, mode);
 
+        DiagnosticLog.log("IDENTITY_MODE", "mode=" + mode.name()
+                + "; mock_combined120=" + d.combined120Tier
+                + "; real_display_hz=" + measured.displayHz);
         simulatedView.setText("\n[MO SYNTHETIC PRESENTATION — NOT ANDROID VALUES]"
                 + "\nMODEL: " + d.presentedModel
                 + "\nCPU: " + d.presentedSoc
