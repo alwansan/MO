@@ -1,5 +1,16 @@
 # Current status
 
+## CURRENT — 2026-11-07 (supersedes historical P0 summary below)
+- Phase: **P9 implementation / waiting for real-device clean GPU Debug readback**. Source and release v0.9 exist; this is **not** Planning-only.
+- Audit session: `MO-20261107-CHAT-P9-AUDIT-015`; verified starting main HEAD `3c3c20a51ce976c64984ea3a076cf5bd9a5bec5b`.
+- Latest verified APK CI: [run 42316925749](https://github.com/alwansan/MO/actions/runs/42316925749), completed success at source `968e13d19a956a0016c4e57609ca744c253da3db`.
+- Latest verified direct raw APK prerelease: [mo-v0.9.0-alpha.9-run16](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run16). Latest documentation-only HEAD is newer than the built source.
+- Last **device** evidence is from installed v0.8: guarded cleanup returned OK, but shell text within the copied report was stale; **fresh independent four-key readback and test-app fresh-process renderer are still unverified**.
+- NEXT SAFE ACTION: on installed v0.8 press `تشخيص GLES (قراءة فقط)`, share all four key values; force-stop/reopen *owned MO Layer Test only* and send new PID + Java/NDK/eglGetProcAddress renderer. **Do not re-enable experiment, uninstall, or upgrade MO before cleanup is verified**.
+- No new source changes, new APK build, privileged commands, or device tests in audit session. `docs/DEVICE_FEEDBACK_ALPHA8_2026-11-07.md` documents last actual phone evidence.
+
+## Historical P0 starting snapshot (retained for provenance)
+
 - Date (Asia/Baghdad): 2026-11-07
 - Phase: **P0 PLANNING / RESEARCH**
 - Source tree: GitHub alwansan/MO main
