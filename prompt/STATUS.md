@@ -1,5 +1,14 @@
 # Current status
 
+## CURRENT — MO-20261107-CHAT-P10-IDENTITY-LAB-017 (supersedes older status below)
+- P10 **original, owned-only Game Identity Laboratory** source implemented inside `probe` v0.4.0; `app` main version remains v0.9.0-alpha.9.
+- Success: [GitHub Actions 42324225397](https://github.com/alwansan/MO/actions/runs/42324225397) at source `4166210d4fb5e62b391b759f3b4508eb50d02e97`, passed Java unit tests, NDK native ARM64 builds, both APK builds and release upload.
+- Public [run25 prerelease](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run25): `MO-Layer-Test-v0.4.0.apk` 172148 bytes SHA-256 `6fdc64c09d76bd0b071d46f5e10f850347a79212256a846a745ac9e8263095dd`. **Do NOT upgrade/uninstall current MO main** to use the owned lab: debug signing changes per run.
+- Lab: pure Java fake identity menu gates by Build.MODEL, CPU, Java GLES, native GLES, Vulkan and real screen Hz, uses own-process read-only EGL/NDK/Vulkan measurements. Mock mode changes only strings in activity, not OS or games. Docs `docs/OWNED_GAME_IDENTITY_LAB_AR.md`.
+- Previous owner device report v0.9 verified last post-cleanup GPU Debug `enable=0` with three MO keys absent. No **new PID recorded after final cleanup** yet, and no P10 phone test. Before probe APK replacement, re-confirm four keys clean; do not trigger a new GPU layer experiment.
+- Stock Outlanders `com.tencent.mhadv` is non-debuggable and opt-in NO; no rootless official layer injection or real FPS unlock. New session `prompt/sessions/MO-20261107-CHAT-P10-IDENTITY-LAB-017.md`, origin chat.
+
+
 ## CURRENT — MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016 (supersedes older audit entries)
 - Stage: **P9 device evidence verified partially + research extension**. No new Android build or live game modification performed this session.
 - Owner's **last v0.9.0-alpha.9 pasted report** contains consistent `[SHIZUKU SYSTEM READ-ONLY]` and `[READBACK AFTER ACTION]`: `enable_gpu_debug_layers=0`; `gpu_debug_app`, `gpu_debug_layers_gles`, `gpu_debug_layer_app` **not present**. The v0.9 post-action UI refresh and MO-owned cleanup both worked at the reported moment. This cleanup is not guaranteed exact restoration of the unknown historical baseline.
