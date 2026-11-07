@@ -59,7 +59,7 @@ def describe_apk(stream, bundle_name):
         result["uncompressed_bytes"] = sum(e.file_size for e in names)
         libs = [e.filename for e in names
                 if e.filename.startswith("lib/") and e.filename.endswith(".so")]
-        abis = sorted({e.split("/")[1] for e in names
+        abis = sorted({e.filename.split("/")[1] for e in names
                        if e.filename.startswith("lib/") and len(e.filename.split("/")) >= 3})
         hints = [e.filename for e in names if INTERESTING.search(e.filename)]
         unreal = [e.filename for e in names if
