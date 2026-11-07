@@ -1,6 +1,17 @@
 # MO — Android graphics identity research & diagnostics
 
-**Active phase: P1 development.** Native Android app for POCO F5 Pro Android 15, locked bootloader, without root. This repo contains original code and research only.
+## Current release — P10 owned Game Identity Laboratory (2026-11-07)
+**Current development state: P10 original implementation, device test pending.** The main MO Graphics Probe app remains `v0.9.0-alpha.9`; a new **MO Layer Test `v0.4.0`** provides an optional, completely synthetic Game Identity Laboratory for the self-owned disposable test package only.
+
+- GitHub Actions [42324225397](https://github.com/alwansan/MO/actions/runs/42324225397) completed successfully (JUnit, ARM64 native build, both APK builds, Release upload).
+- [Latest complete P10 experimental Release](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run25) — [direct MO Layer Test v0.4.0 APK](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run25/MO-Layer-Test-v0.4.0.apk).
+- The lab reads real `Build.MODEL`, SoC, Java GLES, native GLES, Vulkan GPU name and display Hz **inside our own test process**. Selected mock profiles change *only local sample strings* used to draw a fictional LOCKED/UNLOCKED graphics menu.
+- **No real FPS, GPU capabilities, Android properties or closed-game values are changed.** Original Monster Hunter Outlanders remains not eligible for official non-root external graphics layer injection.
+- **Preserve current installed MO main app.** The Release also includes a fresh debug-signed MO v0.9 APK; do **not** reinstall it to use the P10 lab. Before replacing only the disposable test APK, check that the prior MO GPU Debug experiment is clean (`enable_gpu_debug_layers=0`, three MO markers absent). See [P9 phone evidence](docs/DEVICE_FEEDBACK_ALPHA9_2026-11-07.md) and [P10 test guide](docs/OWNED_GAME_IDENTITY_LAB_AR.md).
+
+## Historical project introduction (retained)
+
+**Original P1 historical introduction (not the current phase).** Native Android app for POCO F5 Pro Android 15, locked bootloader, without root. This repo contains original code and research only.
 
 The end goal is to understand why games such as **Monster Hunter Outlanders (`com.tencent.mhadv`)** lock FPS/graphics choices and explore supported non-root options. There is no verified Shizuku-only technique that globally spoofs Android Build/GL/Vulkan properties inside unmodified commercial games.
 
