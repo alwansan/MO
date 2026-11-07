@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
+#include <vulkan/vulkan.h>
 #include <cstring>
 #include <string>
 
@@ -46,4 +47,41 @@ Java_com_alwansan_mo_glesprobe_ProbeNativeRenderer_nativeEglEvidence(JNIEnv* env
     result += "\nGL_RENDERER (eglGetProcAddress): ";
     result += readRendererViaEglProcAddress();
     return env->NewStringUTF(result.c_str());
+}
+
+/*
+ * Independent, read-only Vulkan discovery for the MO-owned process. We do not
+ * expose or spoof features, insert a Vulkan layer, or inspect other processes.
+ */
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_alwansan_mo_glesprobe_ProbeNativeRenderer_nativeVulkanName(JNIEnv* env, jclass) {
+    VkApplicationInfo app{};
+    app.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    app.pApplicationName = "MO Identity Lab (owned)";
+    app.apiVersion = VK_API_VERSION_1_0;
+
+    VkInstanceCreateInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    info.pApplicationInfo = &app;
+
+    VkInstance instance = VK_NULL_HANDLE;
+    VkResult created = vkCreateInstance(&info, nullptr, &instance);
+    if (created != VK_SUCCESS || instance == VK_NULL_HANDLE) {
+        return env->NewStringUTF("(Vulkan instance unavailable)");
+    }
+
+    std::string name = "(no Vulkan physical GPU)";
+    uint32_t total = 0;
+    if (vkEnumeratePhysicalDevices(instance, &total, nullptr) == VK_SUCCESS && total > 0) {
+        VkPhysicalDevice physical = VK_NULL_HANDLE;
+        uint32_t requested = 1;
+        if (vkEnumeratePhysicalDevices(instance, &requested, &physical) == VK_SUCCESS
+                && requested > 0 && physical != VK_NULL_HANDLE) {
+            VkPhysicalDeviceProperties properties{};
+            vkGetPhysicalDeviceProperties(physical, &properties);
+            name.assign(properties.deviceName);
+        }
+    }
+    vkDestroyInstance(instance, nullptr);
+    return env->NewStringUTF(name.c_str());
 }
