@@ -9,3 +9,14 @@
 - To progress without more 230MB archive copies, added `tools/inspect_mho_remote_config.py`: reads exactly `com.tencent.mhadv/cache/RemoteConfig.config` regular member from owner-existing TAR/ZIP backups in memory; prints byte sizes, SHA256, format clue, changed byte-offset ranges, **not raw bytes, tokens or decrypted data**. Added synthetic unit tests `tools/test_inspect_mho_remote_config.py` and updated `.github/workflows/mo-archive-diff-tests.yml` to run new tests; latest workflow run `42426253058` auto started (check actual outcome separately). Instructions will ask owner to run script on existing LOW/MEDIUM/MEDIUM_CONTROL TARs in Termux; no game files modified.
 - No Root/KernelSU, device writes, editing game APK/PAK/cache, GPU Debug layer change, or app APK build. Project's primary user goal is still real independent-game GL/Vulkan GPU identity substitution (Adreno840) and unlocked quality/FPS, **not demonstrated** by this control experiment.
 - Keep original user's private 230MB TARs out of public GitHub; public report includes only file paths/counts and test methodology.
+
+## Final tool validation and owner command
+- GitHub Actions **[42426253058](https://github.com/alwansan/MO/actions/runs/42426253058)** was verified `completed/success` against source commit `6d2852e8f3622f22985cda688ae4b365a2fee082`. This verifies **synthetic Python unit tests only**, NOT decoding the owner's original binary `RemoteConfig.config`.
+- In owner's Termux (no Rish needed; all archives already in Download), retrieve the latest helper:
+```bash
+cd /storage/emulated/0/Download
+curl -fL https://raw.githubusercontent.com/alwansan/MO/main/tools/inspect_mho_remote_config.py -o inspect_mho_remote_config.py
+python inspect_mho_remote_config.py MHO_AFTER_GRAPHICS_LOW.tar MHO_AFTER_GRAPHICS_MEDIUM.tar MHO_MEDIUM_CONTROL.tar --output REMOTE_CONFIG_PATTERN.txt
+```
+- User should inspect/upload only `REMOTE_CONFIG_PATTERN.txt` to private conversation. The report prints length/SHA256/byte-offset differences/format clues but no raw config contents. The tool **never changes game files or writes to Android/data**. If filenames differ/missing, check them in Download before running.
+- Do not conclude backend whitelist location from metadata alone; actual engine/API origin remains unproven.
