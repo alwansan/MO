@@ -21,3 +21,8 @@
 - Created `research/REAL_GPU_IDENTITY_SPOOF_ANDROID15_ANGLE_AR.md` with grounded architecture, proof standard and safe A/B plan.
 - Updated live plan/status/memory/decisions/restore/README/AGENTS to prevent future clients from drifting to FPS widget features as a substitute for genuine cross-app identity change.
 - No APK/CI build, app source modification, device/ADB/Shizuku write, game file modification, root, proprietary ZIP execution or phone access performed.
+
+## Final status
+- Verified main branch HEAD immediately before closeout: `6b3f32fc4f197cf05a0321ded2d777454b270079`. This research cycle added a grounded ANGLE feasibility document and session, and corrected live primary-goal wording at the top of `prompt/PLAN_AR.md`, `prompt/STATUS.md`, `prompt/MEMORY.md`, `prompt/RESTORE_AR.md`, `prompt/DECISIONS.md`, `README.md` and `AGENTS.md`.
+- Latest GitHub Actions remains run `42327821781`, `completed/success` built at source `d40d0b6ec70d14ede1731eac2eae4a4f08e7ff81`; no Android source/APK changes and no new build was launched.
+- **No claim that ANGLE GL_RENDERER property works on POCO, no target app spoof, no main-game FPS unlock.** This pass only identifies a promising upstream mechanism requiring read-only device capability check next.
