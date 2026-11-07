@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## Latest P15 — MO-20261108-CHAT-P15-IUNLOCKER-DATA-027 (2026-11-08)
+- User saw TikTok iUnlockerGL+KernelSU example for Garena `com.garena.game.mho`, screenshot config OpenGL/Vulkan Adreno (TM)840, Vulkan1.3.243, retail Manufacturer "RedMagic 11S Pro+", Model NX809J, asks if same values can be pasted into Global `com.tencent.mhadv` Android/data to unlock graphics/FPS.
+- Crucial mismatch: **iUnlocker official v1.1.5-r4 requires ROOT via KernelSU/Magisk and Zygisk runtime hooking** of GLES/Vulkan/Build/CPU; screenshot UI fields are not proof target has read these values. Old existing uploaded Global data ZIP **no .ini** or clear editable device profile (87 entries total, 53 files); user-created filename alone cannot spoof hardware APIs. RedMagic NX809J is Nubia, retail name entered in Manufacturer field is inaccurate.
+- TikTok/video MP4 and old APKS binary could not be decoded/re-read due Python/CaaS outage, screenshots/docs/previous verified ZIP audit used. Be transparent. No proprietary iUnlocker reuse (LICENSE forbids reverse engineering).
+- Authored standalone read-only Termux helper `tools/compare_android_data_snapshots.py` (not tested yet in runtime) to diff two user-exported Android/data ZIPs before/after a normal in-game option; no patch made. Full report `research/P15_IUNLOCKER_KERNELSU_VS_MHO_DATA_2026-11-08_AR.md`, session `prompt/sessions/MO-20261108-CHAT-P15-IUNLOCKER-DATA-027.md`.
+- Best path still main MO v0.11 P13 **read-only ANGLE** presence report from user, or separate owned-app rootless container test; no evidence stock MHO will accept external config to alter hardware identity. No game/system writes, APK build or root.
+
+
 ## Latest user exploration — MO-20261108-CHAT-P14-ARCH-026 (2026-11-08)
 - Owner brainstormed making MO a launcher for the existing original installed MHO, a lightweight hidden full Android VM with Google Play services/sign-in, or adding/altering game resources in `Android/data`, and uploaded `com.tencent.mhadv.zip` for inspection.
 - Read-only ZIP proof: 87 entries/53 files/34 dirs, 241130830 uncompressed bytes, SHA256 `7fbda67c3366a5639f54790860cdeab479a82b5619ed827f1919828dc0756911`. Contains 9 Unreal MHMobile Base64-like encoded logs, 11 GCloud SDK logs, 17 hotfix resources/descriptors, 1 OpenGL ES3.1 shader precache 55.6 MB, other caches. No visible .ini/AndroidDeviceProfiles.ini/GameUserSettings.ini; hotfix json descriptors binary, no clear editable graphics profile; referenced `/data/user/0/` PufferRes files absent. User archive stays private, no file modification/disassembly.
