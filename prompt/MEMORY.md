@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## P10 — MO-20261107-CHAT-P10-IDENTITY-LAB-017 (2026-11-07)
+- User's "Continue" after Zygisk feasibility research authorized continued **owned-only** engineering. Created `IdentityLabPolicy` with immutable real signals and 7 mock modes (actual, single Build.MODEL, CPU, Java GLES, NDK GLES, Vulkan, or all synthetic); mock combined 120 menu gate requires all flags and physical panel >=120Hz. No real system property or graphics API hook in this lab.
+- `GameIdentityLabActivity` in existing disposable `com.alwansan.mo.glesprobe` reads own process Java Build, GLES20, NDK GLES, native Vulkan GPU name, display Hz; uses non-exported Activity and simulation-only UI. Probe bumped to v0.4.0; MO main remains v0.9.0-alpha.9. Docs `docs/OWNED_GAME_IDENTITY_LAB_AR.md`.
+- GitHub CI [42324225397](https://github.com/alwansan/MO/actions/runs/42324225397) at source `4166210d4fb5e62b391b759f3b4508eb50d02e97` PASSED app and probe JUnit, ARM64 native builds, both APKs and Release. Public [run25 prerelease](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run25): `MO-Layer-Test-v0.4.0.apk` 172148 bytes SHA256 `6fdc64c09d76bd0b071d46f5e10f850347a79212256a846a745ac9e8263095dd`. Rebuilt main APK SHA256 `42fdb05b4256feb1ff6024f43f99b9206bbbd17c40f70ff925cbd719a9965282` has a different debug signature.
+- **Never uninstall or update installed main MO just to use new lab.** Only replace disposable test APK after confirming GPU Debug four keys remain 0/absent (last owner report confirmed this momentarily); signature mismatch may require uninstall of **probe only**. New post-cleanup PID and P10 phone result remain unverified. Neither rootless stock Outlanders spoof nor real FPS improvement is achieved.
+- Session: `prompt/sessions/MO-20261107-CHAT-P10-IDENTITY-LAB-017.md`. No game, system, root or Shizuku settings changes in this cycle.
+
+
 ## Latest device and upstream evidence — MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016
 - User provided four screenshots and two full MO v0.9 reports. **Final pasted post-cleanup** report independently shows `enable_gpu_debug_layers=0` and all three MO layer markers **absent** in `[READBACK AFTER ACTION]`; independent shell panel now also shows 0/null. This directly confirms P9 refresh behavior and bounded cleanup at that point, unlike earlier stale v0.8 report.
 - Screenshots also show **prior** enabled four-key state and owned test PID16719 reporting physical Adreno730 in Java/NDK/eglGetProcAddress; cannot establish PID16719 ran **after** the final cleanup, so the new-process post-cleanup renderer step remains pending. Do not re-enable solely to test.
