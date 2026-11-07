@@ -40,3 +40,12 @@
 - `research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md`
 - https://developer.android.com/ndk/guides/graphics/getting-started
 - https://developer.android.com/ndk/guides/rootless-debug-gles
+
+
+## CI and direct APK verified — 2026-11-07
+- Source: `4166210d4fb5e62b391b759f3b4508eb50d02e97`. GitHub Actions [42324225397](https://github.com/alwansan/MO/actions/runs/42324225397): **completed success** for app/probe unit tests, ARM64 native builds, APK builds and Release upload.
+- Public [prerelease run25](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run25), with **raw APKs**:
+  - [MO-Layer-Test-v0.4.0.apk](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run25/MO-Layer-Test-v0.4.0.apk), 172148 bytes, SHA-256 `6fdc64c09d76bd0b071d46f5e10f850347a79212256a846a745ac9e8263095dd`.
+  - `MO-Graphics-Probe-v0.9.0-alpha.9.apk` (unchanged source, newly debug-signed build), 1135214 bytes, SHA-256 `42fdb05b4256feb1ff6024f43f99b9206bbbd17c40f70ff925cbd719a9965282`. **DO NOT uninstall/update installed MO main just to use this test lab**.
+- Earlier intermediate CI runs also produced releases from partial P10 commits. Use run25 as the complete P10 delivery candidate.
+- No P10 device runtime test yet. Before replacing *only the disposable probe* APK, reconfirm `enable_gpu_debug_layers=0` and absence of the three MO owned layer keys; debug APK signatures differ between CI builds.
