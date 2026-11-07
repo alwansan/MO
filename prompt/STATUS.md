@@ -1,5 +1,15 @@
 # Current status
 
+## CURRENT — MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016 (supersedes older audit entries)
+- Stage: **P9 device evidence verified partially + research extension**. No new Android build or live game modification performed this session.
+- Owner's **last v0.9.0-alpha.9 pasted report** contains consistent `[SHIZUKU SYSTEM READ-ONLY]` and `[READBACK AFTER ACTION]`: `enable_gpu_debug_layers=0`; `gpu_debug_app`, `gpu_debug_layers_gles`, `gpu_debug_layer_app` **not present**. The v0.9 post-action UI refresh and MO-owned cleanup both worked at the reported moment. This cleanup is not guaranteed exact restoration of the unknown historical baseline.
+- Earlier screenshot PID16719 shows real Adreno730 in all three owned test paths (Java/NDK/eglGetProcAddress), but was around 04:10, before a later 04:12 layer activation screenshot; therefore **post-final-cleanup fresh-process renderer is still unverified**, not a full A/B closure. No further cleanup is needed while readback remains 0/absent.
+- Live upstream analysis added: `research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md`; phone analysis: `docs/DEVICE_FEEDBACK_ALPHA9_2026-11-07.md`; new session: `prompt/sessions/MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016.md`.
+- Zygisk Next, ReZygisk, NeoZygisk and COPG all depend on rooted process/bootstrap infrastructure; no stock Shizuku injection into Outlanders. Zygisk Next newer code restrictions, ReZygisk README/license mismatch, COPG source completeness caveat documented.
+- Next: optional read-only four-key recheck and **new PID after final cleanup** from disposable MO Layer Test only, then clean-room Game Identity Laboratory design (owned app) with no stock game patch. P9 release remains v0.9, latest previously verified run 42316925749.
+
+## Historical P9 audit (2026-11-07)
+
 ## CURRENT — 2026-11-07 (supersedes historical P0 summary below)
 - Phase: **P9 implementation / waiting for real-device clean GPU Debug readback**. Source and release v0.9 exist; this is **not** Planning-only.
 - Audit session: `MO-20261107-CHAT-P9-AUDIT-015`; verified starting main HEAD `3c3c20a51ce976c64984ea3a076cf5bd9a5bec5b`.
