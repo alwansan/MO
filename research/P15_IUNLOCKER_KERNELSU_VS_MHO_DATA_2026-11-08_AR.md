@@ -36,3 +36,13 @@ User supplied 8 screenshots from a TikTok clip and an MP4 (the MP4 itself could 
 - False higher driver versions may cause the game to request unavailable features or crash. 120Hz panel does not guarantee game FPS.
 - The screenshot shows Garena package; owner Global version could use different policy/whitelist. No proof MHO on either edition checks only GL_RENDERER.
 - The supplied MP4 was not executed; no phone GPU Debug settings writes, Root, KernelSU flash, binary patch, game file edits, or APK build were performed in this research turn.
+
+## أداة فحص مسار حفظ الإعدادات — **بدون تعديل أي ملف لعبة**
+Created `tools/compare_android_data_snapshots.py` as a read-only Python stdlib utility (suitable for Termux), to compare **two user-exported ZIP archives** of `Android/data/com.tencent.mhadv` before and after **changing a setting using the normal in-game UI**. It compares archive-entry paths, byte length and ZIP CRC, without extracting any resource, running binaries, creating settings, or writing to the game's directories. It emits only metadata; original private contents stay on phone. Untrusted duplicate/traversal ZIP paths are rejected.
+```bash
+pkg install python
+python compare_android_data_snapshots.py BEFORE.zip AFTER.zip --output differences.txt
+# To include noisy logs/cache changes:
+python compare_android_data_snapshots.py BEFORE.zip AFTER.zip --all
+```
+If the only differences are in logs/cache, the result **does not prove** that the graphics whitelist is stored in Android/data; the game could use private /data/user/0, cooked PAK or server profiles. A changed .ini is still not proof it is trusted/loaded until an authorized game setting A/B confirms. Script source is published on GitHub but was **not runtime-tested locally this turn** because the code execution/container environment was unavailable; no CI/test claim is made.
