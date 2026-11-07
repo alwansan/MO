@@ -46,3 +46,10 @@
 - `docs/DIAGNOSTIC_LOG_EXPORT_AR.md`
 - `docs/IMPLEMENTATION_PHASES.md`
 - `prompt/STATUS.md`, `prompt/MEMORY.md`, `prompt/DECISIONS.md`, `prompt/RESTORE_AR.md`, `AGENTS.md`, `README.md`, this session.
+
+## Final documentation / CI check
+- GitHub main HEAD immediately before this session-file closeout: `a9088845c4d94fb82cfa77a5429f02ce641afa75`.
+- Latest source build at `d40d0b6ec70d14ede1731eac2eae4a4f08e7ff81` remains run 42327821781, `completed/success`. Documentation-only commits do not match Android build workflow push filters; **no new APK after run53**.
+- Exact tag `mo-v0.10.0-alpha.10-run53` was fetched directly from GitHub Releases and contains both published assets (`state=uploaded`): `MO-Graphics-Probe-v0.10.0-alpha.10.apk` (1151614 bytes, sha256:a8e227174036732eb31ab7a27e667981e8f6da16102c9f25fe1d737a85fe86ce); `MO-Layer-Test-v0.6.0.apk` (208508 bytes, sha256:ce3771295b2728fad25342ca4c5c86f21904673df55115d56a207615da02ae1f).
+- Current task source implementation and CI are complete, but user has **not tested the new MediaStore log export and clipboard on their actual POCO**. Do not mark this device verified until owner uploads `log.txt` and its save confirmation.
+- Updated README, AGENTS, STATUS, MEMORY, DECISIONS, RESTORE and implementation phases. No root, device writes, game modifications, or background monitoring.
