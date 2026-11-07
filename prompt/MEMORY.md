@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## Latest device and upstream evidence — MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016
+- User provided four screenshots and two full MO v0.9 reports. **Final pasted post-cleanup** report independently shows `enable_gpu_debug_layers=0` and all three MO layer markers **absent** in `[READBACK AFTER ACTION]`; independent shell panel now also shows 0/null. This directly confirms P9 refresh behavior and bounded cleanup at that point, unlike earlier stale v0.8 report.
+- Screenshots also show **prior** enabled four-key state and owned test PID16719 reporting physical Adreno730 in Java/NDK/eglGetProcAddress; cannot establish PID16719 ran **after** the final cleanup, so the new-process post-cleanup renderer step remains pending. Do not re-enable solely to test.
+- Source research: `research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md`. ZygiskNext restrictive since v4-0.9.2; ReZygisk README says AGPL3 but LICENSE is GPL3 text; NeoZygisk GPL3; COPG Apache2 top-level visible repository but its `JSON` branch lacks native `src/` referenced by `build.sh`, so cannot audit/replicate native binary from this tree; MMRL 7.6.1 page has conflicting generic footer.
+- Root/Zygisk bootstrap confirmed distinct from Shizuku UID2000; no new route to spoof GL/VK/Build in stock nondebuggable Outlanders. Android Game Mode FPS overrides are throttles/interventions, not guaranteed game unlock. Candidate next proof is **owned Game Identity Laboratory**, not production-game injection.
+- Source list and precise device evidence: `docs/DEVICE_FEEDBACK_ALPHA9_2026-11-07.md`, `prompt/sessions/MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016.md`. This cycle is docs/research only. No APK build, third-party binary execution, game edit, root or settings writes.
+
+
 ## Current authoritative continuation — MO-20261107-CHAT-P9-AUDIT-015
 - **Active phase P9** (the 2026-11-07 initial Planning-only entries below are historical). Confirmed main starting HEAD `3c3c20a51ce976c64984ea3a076cf5bd9a5bec5b`, documentation child of P9 code `968e13d19a956a0016c4e57609ca744c253da3db`.
 - Verified GitHub Actions [42316925749](https://github.com/alwansan/MO/actions/runs/42316925749) success and [v0.9 direct APK prerelease](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run16), **not on-device v0.9 validation**.
