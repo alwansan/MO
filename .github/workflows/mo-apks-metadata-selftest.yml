@@ -1,0 +1,30 @@
+name: MO APKS read-only metadata inspector tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/inspect_apks_readonly.py'
+      - 'tools/tests/test_inspect_apks_readonly.py'
+      - '.github/workflows/mo-apks-metadata-selftest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-apks-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout MO sources (no uploaded game assets)
+        uses: actions/checkout@v4
+      - name: Python 3.12 standard library only
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate inspector against disposable synthetic split APKs
+        run: python -m unittest discover -s tools/tests -p 'test_*.py' -v
+      - name: Validate Termux command usage
+        run: python tools/inspect_apks_readonly.py --help
