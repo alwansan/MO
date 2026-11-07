@@ -1,5 +1,13 @@
 # Current status
 
+## CURRENT — MO-20261107-CHAT-P10-DEVICE-018 (supersedes older P10 and P9 clean-state notes)
+- **P10 owned identity lab ON-DEVICE PASS (limited)** from three owner screenshots: PID `5783`, Build.MODEL `23013PC75G`, SoC `SM8475`, Java GLES, native GLES and native Vulkan `Adreno (TM) 730`, panel `120.0 Hz`. Mode0 actual-only **fake combined FPS LOCKED**; mode6 all-local-synthetic **fake combined FPS UNLOCKED**; real readings unchanged. This proves mock UI only, **not Outlanders FPS/graphics unlock**. Individual modes 1–5 lack phone screenshots.
+- **CRITICAL: newer owner MO v0.9 report supersedes prior clean-state evidence:** `enable_gpu_debug_layers=1` with `gpu_debug_app=com.alwansan.mo.glesprobe`, `gpu_debug_layers_gles=libMOGlesProofLayer.so`, `gpu_debug_layer_app=com.alwansan.mo.glesprobe`, corroborated by both SHIZUKU SYSTEM and `[READBACK AFTER ACTION]`. Latest **reported** GPU Debug settings are active despite PID5783 showing no intercepted renderer. The cause/time of activation was not established; mock dropdown cannot activate system settings.
+- Immediate safety priority: owner should preserve installed MO main/app data and use its valid normal saved-setting restore if present, then obtain fresh four-key readback; if restore cannot proceed, collect the exact error and use only a separately consented, narrowly guarded MO-marker cleanup as fallback. No new layer activation, reinstall, upgrade, or game modifications while active.
+- A fresh **post-restoration** owned test PID and physical renderer is still pending; PID5783 with active keys is not post-rollback proof.
+- Evidence: `docs/DEVICE_FEEDBACK_P10_2026-11-07.md` and `prompt/sessions/MO-20261107-CHAT-P10-DEVICE-018.md`. No new source APK or Actions build; last verified P10 CI 42324225397.
+
+
 ## CURRENT — MO-20261107-CHAT-P10-IDENTITY-LAB-017 (supersedes older status below)
 - P10 **original, owned-only Game Identity Laboratory** source implemented inside `probe` v0.4.0; `app` main version remains v0.9.0-alpha.9.
 - Success: [GitHub Actions 42324225397](https://github.com/alwansan/MO/actions/runs/42324225397) at source `4166210d4fb5e62b391b759f3b4508eb50d02e97`, passed Java unit tests, NDK native ARM64 builds, both APK builds and release upload.
