@@ -44,3 +44,9 @@ Review and compare public live source and project files for ZygiskNext, ReZygisk
 - https://developer.android.com/ndk/guides/rootless-debug-gles
 - https://developer.android.com/games/optimize/adpf/gamemode/gamemode-interventions
 - https://github.com/bylaws/libadrenotools
+
+## Closeout and repository verification
+- Branch main HEAD immediately before this final session-file edit: `868cd13be2a5295c67269a2086f80c9d7928e5c9`.
+- GitHub Actions latest observed workflow run remains `42316925749` (`completed/success`, source `968e13d19a956a0016c4e57609ca744c253da3db`), because documentation-only paths are excluded from the workflow push build filters. **No new build initiated**.
+- Public Release still `mo-v0.9.0-alpha.9-run16` with individual raw APK files `MO-Graphics-Probe-v0.9.0-alpha.9.apk and MO-Layer-Test-v0.3.0.apk`.
+- Added documentation links in prompt/README and current status/memory/research/decisions/restore; all updates limited to documentation and research directories.
