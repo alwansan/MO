@@ -215,3 +215,12 @@ Guide: `docs/OWNED_GAME_IDENTITY_LAB_AR.md`. Rootless stock Outlanders remains i
 - [x] **P12 process-persistent bounded logs and lifecycle**: 201 cumulative app events across PID31111/PID3604; earlier session logs post-export `FRAME_LAB_PAUSE` and MediaStore/clipboard API `EXPORT_RESULT`. Independent clipboard paste, error-path and log rotation remain untested.
 - [ ] Actual compositor-presented frame timing and jank instrumentation is a separate possible future owned-app experiment, **not** inferred from P11 and not required to accept P10/11.
 - No source/CI changes or new Release. Evidence `docs/DEVICE_FEEDBACK_P11_REPEAT_AND_IDENTITY_2026-11-07.md` and `prompt/sessions/MO-20261107-CHAT-P11-REPEAT-023.md`.
+
+## P13 — restore genuine cross-app GPU spoof target, implement ANGLE READ-ONLY capability gate
+- [x] Owner-provided correction: primary goal requires **another app** actually observing fake higher GPU identity through real API (e.g. ANGLE GLES `glGetString(GL_RENDERER)`), potentially unlocking its own graphics/FPS whitelist. P10 mock local screen and P11 own draw callbacks **do not count**.
+- [x] Official ANGLE source identifies `debug.angle.gl_renderer` and per-app driver selection on supporting builds. Warning: setting `angle_gl_driver_all_angle=1` may cause boot failure; do not touch it.
+- [x] Main app `v0.11.0-alpha.11`: new `AngleReadOnlyCommandPolicy` 14 fixed `pm list/path`, `settings get`, `getprop` commands, UID2000 Shizuku AIDL method `getAngleSnapshot()`, dedicated UI panel, timestamped log/copy report. NO `settings put`, `setprop`, driver activation or game injection.
+- [x] JUnit policy tests reject writes and arbitrary commands; GitHub Actions [42332224614](https://github.com/alwansan/MO/actions/runs/42332224614) **SUCCESS**, both APKs built/released at https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run59. Main APK SHA256 `4372a3b077632925df8c51161843f110c53777d9009254c6c51c2ffd6fe5925f`; unchanged test APK (re-signed) v0.6.0.
+- [ ] User phone test: P13 ANGLE read-only panel and `Download/log.txt`. Distinguish package found from ANGLE actually used. Detailed steps `docs/P13_ANGLE_READONLY_DEVICE_TEST_AR.md`.
+- [ ] Later, only with separately explicit consent and reproducible rollback, test chosen GLES renderer **inside a separate cooperating application's process**; no misleading claim of Vulkan/Build/Outlanders FPS unlocking.
+- Session `prompt/sessions/MO-20261107-CHAT-P13-ANGLE-READONLY-025.md`.
