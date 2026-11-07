@@ -7,6 +7,7 @@
         android:extractNativeLibs="true"
         android:theme="@android:style/Theme.Material.NoActionBar">
         <meta-data android:name="com.android.graphics.injectLayers.enable" android:value="true" />
+        <activity android:name=".GameIdentityLabActivity" android:exported="false" />
         <activity android:name=".ProbeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
