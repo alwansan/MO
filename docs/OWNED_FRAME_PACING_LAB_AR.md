@@ -40,3 +40,6 @@ It also prints the physical display refresh **setting** separately. None of thes
 - [MO-Layer-Test-v0.5.0.apk](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run32/MO-Layer-Test-v0.5.0.apk): 182484 bytes، SHA-256 `5aca59d8dc61ec0a1e3763963de96974f02c62f60d15d7041233d774afae37d8`.
 - Main `MO-Graphics-Probe-v0.9.0-alpha.9.apk` also rebuilt and shipped automatically (same source functionality, different debug certificate), 1135214 bytes، SHA-256 `5ab29995235bdd6c5c896192af3aaac4477b0b6e40c9e20373ef29c0928ae3e2`. لا حاجة لتثبيته لتجربة P11.
 - **اختبار P11 على الهاتف لم يصل بعد.** CI/build success does not verify renderer runtime, device safety state or display presentation.
+
+## آخر نتيجة هاتف فعلية — MO-20261107-CHAT-P12-DEVICE-LOGS-021
+Owner-uploaded P12 `log.txt` contains 21 `FRAME_SAMPLE` windows (3 owned lab visits) all with `stride=1`. Mean Choreographer and GLES onDrawFrame callback rates 120.4749/s (range 118.597–121.383). No logged `stride=2` or `stride=4`; their expected scaling must be verified by selecting those options explicitly. This is real MO-owned callback timing, not SurfaceFlinger-presented FPS or game FPS. See `docs/DEVICE_FEEDBACK_P12_LOGS_2026-11-07.md`. User's main MO export verifies guarded GPU marker cleanup at 05:25:51 with readback 0/absent, repeated twice; **do not re-enable** layer merely for pacing test.
