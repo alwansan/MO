@@ -31,3 +31,12 @@
 - Verify latest workflow passes `app/probe testDebugUnitTest`, `app/probe assembleDebug`, APK ZIP test and Release upload; repair any CI failure before concluding.
 - Optional owner phone test on the new separate disposable probe, if desired, without restoring/reinstalling main MO automatically. Verify P11 draw callbacks at stride 1/2/4; never equate callbacks with true presented FPS.
 - For GPU Debug cleanup question, ask for independent **read-only** four-key values only if necessary before enabling a future layer feature (not needed for P11).
+
+## Verified final CI & release (supersedes earlier pending section)
+- P11 complete source commit `9abd11a3cbc3062836ceef6f2facd968286faa6f` passed [GitHub Actions run 42325865139](https://github.com/alwansan/MO/actions/runs/42325865139): **completed / success**. Logs confirm `:app:testDebugUnitTest`, `:probe:testDebugUnitTest`, `:app:assembleDebug`, `:probe:assembleDebug`, APK archive verification, Release publication all successful.
+- Public [prerelease `mo-v0.9.0-alpha.9-run32`](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run32) with two raw uploaded APKs:
+  - `MO-Layer-Test-v0.5.0.apk`, 182484 bytes; SHA-256 `5aca59d8dc61ec0a1e3763963de96974f02c62f60d15d7041233d774afae37d8`.
+  - `MO-Graphics-Probe-v0.9.0-alpha.9.apk`, unchanged main source features but a new CI debug signature, 1135214 bytes; SHA-256 `5ab29995235bdd6c5c896192af3aaac4477b0b6e40c9e20373ef29c0928ae3e2`. No need to install main to use separate P11.
+- The new **Frame Pacing Lab has NOT been tested on owner's phone**, and counts `doFrame`/GL `onDrawFrame` callbacks, not true displayed FPS or another game's FPS.
+- Reconciled documentation: `docs/OWNED_FRAME_PACING_LAB_AR.md`, `docs/IMPLEMENTATION_PHASES.md`, `prompt/STATUS.md`, `prompt/MEMORY.md`, `prompt/DECISIONS.md`, `prompt/RESTORE_AR.md`, `README.md`, and `AGENTS.md`.
+- HEAD at verification immediately preceding this session-file closeout: `5c59debec37ce71f7d51a9671c5959e217eb2ae9`; documentation-only commits since P11 source build did **not** trigger a new APK build. No further phone/system/game changes performed.
