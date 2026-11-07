@@ -25,6 +25,33 @@ public final class ReadOnlyProbeService extends IReadOnlyProbe.Stub {
         b.append("هذه قيم إعدادات النظام، وليست القيم التي تقرؤها اللعبة بالضرورة.");
         return b.toString();
     }
+    /**
+     * P13: detect possible system ANGLE support without any device writes.
+     * Package and property discovery is not proof of a target app using ANGLE.
+     */
+    @Override public String getAngleSnapshot() throws RemoteException {
+        int uid = Os.getuid();
+        if (uid != 2000) return "مرفوض: UID " + uid + " ليس ADB Shell 2000";
+        StringBuilder b = new StringBuilder(
+                "[P13 ANGLE SYSTEM CAPABILITY / READ-ONLY]\n"
+                + "Shizuku UserService UID=" + uid + "\n"
+                + "No settings put/delete, no setprop, no package install.\n"
+                + "Packages and properties are only availability clues.\n\n");
+        for (String[] args : AngleReadOnlyCommandPolicy.commands()) {
+            if (!AngleReadOnlyCommandPolicy.readOnly(args)) {
+                b.append("[blocked unexpected command]\n");
+                continue;
+            }
+            b.append("$ ").append(String.join(" ", args)).append("\n");
+            b.append(run(args)).append("\n\n");
+        }
+        b.append("DANGER: angle_gl_driver_all_angle=1 can prevent booting on some builds. ")
+                .append("MO never writes this setting.\n");
+        b.append("Not demonstrated: ANGLE loaded in an independent app, ")
+                .append("GL_RENDERER override accepted, Vulkan spoof or Outlanders FPS unlock.");
+        return b.toString();
+    }
+
     @Override public String captureLayerSettings() throws RemoteException {
         return OwnedLayerSettings.snapshot();
     }
