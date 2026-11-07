@@ -53,3 +53,10 @@ python compare_android_data_snapshots.py MHO_BEFORE.tar MHO_AFTER.tar --all --ou
 - إن لم يظهر ملف إعدادات، قد تُحفظ القيود في `/data/user/0` أو ضمن ملفات اللعبة المجمّعة أو لدى الخادم؛ هذا لا يخول الوصول إلى بيانات خاصة عبر Rish.
 - لا تُنشئ أو تلصق `DeviceProfiles.ini` عشوائيًا، ولا تعدل PAK/UTOC/Shader Cache؛ الـruntime spoof عبر KernelSU/Zygisk مختلف تمامًا عن تعديل Android/data.
 - لا يثبت الفحص أن `com.tencent.mhadv` سيقرأ `Adreno840` بدل `Adreno730`؛ الهدف الرئيسي لمشروع MO ما زال غير مثبت على النسخة الأصلية بلا Root.
+
+## آخر دليل حقيقي من هاتف المالك — جلسة MO-20261108-CHAT-P16-RISH-DEVICE-029
+- **تم تأكيد الوصول فعليًا** وليس افتراضًا: `id` في Rish = `uid=2000(shell)` مع `1078(ext_data_rw)` وSELinux `u:r:shell:s0`. `ls` أعطى `cache` و`files` داخل `/storage/emulated/0/Android/data/com.tencent.mhadv`، و`tar` متوفر في `/system/bin/tar`.
+- الأمر `tar -cf .../Download/MHO_BEFORE.tar ... com.tencent.mhadv` أعاد **exit code 0**، والملف الناتج حجمه **230M**. هذه **النسخة الأولى فقط**، وتحتوي الملفات الخارجية المسموح قراءتها؛ لا تشمل `/data/user/0`.
+- المستخدم نجح في تنزيل Python comparator داخل Termux Download، لكنه شغّله قبل إنشاء `MHO_AFTER.tar`، ولذلك ظهر الخطأ المتوقع `Two real archive files are required` مرتين. هذا **ليس** احتياجًا إلى Root ولا خللًا في السكربت.
+- **الخطوة التالية الوحيدة:** لا تمس `MHO_BEFORE.tar`. بعد تغيير إعداد عادي من قائمة اللعبة وإغلاقها، ادخل Rish وأنشئ `MHO_AFTER.tar` بنفس `tar -cf`، تحقق من `echo $?` = 0، ثم `exit` للعودة إلى Termux وشغّل المقارنة على الملفين. النتيجة المنتظرة `all_differences.txt`. لا تغيّر الملفات داخل Android/data ولا تستخدم إعدادات Vulkan/GPU وهمية لمجرد إكمال المقارنة.
+- مرجع الجلسة: `prompt/sessions/MO-20261108-CHAT-P16-RISH-DEVICE-029.md`.
