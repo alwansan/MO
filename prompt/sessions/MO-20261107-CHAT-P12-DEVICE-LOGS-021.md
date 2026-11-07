@@ -43,3 +43,9 @@
 - Private uploaded file `log.txt`: disposable probe run from 05:24:09.
 - `docs/DEVICE_FEEDBACK_P12_LOGS_2026-11-07.md`
 - https://github.com/alwansan/MO/actions/runs/42327821781
+
+## Closing verification and commits
+- Verified current main branch HEAD immediately before this session file closeout: `ecd3610600d744b24674d3bd12595cd689429514`.
+- GitHub Actions latest remains **`42327821781`, completed/success**, source `d40d0b6ec70d14ede1731eac2eae4a4f08e7ff81`. This evidence-only work changed Markdown/docs/AGENTS/README, **not** Java, Gradle, native files or workflow. No new Actions build triggered.
+- The existing public release `mo-v0.10.0-alpha.10-run53` still contains `MO-Graphics-Probe-v0.10.0-alpha.10.apk` and `MO-Layer-Test-v0.6.0.apk`. **No new APK required** for user to test stride2/4 with already installed v0.6.
+- Updated `AGENTS.md`, `README.md`, `prompt/STATUS.md`, `prompt/MEMORY.md`, `prompt/RESTORE_AR.md`, `prompt/DECISIONS.md`, `docs/DIAGNOSTIC_LOG_EXPORT_AR.md`, `docs/OWNED_FRAME_PACING_LAB_AR.md` with the new log-derived device truth. Private raw uploaded logs were not added to GitHub.
