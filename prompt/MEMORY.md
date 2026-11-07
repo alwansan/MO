@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## Latest — MO-20261107-CHAT-P11-STRIDE-022: P11 stride 1/2/4 real-device acceptance
+- Third owner uploaded `log (2).txt` (SHA256 `66a24cae18b578d22624e15439dbbf7693ef9a50c6b4b5c8d7f72bfa34d76cff`) from owned `com.alwansan.mo.glesprobe` v0.6.0 Android15, PID31111 new at 05:38:31. 76 event records, 45 one-second pacing windows, no explicit Java crash or ERROR logs; private raw file kept in chat, not public GitHub.
+- All P11 request strides **tested and PASSED**: stride1 14 windows mean 119.632 Choreographer vs 119.632 renderer callbacks/s; stride2 19 windows mean 119.127 vs 59.563; stride4 12 windows mean 120.316 vs 30.079. Aggregate UI/draw counts: 1680/1680, 2270/1135, 1448/362. Renderer callback rate dropped ~50.21% and ~74.86% vs stride1. Do not claim SurfaceFlinger frames, energy savings or real Outlanders 120 FPS from these.
+- New PID after older 05:26 confirmed MO-only GPU Debug cleanup shows all own Java/NDK GLES and native Vulkan renderer **Adreno730** / no intercept, but newer log does **not** independently check four Settings.Global keys. Prior main Shizuku last known clean values remain last measured at 05:26:04.
+- P11 basic lab benchmark can be closed; no further APK or new Shizuku layer experiment necessary. P12 clipboard, crash diagnostics, 3×3MiB rotation still not demonstrated but Download file export works.
+- Report `docs/DEVICE_FEEDBACK_P11_STRIDE_2026-11-07.md`, session `prompt/sessions/MO-20261107-CHAT-P11-STRIDE-022.md`. Documentation only; source/release unchanged.
+
+
 ## Latest device evidence — MO-20261107-CHAT-P12-DEVICE-LOGS-021 (owner uploaded both P12 diagnostic files)
 - Uploaded two owner-generated Download text files from real POCO Android15: `log (1).txt` is **MO main v0.10.0-alpha.10**, PID22510, 35 events; `log.txt` is **owned MO Layer Test v0.6.0**, PID23395, 119 events. The two separate app-private local logs show timestamps, lifecycle, measured GL/GLES/Vulkan, Shizuku outputs and UI actions. Download/export on phone PASS; clipboard copy, rotation, crash catching not yet verified. Never copy the full user logs into public GitHub.
 - **Last four-key GPU debug state is now evidence-backed clean at 05:26:04+0300:** main action1 activated MO debug layers at 05:24:29, action4 guarded cleanup at 05:25:51 disabled enable=0 and removed all three MO markers; action3 at 05:25:55 and 05:26:02 independently reconfirm. It was **guarded cleanup**, not necessarily exact restoration of unknown historical values.
