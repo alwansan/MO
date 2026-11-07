@@ -83,3 +83,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-029 — P10 shipment must not risk GPU Debug rollback in main MO
 **Accepted.** Deliver P10 using `probe` v0.4.0 only, leave `app` main v0.9 source unchanged. CI rebuilds both APKs with per-run debug certs; avoid uninstall/updating installed main MO, whose private GPU rollback snapshot can matter. Verify four GPU keys clean before replacing **only owned disposable test**. GitHub build success is not device runtime proof.
+
+## ADR-030 (MO-20261107-CHAT-P10-DEVICE-018) — P10 real-phone identity lab accepted within simulation scope
+**Accepted.** Owner screenshots of process PID5783 verify own-process Build/SoC, Java/NDK GLES and native Vulkan Adreno730 readings, mode0 fake combined 120 FPS LOCKED and mode6 fake combined 120 FPS UNLOCKED using local synthetic identifiers. Real graphics properties remain unchanged and no FPS or Outlanders capability was unlocked. CI validates code; other mock modes need separate device evidence only if useful.
+
+## ADR-031 — Newest GPU Debug readback overrides earlier clean report
+**Accepted.** Latest user-supplied v0.9 report is **enable=1** with three owned markers and fresh matching `[READBACK AFTER ACTION]`, even though an older report showed 0/absent. Do not assert rollback complete merely because PID5783 renders Adreno730. Preserve installed MO's private backup and attempt ordinary exact restore first. If backup absent/unsafe, request error and only use explicitly consented four-marker guarded stale cleanup as bounded alternative, never reconstruct unknown baseline. Require new-process physical renderer observation **after** confirmed four-key rollback.
