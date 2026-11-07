@@ -16,12 +16,23 @@ public final class ProbeNativeRenderer {
     private ProbeNativeRenderer() {}
     private static native String nativeRenderer();
     private static native String nativeEglEvidence();
+    private static native String nativeVulkanName();
     public static String eglEvidence() {
         if (!READY) return "EGL evidence: NDK module unavailable";
         try {
             return nativeEglEvidence();
         } catch (RuntimeException | LinkageError ex) {
             return "EGL evidence unavailable: " + ex.getClass().getSimpleName();
+        }
+    }
+
+    /** Real VkPhysicalDeviceProperties.deviceName within only our own process. */
+    public static String vulkanDeviceName() {
+        if (!READY) return "(native Vulkan probe unavailable)";
+        try {
+            return nativeVulkanName();
+        } catch (RuntimeException | LinkageError ex) {
+            return "(Vulkan query failed: " + ex.getClass().getSimpleName() + ")";
         }
     }
 
