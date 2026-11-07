@@ -1,5 +1,12 @@
 # MO — Android graphics identity research & diagnostics
 
+## Latest P11 — owned frame pacing measurement (2026-11-07)
+- **[P11 direct APK release](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run32)** includes [**MO Layer Test v0.5.0**](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run32/MO-Layer-Test-v0.5.0.apk), source `9abd11a3cbc3062836ceef6f2facd968286faa6f`, [Actions run 42325865139](https://github.com/alwansan/MO/actions/runs/42325865139) verified SUCCESS. Experimental test app only; phone test pending.
+- The owned GLES frame pacing lab counts Choreographer callbacks and GLSurfaceView Renderer.onDrawFrame calls over one-second intervals; selectable stride 1/2/4. **These are not true presented FPS or the FPS of Outlanders.** No Root, Shizuku permissions, game changes, system GPU settings writes or original proprietary code.
+- Android15 identity lab top status-bar clipping corrected. See [safe P11 guide](docs/OWNED_FRAME_PACING_LAB_AR.md).
+- Owner reports restoring GPU Debug and removing an app; this is a **self-report**, exact post-restore settings and removed package unknown. No need to reinstall the main MO app for this optional owned-only test.
+
+
 ## Current release — P10 owned Game Identity Laboratory (2026-11-07)
 **Current development state: P10 original implementation, device test pending.** The main MO Graphics Probe app remains `v0.9.0-alpha.9`; a new **MO Layer Test `v0.4.0`** provides an optional, completely synthetic Game Identity Laboratory for the self-owned disposable test package only.
 
