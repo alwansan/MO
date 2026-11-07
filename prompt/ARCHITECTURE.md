@@ -1,4 +1,4 @@
-# MO architecture (proposed; not implemented)
+# MO architecture (initial proposal with P9 implementation addendum)
 
 ## Module boundaries
 - **app/** Kotlin + Jetpack Compose. No device modifications without explicit user action.
@@ -33,3 +33,12 @@
 - Only whitelisted settings keys: `enable_gpu_debug_layers`, `gpu_debug_app`, `gpu_debug_layers_gles`, `gpu_debug_layer_app` (and Vulkan `gpu_debug_layers` separately). Never unbounded shell injection.
 - Eligibility check: app debuggable OR manifest opt-in on API/target-supported versions. No attempt to bypass nondebuggable process policy.
 - This POC does NOT provide a universal GLTool replacement for closed third-party games.
+
+
+## Actual implementation as of MO-20261107-CHAT-P9-AUDIT-015 (supersedes historical future-tense proposal)
+- Android Java `app/`: MO Graphics Probe, Shizuku v13 UserService with command allowlist, read-only native Vulkan probe, game manifest eligibility, and owned-layer settings control. Kotlin/Compose, archive inspector, and general installer in original proposal are **not implemented** merely because they were planned.
+- Separate `probe/`: disposable debuggable `com.alwansan.mo.glesprobe` with independently written GLES proof layer and Java/NDK/eglGetProcAddress reports. Native simulation was observed on the user's POCO; not a FPS change in Outlanders.
+- `OwnedLayerSettings` allows exactly four Global developer GPU debug keys with snapshot, restore, guarded MO-only stale cleanup. v0.9 `MainActivity` rereads the layers and shell snapshot after Shizuku action. This does **not** authorize hooks into stock nondebuggable games.
+- Packaging: `.github/workflows/mo-android-debug.yml` builds both APKs on source-path changes and publishes experimental direct APK assets. Debug signing varies; do not uninstall/upsert while a rollback snapshot is needed.
+- **Open safety gate**: fresh read-only phone values post-v0.8 cleanup, followed by newly launched owned test app showing physical Adreno 730 (NDK/eglGetProcAddress). Main project issue remains stock Outlanders non-opt-in.
+- Code-review hypothesis for later: avoid possible simultaneous initial Shizuku snapshot and pending action refresh on cold service connection. This was not device reproduced.
