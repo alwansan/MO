@@ -48,6 +48,7 @@ public final class MainActivity extends Activity {
     private TextView vulkanOutput;
     private TextView nativeVulkanOutput;
     private TextView shellOutput;
+    private TextView angleOutput;
     private TextView layerOutput;
     private IReadOnlyProbe layerService;
     private boolean layerBusy = false;
@@ -58,10 +59,11 @@ public final class MainActivity extends Activity {
     private static final String LAYER_BACKUP_ARCHIVE = "previous_backup_archived";
     private boolean probeBound = false;
     private boolean probeConnecting = false;
+    private boolean pendingAngleRead = false;
 
     private final Shizuku.UserServiceArgs probeArgs = new Shizuku.UserServiceArgs(
             new ComponentName("com.alwansan.mo", ReadOnlyProbeService.class.getName()))
-            .daemon(false).processNameSuffix("probe-readonly").version(4);
+            .daemon(false).processNameSuffix("probe-readonly").version(5);
 
     private final ServiceConnection probeConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -74,6 +76,10 @@ public final class MainActivity extends Activity {
             }
             IReadOnlyProbe service = IReadOnlyProbe.Stub.asInterface(binder);
             layerService = service;
+            if (pendingAngleRead) {
+                pendingAngleRead = false;
+                runAngleRead(service);
+            }
             if (pendingLayerAction != 0) {
                 int action = pendingLayerAction;
                 pendingLayerAction = 0;
@@ -98,6 +104,8 @@ public final class MainActivity extends Activity {
             layerService = null;
             layerBusy = false;
             pendingLayerAction = 0;
+            pendingAngleRead = false;
+            if (angleOutput != null) angleOutput.setText("انقطع اتصال Shizuku. لم تُغيَّر أي إعدادات.");
             if (shellOutput != null) shellOutput.setText("خدمة Shizuku غير متصلة؛ لم نغيّر شيئاً");
         }
     };
@@ -223,6 +231,15 @@ public final class MainActivity extends Activity {
         shellOutput.setTextIsSelectable(true);
         shellCard.addView(shellOutput);
         shellCard.addView(action("فحص Game Mode وANGLE", this::readSystemSettings));
+
+        LinearLayout angleCard = card(root, "05B / P13 ANGLE CAPABILITY — READ ONLY",
+                "بحث عن ANGLE النظامي وخصائص GL_RENDERER وإعدادات اختيار التعريف. " +
+                "فحص فقط، لا يوجد أي زر تغيير أو تفعيل، ولا نفترض نجاح Adreno840.");
+        angleOutput = text("اضغط فحص ANGLE لمعرفة هل توجد مؤشرات دعم على هذا الجهاز.",
+                14, COLOR_TEXT, false);
+        angleOutput.setTextIsSelectable(true);
+        angleCard.addView(angleOutput);
+        angleCard.addView(action("فحص قدرة ANGLE (قراءة فقط)", this::readAngleCapabilities));
 
         LinearLayout layerCard = card(root, "06  /  OWNED GLES LAYER TEST",
                 "تجربة على تطبيق MO منفصل فقط. تحفظ الإعدادات القديمة قبل التفعيل. لا تمس Outlanders.");
@@ -535,6 +552,63 @@ public final class MainActivity extends Activity {
         }, "MO-OwnedLayer-Transaction").start();
     }
 
+    /**
+     * P13 read-only ANGLE capability audit. This does not attempt setprop,
+     * selecting ANGLE, loading a layer or changing a game's graphics profile.
+     */
+    private void readAngleCapabilities() {
+        DiagnosticLog.log("ANGLE_CAPABILITY_REQUEST",
+                "Read-only system ANGLE package/settings/property inspection");
+        if (layerBusy) {
+            angleOutput.setText("انتظر انتهاء عملية GPU Debug الجارية أولًا.");
+            return;
+        }
+        try {
+            if (!Shizuku.pingBinder()
+                    || Shizuku.getUid() != PrivilegeGate.ADB_SHELL_UID
+                    || Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED
+                    || Shizuku.getVersion() < 10) {
+                angleOutput.setText("يتطلب Shizuku ADB UID 2000 وGRANTED. "
+                        + "لم تُغيَّر أي إعدادات.");
+                return;
+            }
+            angleOutput.setText("قراءة أسماء حزم ANGLE وإعدادات النظام وخصائص debug.angle... ");
+            if (probeBound && layerService != null) {
+                runAngleRead(layerService);
+            } else {
+                pendingAngleRead = true;
+                if (!probeConnecting) {
+                    probeConnecting = true;
+                    Shizuku.bindUserService(probeArgs, probeConnection);
+                }
+            }
+        } catch (RuntimeException | LinkageError ex) {
+            pendingAngleRead = false;
+            probeConnecting = false;
+            DiagnosticLog.failure("ANGLE_CAPABILITY_BIND", ex);
+            angleOutput.setText("تعذّر فحص ANGLE: " + ex.getClass().getSimpleName());
+        }
+    }
+
+    private void runAngleRead(IReadOnlyProbe service) {
+        new Thread(() -> {
+            String result;
+            try {
+                result = service.getAngleSnapshot();
+            } catch (RemoteException | RuntimeException ex) {
+                result = "تعذّرت قراءة ANGLE: " + ex.getClass().getSimpleName();
+                DiagnosticLog.failure("ANGLE_CAPABILITY_READ", ex);
+            }
+            final String output = result;
+            DiagnosticLog.log("ANGLE_CAPABILITY_READ_ONLY", output);
+            runOnUiThread(() -> {
+                if (!isFinishing() && !isDestroyed() && angleOutput != null) {
+                    angleOutput.setText(output);
+                }
+            });
+        }, "MO-ANGLE-ReadOnly").start();
+    }
+
     private void readSystemSettings() {
         DiagnosticLog.log("SHIZUKU_READ_REQUEST", "Game Mode / ANGLE / GPU keys (read-only)");
         if (layerBusy) {
@@ -621,6 +695,7 @@ public final class MainActivity extends Activity {
                 + "\n[VULKAN SUPPORT]\n" + safePanel(vulkanOutput)
                 + "\n[VULKAN NATIVE]\n" + safePanel(nativeVulkanOutput)
                 + "\n[SHIZUKU SYSTEM]\n" + safePanel(shellOutput)
+                + "\n[ANGLE CAPABILITY READ-ONLY]\n" + safePanel(angleOutput)
                 + "\n[OWNED GPU DEBUG]\n" + safePanel(layerOutput));
     }
 
@@ -639,6 +714,7 @@ public final class MainActivity extends Activity {
                 + "[VULKAN SUPPORT]\n" + vulkanOutput.getText() + "\n\n"
                 + "[SHIZUKU SYSTEM READ-ONLY]\n" + shellOutput.getText() + "\n\n"
                 + "[VULKAN NATIVE GPU]\n" + nativeVulkanOutput.getText() + "\n\n"
+                + "[ANGLE CAPABILITY READ-ONLY]\n" + angleOutput.getText() + "\n\n"
                 + "[OWNED GLES LAYER TEST]\n" + layerOutput.getText() + "\n\n"
                 + "No game was modified. No root was used.";
         ClipboardManager clipboard = (ClipboardManager)
