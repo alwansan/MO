@@ -1,6 +1,7 @@
 package com.alwansan.mo.glesprobe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.opengl.EGL14;
 import android.opengl.EGLConfig;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,6 +52,19 @@ public final class GameIdentityLabActivity extends Activity {
         super.onCreate(state);
         ScrollView scroll = new ScrollView(this);
         scroll.setBackgroundColor(Color.rgb(16, 23, 37));
+        // Android 15 targetSdk35 uses edge-to-edge: avoid clipping the title
+        // beneath the status bar (observed in the owner's P10 screenshots).
+        scroll.setClipToPadding(false);
+        scroll.setOnApplyWindowInsetsListener((view, insets) -> {
+            int top = Build.VERSION.SDK_INT >= 30
+                    ? insets.getInsets(WindowInsets.Type.statusBars()).top
+                    : insets.getSystemWindowInsetTop();
+            int bottom = Build.VERSION.SDK_INT >= 30
+                    ? insets.getInsets(WindowInsets.Type.navigationBars()).bottom
+                    : insets.getSystemWindowInsetBottom();
+            view.setPadding(0, Math.max(0, top), 0, Math.max(0, bottom));
+            return insets;
+        });
         LinearLayout column = new LinearLayout(this);
         column.setOrientation(LinearLayout.VERTICAL);
         int margin = Math.round(18f * getResources().getDisplayMetrics().density);
@@ -91,6 +106,13 @@ public final class GameIdentityLabActivity extends Activity {
                 renderSimulated();
             }
         });
+
+        Button frameMeter = new Button(this);
+        frameMeter.setText("قياس وتيرة رسم GLES المملوك لـMO");
+        frameMeter.setAllCaps(false);
+        frameMeter.setOnClickListener(v -> startActivity(
+                new Intent(this, FramePacingLabActivity.class)));
+        column.addView(frameMeter);
 
         simulatedView = label("جارٍ تجهيز المختبر...", 14, TEXT, false);
         simulatedView.setTextIsSelectable(true);
