@@ -1,5 +1,13 @@
 # Current status
 
+## CURRENT — MO-20261107-CHAT-P13-REAL-SPOOF-024: owner reset primary mission to genuine cross-app GPU identity spoof
+- **Owner correction is authoritative:** MO's primary goal is that **an independent app/game reads a higher reported GPU identity**, e.g. `Adreno840` instead of real `Adreno730`, hoping to unlock graphics/FPS options. Previous P10 fictional selection, P11 owned callback rates and P12 logs are supporting diagnostics **not mission success**.
+- **New credible, conditional candidate:** AOSP ANGLE documents `debug.angle.gl_renderer` / `debug.angle.gl_vendor` overrides and its source `Context::initRendererString` reads these properties; system ANGLE supports per-app driver selection where OEM enables it. This *can* affect a real target app's GLES `glGetString(GL_RENDERER)` **only if** that app runs ANGLE and the property override is accepted/read. **No POCO device eligibility or shell write proved**, and it cannot change native Vulkan or Java Build automatically.
+- Next investigation: **read-only system ANGLE availability** and property/driver selection probe on user device via optional Shizuku; no blind global writes. With explicit consent only, reversible owned independent-app GL A/B proving actual API readback before/after/rollback; do not test stock Outlanders first.
+- Android official GLES/Vulkan loader gate remains: stock `com.tencent.mhadv` targetSdk36, Debuggable NO, external layer opt-in NO; Shizuku ADB UID2000 cannot inject into that process. Do not advertise `Adreno840 applied` or `120 FPS unlocked`.
+- Engineering focus `research/REAL_GPU_IDENTITY_SPOOF_ANDROID15_ANGLE_AR.md` and `prompt/sessions/MO-20261107-CHAT-P13-REAL-SPOOF-024.md`. No new APK, code, device settings writes, or builds this research cycle. Existing v0.10/v0.6 release remains last tested.
+
+
 ## CURRENT — MO-20261107-CHAT-P11-REPEAT-023: P10 all local modes and P11 pacing replicated; no new APK needed
 - Latest **new** user-uploaded `log (2).txt` is a **41,724-byte cumulative export** (SHA256 `dbdfe2ecfa429012378459ae212e34c3181619ebe699dba055e30676d5bb7415`), NOT the prior 15,982-byte same-named attachment. **201 logged events** = 85 retained older PID31111 events (including follow-up export/pause) + **116 newly observed** PID3604 events at 05:45:19–05:47:32. Original raw log stays private; no public GitHub attachment.
 - **P10 now all 7 mock identity modes device-verified:** ACTUAL and each MODEL/CPU/JAVA_GLES/NATIVE_GLES/VULKAN single simulation return `mock_combined120=false`; only ALL_SIMULATED `true`, reversible on changing mode. Repeated actual Java/NDK GLES, eglGetProcAddress, native Vulkan remain **Adreno(TM)730**, actual SM8475/120Hz, so **no real device spoof or commercial-game FPS unlock**.
