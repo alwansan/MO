@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## Most recent owner goal correction — MO-20261107-CHAT-P13-REAL-SPOOF-024: cross-app GPU spoof is primary
+- User explicitly clarified **not** aiming merely for FPS measurement or mock settings; wants independent games/apps to **see fake higher hardware** (e.g. string `Adreno 840` instead of `Adreno (TM) 730`) to potentially unlock graphics or FPS presets. This restores original primary acceptance. P10 local fictional profile, P11 own onDrawFrame callbacks, P12 logs are tools only, NOT a working game spoof.
+- NEW upstream candidate: ANGLE source `src/libANGLE/Context.cpp` uses Android property `debug.angle.gl_renderer` and vendor/version aliases to override the GLES renderer string exposed *by ANGLE*; AOSP docs show per-app ANGLE/native driver choice. Crucially **unknown if stock POCO HyperOS has usable system ANGLE, if nonroot ADB can write/read property, if target uses ANGLE or Vulkan**. No cross-app effect was demonstrated.
+- Android officially blocks external GLES/Vulkan layers for nondebuggable non-opt-in stock Outlanders; Shizuku ADB UID2000 doesn't alter this. ANGLE may only cover OpenGL GLES string, not `VkPhysicalDeviceProperties`, Java `Build.MODEL`, actual GPU capabilities, or engine whitelist.
+- Proposed strict proof: read-only ANGLE capability audit → consented reversible A/B **independent cooperating app** reading `glGetString(GL_RENDERER)` in its own process → exact rollback before any discussion of gaming usage. Do not turn on MO debug layer or modify stock game for routine proof. All upstream refs `research/REAL_GPU_IDENTITY_SPOOF_ANDROID15_ANGLE_AR.md` and session `prompt/sessions/MO-20261107-CHAT-P13-REAL-SPOOF-024.md`.
+- Previous Android test output remains valid but doesn't satisfy primary goal; no new app build this correction cycle.
+
+
 ## Latest — MO-20261107-CHAT-P11-REPEAT-023: newer cumulative diagnostic file adds P10 + repeated P11 PASS
 - A **new** owner-uploaded file named `log (2).txt` is 41724 bytes SHA256 `dbdfe2ecfa429012378459ae212e34c3181619ebe699dba055e30676d5bb7415`, **different from** earlier same-named 15982-byte upload. It preserves PID31111 (85 events including previously missing export and pause) and adds PID3604 (116 events); **201 total are cumulative, not 201 new**.
 - New PID3604 05:45–05:47 device-run validated **all seven local P10 mode choices** with real model23013PC75G/SM8475 and GLES/NDK/eglGetProcAddress/Vulkan Adreno730/120Hz unchanged. Combined fake 120 menu false on ACTUAL or any single mock, true only on ALL_SIMULATED and returns false when switched away. No commercial game spoof.
