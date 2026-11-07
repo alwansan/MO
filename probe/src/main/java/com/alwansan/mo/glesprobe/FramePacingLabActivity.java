@@ -118,6 +118,7 @@ public final class FramePacingLabActivity extends Activity
                                                   int position, long id) {
                 if (position < 0 || position >= REQUEST_EVERY.length) return;
                 requestEvery = REQUEST_EVERY[position];
+                DiagnosticLog.log("FRAME_MODE", "request_stride=" + requestEvery);
                 resetWindow();
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
@@ -134,6 +135,8 @@ public final class FramePacingLabActivity extends Activity
                 + "أو حد FPS أو تعريف الجهاز أو أي لعبة.\n"
                 + "توقف القياسات بمجرد مغادرة هذه الشاشة لتقليل الاستهلاك.",
                 13, Color.rgb(178, 196, 227)));
+        DiagnosticLogUi.attach(this, column);
+        DiagnosticLog.log("FRAME_LAB_OPEN", "Own GLES2 surface, mode=when-dirty");
     }
 
     private TextView text(String content, int sp, int color) {
@@ -156,6 +159,7 @@ public final class FramePacingLabActivity extends Activity
 
     @Override protected void onResume() {
         super.onResume();
+        DiagnosticLog.log("FRAME_LAB_RESUME", "restart GL surface + pacing callbacks");
         surface.onResume();
         resetWindow();
         active = true;
@@ -164,6 +168,8 @@ public final class FramePacingLabActivity extends Activity
 
     @Override protected void onPause() {
         active = false;
+        DiagnosticLog.log("FRAME_LAB_PAUSE", "stop pacing; total callbacks="
+                + uiFrameCallbacks.get() + " GL draws=" + glDrawCallbacks.get());
         Choreographer.getInstance().removeFrameCallback(this);
         surface.onPause();
         super.onPause();
@@ -178,6 +184,12 @@ public final class FramePacingLabActivity extends Activity
         FramePacingWindow.Sample sample = window.sample(
                 SystemClock.elapsedRealtimeNanos(), vsyncTicks, glDrawCallbacks.get());
         if (sample.ready && measured != null) {
+            DiagnosticLog.log("FRAME_SAMPLE", String.format(Locale.US,
+                    "stride=%d; callbacks_per_s=%.3f; owned_gles_draws_per_s=%.3f"
+                            + "; window_seconds=%.3f; callbacks=%d; draws=%d"
+                            + "; NOT presented/displayed FPS",
+                    requestEvery, sample.callbackRate, sample.drawRate,
+                    sample.seconds, sample.callbackCount, sample.drawCount));
             double reportedHz = getWindowManager().getDefaultDisplay().getRefreshRate();
             measured.setText(String.format(Locale.US,
                     "Current display setting: %.1f Hz\n"
