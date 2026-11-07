@@ -89,3 +89,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-031 — Newest GPU Debug readback overrides earlier clean report
 **Accepted.** Latest user-supplied v0.9 report is **enable=1** with three owned markers and fresh matching `[READBACK AFTER ACTION]`, even though an older report showed 0/absent. Do not assert rollback complete merely because PID5783 renders Adreno730. Preserve installed MO's private backup and attempt ordinary exact restore first. If backup absent/unsafe, request error and only use explicitly consented four-marker guarded stale cleanup as bounded alternative, never reconstruct unknown baseline. Require new-process physical renderer observation **after** confirmed four-key rollback.
+
+## ADR-032 (MO-20261107-CHAT-P11-FRAME-PACING-019) — Count real owned GL callbacks without misreporting game FPS
+**Accepted.** After P10 confirmed fake `UNLOCKED` mock menu, implement a separate owned GLES2 rendering view with cadence 1/2/4 on Choreographer callbacks, and log draw callback counts independently from display Hz. Do NOT call either value displayed-FPS or infer engine FPS of Outlanders. Stop/suspend rendering with Activity lifecycle, use no Shizuku, system writes or game hooks.
+
+## ADR-033 — Respect owner-reported restore and ambiguous app uninstall
+**Accepted.** User says GPU Debug was restored and an app deleted, but package identity and exact four-key readback weren't included. Record as **self-reported**, do not demand reinstating main MO for optional owned lab, and do not claim verified clean state. A future global GLES layer activation requires independent current-state check and user consent, not permitted implicitly by "Continue".
