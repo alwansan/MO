@@ -60,3 +60,10 @@ Accepted. Its newProcess getprop replacement does not rewrite target game native
 VMOS+ guest-root can leave physical phone unrooted, but is NOT a Shizuku-only solution and requires separate explicit approval to try. Game compatibility unverified.
 ## ADR-022: Monster Hunter Outlanders identity
 Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster Hunter Now.
+
+
+## ADR-023 (MO-20261107-CHAT-P9-AUDIT-015) — P9 readback and device rollback gate
+**Accepted.** Treat last v0.8 guarded cleanup success as evidence of an internally verified transaction only; the cached same-report shell panel was stale, and **fresh user-triggered phone readback is still missing**. Prioritize read-only four-key inspection and a fresh-process owned-test renderer check before any further activation or APK upgrade/uninstall. Never infer exact historical values of missing backup keys. No new APK produced merely to reconcile docs.
+
+## ADR-024 — Phase precedence and narrow continuation
+**Accepted.** Earlier P0 planning statements are historical; owner explicitly authorized P1–P9 implementation. GitHub CI and releases confirm code maturity, but do not substitute for device runtime tests. This audit documents and preserves current evidence without modifying the phone, game, or app source. Potential cold Shizuku service-connection snapshot race is a **code-review hypothesis**, not a confirmed defect. Investigate only as a focused follow-up after safety gate.
