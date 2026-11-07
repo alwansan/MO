@@ -29,3 +29,11 @@ The Shizuku UID2000 service:
 - App will reject activation when any of the GPU debug keys are already provisioned/active (even for MO) and refuse treating a snapshot of all four MO test values as a valid original state.
 - Debug signing is still not stable. Never uninstall an app while depending on its exact rollback snapshot. Recovery cleanup requires explicit user permission after in-place normal Restore is checked.
 - Only tests inside self-owned disposable GLES app. This does NOT make Outlanders eligible for official GLES layering.
+
+## P8 CI and Release verified (2026-11-07)
+- GitHub Actions https://github.com/alwansan/MO/actions/runs/42315468593 finished **SUCCESS**, commit `2e2ddb7cc4ba29731bddf1f612955339ac9931da`; app and probe JUnit tests, NDK builds and release upload passed.
+- Raw APK release: https://github.com/alwansan/MO/releases/tag/mo-v0.8.0-alpha.8-run15.
+  - `MO-Graphics-Probe-v0.8.0-alpha.8.apk` (1,135,214 bytes), raw .apk verified uploaded.
+  - `MO-Layer-Test-v0.3.0.apk` (155,196 bytes), unchanged probe.
+- On-device P8 emergency cleanup **NOT tested**; user still must test existing v0.7 Restore/readback first. Do not force an upgrade or claim full prior-state restoration. If v0.7 restore fails and exact four owned markers persist, v0.8 offers explicit guarded cleanup, only with owner consent. Shizuku UID2000 is mandatory.
+- New run results are not evidence original Outlanders FPS/graphics options unlocked; original game's manifest flags still exclude official GLES external layers.
