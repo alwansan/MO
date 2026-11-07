@@ -1,5 +1,12 @@
 # MO memory — 2026-11-07
 
+## Latest P17 — MO-20261108-CHAT-P17-GRAPHICS-030: first real graphics Medium→Low TAR comparison
+- Current uploaded `differences_graphics_low.txt` reports user Rish BEFORE 53 files (230M) vs AFTER 51 files (237M) after stock Outlanders was launched and Graphics Quality set Medium→Low. SHA256 comparator enumerated **18 changes**: 6 added logs, 8 deleted `MHHotRes` version3392342 resource files, 4 modified: `RemoteConfig.config` (146→146B), OpenGL ES `PrecacheBinaries` (55,635,081→sameB), MHMobile.log (9,477,983→13,283,940B), centauriLog.mmap (153600→sameB). Net size delta **7,148,030B** is accounted for by logs + HotRes deletion. No new plain INI or device profile.
+- No evidence that `RemoteConfig.config` is game graphics whitelist or altered *because* of quality option; game launch and resource cleanup are confounders. Shader cache changes do not spoof real GL/Vulkan identity. Android/data archives exclude `/data/user/0`; need A/B reverse toggle for causality.
+- Attempted direct binary `/mnt/data/MHO_AFTER_GRAPHICS_LOW.tar` reading via python/container/python_user_visible failed with ClientError (runtime issue). **No claim to have parsed TAR or 146B config bytes.** Source data is supplied textual diff. Do not publish raw game archive.
+- Next controlled test Low→Medium and optionally Medium→Low with game closed before Rish tar capture; upload only compact reports. No raw file patch created, no new Android APK build. Detailed doc `docs/P17_MHO_GRAPHICS_LOW_TAR_DIFF_2026-11-08_AR.md` and `prompt/sessions/MO-20261108-CHAT-P17-GRAPHICS-030.md`.
+
+
 ## Latest P16 — MO-20261108-CHAT-P16-RISH-028
 - User can access external Android/data path but cannot reach `/data/user/0/com.tencent.mhadv`; tried Termux Python script from wrong cwd `~`, then from Download with non-existent placeholder BEFORE.zip/AFTER.zip, then entered `sh rish` Android shell where Termux `python` and `pkg` are absent. Need to explain that Rish ADB UID2000 is not root; private app folder still protected.
 - Repaired archive diff helper to support ZIP, TAR, TAR.GZ with streamed SHA256 member comparison; test workflow `mo-archive-diff-tests.yml` succeeded run `42421428529`. Source `tools/compare_android_data_snapshots.py`, tests under `tools/test_compare_android_data_snapshots.py`; no APK build.
