@@ -1,6 +1,6 @@
 # أمر الاستعادة — انسخ هذا النص إلى محادثة جديدة
 
-اسم المشروع: **MO**. ابق في الدردشة الحالية واستخدم الأدوات المتاحة مباشرة. مستودع المشروع: https://github.com/alwansan/MO ، الفرع الافتراضي main. المستخدم يريد بناء تطبيق Android مستقل يعتمد على Shizuku ويعمل **بلا روت وبلا فتح بوتلودر**. الحالة الحالية: **Planning only**.
+اسم المشروع: **MO**. ابق في الدردشة الحالية واستخدم الأدوات المتاحة مباشرة. مستودع المشروع: https://github.com/alwansan/MO ، الفرع الافتراضي main. المستخدم يريد بناء تطبيق Android مستقل يعتمد على Shizuku ويعمل **بلا روت وبلا فتح بوتلودر**. الحالة الحالية الآن: **P9 تنفيذ — إصدار v0.9 منشور، وتأكيد تنظيف GPU Debug على الهاتف ما زال مطلوبًا**. أي إشارات P0/Planning في الفقرات القديمة توثيق تاريخي وليست وضع التنفيذ الحالي.
 
 نفّذ بالتسلسل:
 1. افتح المستودع الحي ولا تعتمد على ذاكرة الدردشة وحدها. اقرأ `AGENTS.md` ثم `prompt/README.md` و`prompt/MEMORY.md` و`prompt/STATUS.md` و`prompt/PLAN_AR.md` و`prompt/RESEARCH_AR.md` و`prompt/ARCHITECTURE.md` و`prompt/DECISIONS.md` و`prompt/SOURCE_INVENTORY.md` و`prompt/DEVICE_TESTS.md` و`docs/SHIZUKU_CAPABILITY_MATRIX.md` و`docs/LEGAL_AND_SECURITY.md`.
@@ -138,3 +138,7 @@ v0.5 source introduces native-vs-Java GLES, manual ELF load test, process PID, a
 - Uploaded direct assets: `MO-Graphics-Probe-v0.9.0-alpha.9.apk` (1,135,214 bytes) and unchanged `MO-Layer-Test-v0.3.0.apk` (155,196 bytes).
 - Fix: after every Shizuku operation UI re-reads four exact GPU keys and refreshes the cached shell panel; report appends `[READBACK AFTER ACTION]`. This addresses contradictory stale `enable_gpu_debug_layers=1` after a cleanup verified by the backend.
 - **On-device v0.9 not yet tested**. Owner v0.8 cleanup reported OK. First action is to verify with v0.8 read-only diagnosis and restart owned test app; do NOT reinstall/update unless no active GPU debug state and no rollback needed.
+
+
+## Audit continuation MO-20261107-CHAT-P9-AUDIT-015
+Read `prompt/sessions/MO-20261107-CHAT-P9-AUDIT-015.md` first when resuming after P9. GitHub main at audit start `3c3c20a51ce976c64984ea3a076cf5bd9a5bec5b`; latest confirmed CI run 42316925749 and prerelease `mo-v0.9.0-alpha.9-run16`. **No independent post-v0.8 fresh four-key device readback yet.** First request read-only GPU settings diagnosis from installed MO v0.8 and fresh PID plus Java/NDK/eglGetProcAddress renderer of disposable MO Layer Test after force-stop/relaunch; do not reinstall/re-enable before clean rollback evidence. This audit is documentation-only and does not assert v0.9 device success.
