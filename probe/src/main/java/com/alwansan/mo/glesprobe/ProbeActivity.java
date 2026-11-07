@@ -1,6 +1,7 @@
 package com.alwansan.mo.glesprobe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.opengl.EGL14;
@@ -71,6 +72,13 @@ public final class ProbeActivity extends Activity {
         refreshEgl.setAllCaps(false);
         refreshEgl.setOnClickListener(v -> queryAsync());
         column.addView(refreshEgl);
+
+        Button lab = new Button(this);
+        lab.setText("مختبر هوية الجهاز (محاكاة مستقلة فقط)");
+        lab.setAllCaps(false);
+        lab.setOnClickListener(v -> startActivity(
+                new Intent(this, GameIdentityLabActivity.class)));
+        column.addView(lab);
 
         TextView instructions = new TextView(this);
         instructions.setText("عند تغيير إعدادات طبقات GLES من تطبيق MO، أغلق تطبيق الاختبار وافتحه مجددًا.\nهذا التطبيق لا يكتب أي إعداد للنظام.");
