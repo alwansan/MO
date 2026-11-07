@@ -33,3 +33,10 @@ It also prints the physical display refresh **setting** separately. None of thes
 - GLSurfaceView official: https://developer.android.com/reference/android/opengl/GLSurfaceView (when-dirty mode, activity onPause/onResume)
 - Choreographer callback official: https://developer.android.com/reference/android/view/Choreographer.FrameCallback
 - Android OpenGL starter: https://developer.android.com/develop/ui/views/graphics/opengl/environment
+
+## نتيجة CI والنشر — مؤكدة
+- GitHub Actions [42325865139](https://github.com/alwansan/MO/actions/runs/42325865139) عند source commit `9abd11a3cbc3062836ceef6f2facd968286faa6f`: **completed/success**. تضمن الاختبارات `:app:testDebugUnitTest` و`:probe:testDebugUnitTest` وبناء `:app:assembleDebug` و`:probe:assembleDebug` وفحص صحة حزمة APK ورفع Release.
+- الإصدار التجريبي المباشر: [mo-v0.9.0-alpha.9-run32](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run32)، draft=false، وحالته prerelease.
+- [MO-Layer-Test-v0.5.0.apk](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run32/MO-Layer-Test-v0.5.0.apk): 182484 bytes، SHA-256 `5aca59d8dc61ec0a1e3763963de96974f02c62f60d15d7041233d774afae37d8`.
+- Main `MO-Graphics-Probe-v0.9.0-alpha.9.apk` also rebuilt and shipped automatically (same source functionality, different debug certificate), 1135214 bytes، SHA-256 `5ab29995235bdd6c5c896192af3aaac4477b0b6e40c9e20373ef29c0928ae3e2`. لا حاجة لتثبيته لتجربة P11.
+- **اختبار P11 على الهاتف لم يصل بعد.** CI/build success does not verify renderer runtime, device safety state or display presentation.
