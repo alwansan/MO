@@ -1,5 +1,12 @@
 # MO memory — 2026-11-07
 
+## Latest P13 CI and download — 2026-11-07
+- Main MO `v0.11.0-alpha.11` implements P13 **read-only ANGLE capability audit**. Source `5666cb45c6f8601acf14aeaca02a8b626979ff63`, GitHub Actions `42332224614` completed success for both app/probe tests, APK builds and Release upload. Public https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run59, main APK **1167998 bytes / SHA256 4372a3b077632925df8c51161843f110c53777d9009254c6c51c2ffd6fe5925f**.
+- UI 05B P13 section and `getAngleSnapshot()` Shizuku UID2000 AIDL endpoint read known package names, driver selection settings, `debug.angle.gl_renderer` and ro.debuggable with **14 allowlisted read-only commands**, no `settings put` or `setprop`. Global all-angle switch `angle_gl_driver_all_angle` is only read because AOSP warns setting it to1 may make device unbootable.
+- P13 has **not run on user's POCO**; no confirmed ANGLE driver availability, write permission or independent game/application `glGetString` spoof. User original goal is Adreno840 actually returned by other apps, not fake MO labels. Read `docs/P13_ANGLE_READONLY_DEVICE_TEST_AR.md`, session `prompt/sessions/MO-20261107-CHAT-P13-ANGLE-READONLY-025.md`.
+- Main CI debug signature differs across runs; advise preserving any GPU Debug rollback data before uninstall/reinstall; previous P12 main user log last proved clean 4 keys at 05:26:04 only. Probe source still v0.6, optionally rebuilt but no additional feature.
+
+
 ## Latest — MO-20261107-CHAT-P13-ANGLE-READONLY-025: first real GPU spoof feasibility gate (ANGLE, read-only)
 - User's foundational MO goal is **cross-app reported GPU identity substitution** such as Adreno840 read by a separate app's GLES API, aiming to discover if its graphics/FPS whitelist changes. Not MO fake menus/FPS callbacks. Conditional source insight: system ANGLE `debug.angle.gl_renderer` string override exists upstream, but no proof this POCO provides a usable ANGLE driver, shell can set property, or Outlanders uses GLES/ANGLE. No Vulkan/Java GPU model global spoof demonstrated.
 - Implemented main MO `v0.11.0-alpha.11` **read-only P13 ANGLE discovery**: AIDL `getAngleSnapshot()` in strict UID2000 Shizuku service, 14 allowlisted `pm list/path`, `settings get`, `getprop` commands, explicit all-app boot-risk warning. UI button `فحص قدرة ANGLE (قراءة فقط)`, normal clipboard report, `Download/log.txt` DiagnosticLog events; UserService version5. JUnit `AngleReadOnlyCommandPolicyTest` rejects `setprop`, `settings put`, arbitrary commands.
