@@ -33,7 +33,7 @@ public class FramePacingWindowTest {
         meter.sample(100, 200, 90);
         assertFalse(meter.sample(1_000_000_100L, 10, 0).ready);
         assertTrue(meter.sample(2_000_000_100L, 130, 28).ready);
-        assertEquals(28.0, meter.sample(3_000_000_100L, 250, 58).drawRate, 0.001);
+        assertEquals(30.0, meter.sample(3_000_000_100L, 250, 58).drawRate, 0.001);
     }
 
     @Test public void subZeroInputIsRejected() {
