@@ -65,6 +65,7 @@ public final class MainActivity extends Activity {
 
     private final ServiceConnection probeConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder binder) {
+            DiagnosticLog.log("SHIZUKU_SERVICE_CONNECTED", "binderPresent=" + (binder != null));
             probeBound = true;
             probeConnecting = false;
             if (binder == null || !binder.pingBinder()) {
@@ -86,10 +87,12 @@ public final class MainActivity extends Activity {
                     result = "تعذّرت القراءة: " + e.getClass().getSimpleName();
                 }
                 final String output = result;
+                DiagnosticLog.log("SHIZUKU_SYSTEM_SNAPSHOT", output);
                 runOnUiThread(() -> { if (!isFinishing() && !isDestroyed()) shellOutput.setText(output); });
             }, "MO-ReadOnly-Shell").start();
         }
         @Override public void onServiceDisconnected(ComponentName name) {
+            DiagnosticLog.log("SHIZUKU_SERVICE_DISCONNECTED", "Service connection lost");
             probeBound = false;
             probeConnecting = false;
             layerService = null;
@@ -113,6 +116,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        DiagnosticLog.log("MAIN_OPEN", "MainActivity created; Shizuku probe optional");
         createInterface();
         refreshShizuku();
         refreshDevice();
@@ -146,6 +150,7 @@ public final class MainActivity extends Activity {
             // Provider may not be running; no privileged action.
         }
         layerService = null;
+        DiagnosticLog.log("MAIN_DESTROY", "Shizuku service unbound");
         super.onDestroy();
     }
 
@@ -168,6 +173,10 @@ public final class MainActivity extends Activity {
                 14, COLOR_MUTED, false);
         subtitle.setPadding(0, dp(6), 0, dp(18));
         root.addView(subtitle);
+
+        // One tap collects the current MO diagnostic panels and writes the
+        // complete available local event history to Download/log.txt.
+        DiagnosticLogUi.attach(this, root, this::recordUiSnapshotForLog);
 
         LinearLayout shizukuCard = card(root, "01  /  SHIZUKU", 
                 "فحص خدمة Shizuku والصلاحية الفعلية. لن نطلب روت.");
@@ -498,6 +507,9 @@ public final class MainActivity extends Activity {
             } catch (Exception e) {
                 outcome = "فشلت العملية: " + e.getClass().getSimpleName();
             }
+            DiagnosticLog.log("OWNED_GPU_ACTION_RESULT", "action=" + action
+                    + "; outcome=" + outcome + "; refreshedOwned=" + currentLayerSettings
+                    + "; refreshedSystem=" + currentSystemSnapshot);
             final String display = outcome;
             final String verifiedSettings = currentLayerSettings;
             final String refreshedSystem = currentSystemSnapshot;
@@ -524,6 +536,7 @@ public final class MainActivity extends Activity {
     }
 
     private void readSystemSettings() {
+        DiagnosticLog.log("SHIZUKU_READ_REQUEST", "Game Mode / ANGLE / GPU keys (read-only)");
         if (layerBusy) {
             shellOutput.setText("هناك عملية ضبط GPU قيد التنفيذ. أعد المحاولة لاحقًا.");
             return;
@@ -573,12 +586,14 @@ public final class MainActivity extends Activity {
                 + "\nRAM total: ~" + totalGiB + " GiB"
                 + "\nCurrent screen refresh: " + hz + " Hz"
                 + "\n120Hz شاشة لا يعني 120 FPS داخل الألعاب.");
+        DiagnosticLog.log("DEVICE_REPORT", deviceOutput.getText().toString());
     }
 
     private void refreshGraphics() {
         gpuOutput.setText("جارٍ إنشاء EGL context آمن للقراءة...");
         new Thread(() -> {
             String report = GraphicsProbe.inspect();
+            DiagnosticLog.log("GLES_REPORT", report);
             runOnUiThread(() -> {
                 if (!isFinishing() && !isDestroyed()) gpuOutput.setText(report);
             });
@@ -589,13 +604,32 @@ public final class MainActivity extends Activity {
         nativeVulkanOutput.setText("جارٍ قراءة VkPhysicalDeviceProperties...");
         new Thread(() -> {
             String result = NativeVulkanProbe.inspect();
+            DiagnosticLog.log("VULKAN_REPORT", result);
             runOnUiThread(() -> {
                 if (!isFinishing() && !isDestroyed()) nativeVulkanOutput.setText(result);
             });
         }, "MO-Vulkan-Native-ReadOnly").start();
     }
 
+    private void recordUiSnapshotForLog() {
+        DiagnosticLog.log("MO_FULL_UI_SNAPSHOT", "MO Graphics Probe v"
+                + BuildConfig.VERSION_NAME
+                + "\n[SHIZUKU]\n" + safePanel(shizukuOutput)
+                + "\n[DEVICE]\n" + safePanel(deviceOutput)
+                + "\n[GLES]\n" + safePanel(gpuOutput)
+                + "\n[GAMES]\n" + safePanel(gameOutput)
+                + "\n[VULKAN SUPPORT]\n" + safePanel(vulkanOutput)
+                + "\n[VULKAN NATIVE]\n" + safePanel(nativeVulkanOutput)
+                + "\n[SHIZUKU SYSTEM]\n" + safePanel(shellOutput)
+                + "\n[OWNED GPU DEBUG]\n" + safePanel(layerOutput));
+    }
+
+    private static String safePanel(TextView panel) {
+        return panel == null ? "(not initialized)" : panel.getText().toString();
+    }
+
     private void copyReport() {
+        DiagnosticLog.log("COPY_REPORT", "Owner requested copy of current MO panels");
         String report = "MO Graphics Probe v" + BuildConfig.VERSION_NAME + "\n"
                 + "Local read-only diagnostics\n\n"
                 + "[SHIZUKU]\n" + shizukuOutput.getText() + "\n\n"
