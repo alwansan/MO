@@ -37,3 +37,12 @@ User sent "Continue" after explicitly correcting original MO goal: make **indepe
 - Confirm P13 CI app unit test + Android/AIDL/NDK build + publish both raw APKs. Fix source compile failures if any. Only then give verified APK link.
 - Obtain user ANGLE read-only report for this exact firmware; decide whether a safe owned-app-only ANGLE A/B test is technically possible.
 - Do not repeat P10 or P11 benchmark as primary progress.
+
+## Final verified CI/release status (supersedes pending section above)
+- Completed [GitHub Actions 42332224614](https://github.com/alwansan/MO/actions/runs/42332224614): `completed/success`, source `5666cb45c6f8601acf14aeaca02a8b626979ff63`. Test phase and APK builds for both apps, release publish all passed.
+- Public prerelease [`mo-v0.11.0-alpha.11-run59`](https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run59), assets state uploaded:
+  - `MO-Graphics-Probe-v0.11.0-alpha.11.apk`, 1,167,998 bytes SHA256 `4372a3b077632925df8c51161843f110c53777d9009254c6c51c2ffd6fe5925f` ([direct APK](https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run59/MO-Graphics-Probe-v0.11.0-alpha.11.apk)).
+  - `MO-Layer-Test-v0.6.0.apk`, unchanged source, 208,508 bytes SHA256 `8540a452ee162a7e13a94a9e28d6ba2e50883239a3c44565ee3c37ca040fd607`.
+- Verified branch main SHA immediately prior to this closeout: `e161e5c8f0f40da2af1b7ba52b710c3805282352`; documentation-only commits after P13 source do not trigger a new Android source build. Latest Actions run `42332224614`, `completed/success`, and latest raw APK assets match the code.
+- Updated `README.md`, `AGENTS.md`, `prompt/PLAN_AR.md`, `prompt/STATUS.md`, `prompt/MEMORY.md`, `prompt/DECISIONS.md`, `prompt/RESTORE_AR.md`, `docs/IMPLEMENTATION_PHASES.md` and `docs/P13_ANGLE_READONLY_DEVICE_TEST_AR.md`.
+- **Device test remains pending**. Do not claim ANGLE package selection or GL_RENDERER override on POCO, or actual independent-game identity spoof, until owner supplies direct read-only P13 report and later a consented reproducible A/B. No device write, root or game changes this cycle.
