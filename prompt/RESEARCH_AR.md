@@ -53,3 +53,10 @@ Sources: https://developer.android.com/games/develop/vulkan/overview and https:/
 - AOSP disallows external code injection into third-party nondebuggable processes on production devices. Shizuku shell UID2000 does not remove that policy.
 - Docs https://developer.android.com/ndk/guides/rootless-debug-gles ; https://developer.android.com/ndk/guides/graphics/validation-layer ; https://source.android.com/docs/core/graphics/implement-vulkan .
 - AOSP ANGLE warns `angle_gl_driver_all_angle=1` can render device unbootable; forbidden in MO. https://github.com/google/angle/blob/main/src/android_system_settings/README.md
+
+
+## Additional live upstream audit — MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016
+- Full comparison: `research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md`. Public pinned README/source audits of ZygiskNext, ReZygisk, NeoZygisk, COPG, MMRL and iUnlockerGL. NO binaries executed or copied.
+- ZygiskNext current README restricts redistribution/derivatives since v4-0.9.2. ReZygisk README vs LICENSE ambiguity (AGPL vs GPL) and COPG public source incompleteness are documented, not resolved by guessing.
+- Shizuku is UID2000 and cannot enter non-debuggable commercial-game process through any of these root-bootstrapped frameworks. Official GLES target opt-in remains mandatory. Android Game Mode `--fps` is an intervention/throttle, not changing the GPU identity or opening a game's locked menu.
+- Device evidence `docs/DEVICE_FEEDBACK_ALPHA9_2026-11-07.md` confirms v0.9 final post-cleanup four-key readback 0/absent, but the separate PID16719 Adreno renderer screenshot should **not** be claimed as a new process launched after the final cleanup.
