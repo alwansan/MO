@@ -2,7 +2,7 @@
 
 1. Read `prompt/RESTORE_AR.md`, `prompt/MEMORY.md`, `prompt/STATUS.md`, `prompt/PLAN_AR.md`, `docs/LEGAL_AND_SECURITY.md` BEFORE acting.
 2. Respect owner's immutable limits: **no root, no bootloader unlocking, no kernel flashing, no Zygisk, no PC dependency**, Shizuku as sole optional privileged broker, POCO F5 Pro Android 15.
-3. Respect phase: currently **PLANNING ONLY**. Do not create source builds, binaries, releases, or Android settings changes until phase explicitly changes.
+3. Respect the latest authorized phase: **P9 implementation / device rollback verification pending**, following the owner's explicit P1 implementation approval and subsequent P4–P9 work. Historical P0 planning restrictions are superseded for authorized original app source/CI work, but never for root, bootloader, proprietary-code or game-safety limits. Do not trigger new device settings changes without consent; do not mistake CI for on-device validation.
 4. Source truth: live GitHub files + primary vendor docs + device test evidence. Separate observed, documented, suspected and unverified. Never invent hardware capabilities or successful actions.
 5. Never label a ZIP 'installed' merely because it was extracted. Root-module install is unavailable without root infrastructure; report missing permissions candidly.
 6. Do not run third-party ZIP shell scripts, native binaries, updater commands, or network-supplied executable code. Treat archives as untrusted.
