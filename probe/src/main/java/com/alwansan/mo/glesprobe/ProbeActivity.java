@@ -84,13 +84,17 @@ public final class ProbeActivity extends Activity {
         instructions.setText("عند تغيير إعدادات طبقات GLES من تطبيق MO، أغلق تطبيق الاختبار وافتحه مجددًا.\nهذا التطبيق لا يكتب أي إعداد للنظام.");
         instructions.setTextColor(Color.rgb(177, 192, 219));
         column.addView(instructions);
+        DiagnosticLogUi.attach(this, column);
+        DiagnosticLog.log("PROBE_SCREEN", "ProbeActivity initialized; owned test only");
         queryAsync();
     }
 
     private void queryAsync() {
+        DiagnosticLog.log("GLES_READ_BEGIN", "Offscreen EGL query in owned process");
         result.setText("جارٍ إنشاء EGL context...");
         new Thread(() -> {
             String text = query();
+            DiagnosticLog.log("GLES_READ_RESULT", text);
             runOnUiThread(() -> {
                 if (!isFinishing() && !isDestroyed()) result.setText(text);
             });
@@ -151,6 +155,7 @@ public final class ProbeActivity extends Activity {
                     + "\n\nOfficial GLES layers can apply only to debuggable or opted-in apps."
                     + "\nNo real GPU capabilities, FPS, or game settings were modified.";
         } catch (RuntimeException | LinkageError e) {
+            DiagnosticLog.failure("GLES_QUERY", e);
             return "GL query error: " + e.getClass().getSimpleName();
         } finally {
             if (d != EGL14.EGL_NO_DISPLAY) {
