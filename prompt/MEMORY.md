@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## Latest — MO-20261107-CHAT-P11-REPEAT-023: newer cumulative diagnostic file adds P10 + repeated P11 PASS
+- A **new** owner-uploaded file named `log (2).txt` is 41724 bytes SHA256 `dbdfe2ecfa429012378459ae212e34c3181619ebe699dba055e30676d5bb7415`, **different from** earlier same-named 15982-byte upload. It preserves PID31111 (85 events including previously missing export and pause) and adds PID3604 (116 events); **201 total are cumulative, not 201 new**.
+- New PID3604 05:45–05:47 device-run validated **all seven local P10 mode choices** with real model23013PC75G/SM8475 and GLES/NDK/eglGetProcAddress/Vulkan Adreno730/120Hz unchanged. Combined fake 120 menu false on ACTUAL or any single mock, true only on ALL_SIMULATED and returns false when switched away. No commercial game spoof.
+- Repeated independent P11 stride tests: 38 new windows; 13 stride1 mean own draw120.061/s, 16 stride2 mean59.834/s, 9 stride4 mean30.037/s. Choreographer UI stayed around 120/s. This confirms 1/2/4 callback pacing **twice**, not SurfaceFlinger/game FPS.
+- Earlier process's `EXPORT_RESULT` inside cumulative history reports successful app copy of 15943 chars and Download/log (2).txt output; subsequent `FRAME_LAB_PAUSE` records normal stop. Clipboard *contents* not independently pasted; newer snapshot ends before its own export result. `TRIM_MEMORY=20` is UI hidden; no ERROR/UNCAUGHT_CRASH in retained 201.
+- Test-only upload has no new GPU Debug settings readback; last independent four-key data remain the main MO 05:26 guarded-cleanup result. No re-activation needed.
+- New source evidence `docs/DEVICE_FEEDBACK_P11_REPEAT_AND_IDENTITY_2026-11-07.md` and session `prompt/sessions/MO-20261107-CHAT-P11-REPEAT-023.md`; documents only, no APK rebuild/source patch/game write.
+
 ## Latest — MO-20261107-CHAT-P11-STRIDE-022: P11 stride 1/2/4 real-device acceptance
 - Third owner uploaded `log (2).txt` (SHA256 `66a24cae18b578d22624e15439dbbf7693ef9a50c6b4b5c8d7f72bfa34d76cff`) from owned `com.alwansan.mo.glesprobe` v0.6.0 Android15, PID31111 new at 05:38:31. 76 event records, 45 one-second pacing windows, no explicit Java crash or ERROR logs; private raw file kept in chat, not public GitHub.
 - All P11 request strides **tested and PASSED**: stride1 14 windows mean 119.632 Choreographer vs 119.632 renderer callbacks/s; stride2 19 windows mean 119.127 vs 59.563; stride4 12 windows mean 120.316 vs 30.079. Aggregate UI/draw counts: 1680/1680, 2270/1135, 1448/362. Renderer callback rate dropped ~50.21% and ~74.86% vs stride1. Do not claim SurfaceFlinger frames, energy savings or real Outlanders 120 FPS from these.
