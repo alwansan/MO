@@ -201,3 +201,10 @@ Guide: `docs/OWNED_GAME_IDENTITY_LAB_AR.md`. Rootless stock Outlanders remains i
 - [x] GitHub Actions [42327821781](https://github.com/alwansan/MO/actions/runs/42327821781) **SUCCESS** source `d40d0b6ec70d14ede1731eac2eae4a4f08e7ff81`: both JUnit, native builds, APKs and release upload.
 - [x] Direct https://github.com/alwansan/MO/releases/tag/mo-v0.10.0-alpha.10-run53: main 1,151,614 bytes SHA256 `a8e227174036732eb31ab7a27e667981e8f6da16102c9f25fe1d737a85fe86ce`; disposable 208,508 bytes SHA256 `ce3771295b2728fad25342ca4c5c86f21904673df55115d56a207615da02ae1f`.
 - [ ] On-device Android15 UI/MediaStore clipboard/file save and P11 frame stride proof. Guide `docs/DIAGNOSTIC_LOG_EXPORT_AR.md`. Do not claim phone save success from CI alone.
+
+## P11 follow-up acceptance — 2026-11-07, session MO-20261107-CHAT-P11-STRIDE-022
+- [x] Real Android15 POCO test of all three own-app frame pacing strides 1,2,4 from 45 recorded one-second frame-sample windows (owner uploaded third log `log (2).txt`).
+- [x] Mean draw callbacks/s stride1=119.632 (14 samples), stride2=59.563 (19), stride4=30.079 (12). Choreographer callbacks remain ~120/s in each mode; draw/request ratio 1,1/2,1/4.
+- [x] New test process PID31111 after prior recorded main-app GPU Debug cleanup confirms own Java/NDK/Vulkan physical Adreno730, no own layer intercept observed. New probe-only log did **not** recheck global GPU four keys. No new privileged settings writes required.
+- [ ] Actual SurfaceFlinger-presented frame metrics, power/thermal and game FPS still **not measured**. These are not necessary for P11 scoped pacing acceptance and must not be inferred from `onDrawFrame` counts.
+- No code/API/build changes for these evidence-only docs, no new APK release. See `docs/DEVICE_FEEDBACK_P11_STRIDE_2026-11-07.md` and `prompt/sessions/MO-20261107-CHAT-P11-STRIDE-022.md`.
