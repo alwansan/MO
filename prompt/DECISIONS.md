@@ -107,3 +107,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-037 — P11 callback rate versus real presented FPS and loader new-process limitation
 **Accepted.** 21 stride1 samples from owned app average 120.47 Choreographer/draw callbacks per second; stride2/4 not yet tested, and neither rate is SurfaceFlinger-presented frames or Outlanders FPS. Owned probe PID23395 started before user enabled developer layer, therefore later same-process `intercepted NO` does not prove failure for a new process. Require new PID after any relevant toggle for loader conclusions, but **do not request new activation** given completed cleanup.
+
+## ADR-038 (MO-20261107-CHAT-P11-STRIDE-022) — Accept owned P11 cadence 1/2/4 on actual Android15
+**Accepted.** Owner supplied third private log with 45 `FRAME_SAMPLE` entries: stride1 119.632 Choreographer/draw calls/s; stride2 119.127 Choreographer and 59.563 own draws/s; stride4 120.316 and 30.079 own draws/s. The observed request ratio is 1, 0.5, 0.25 respectively, and no Java error/crash was logged in this captured run. All three **application-local** P11 pacing modes are accepted; no code change/new APK needed solely for this result. `onDrawFrame` does not prove compositor presentation, FPS or behavior of Outlanders.
+
+## ADR-039 — Do not infer present GPU Debug key values from a probe-only log
+**Accepted.** New owned test PID31111 started at 05:38 after main MO had independently confirmed last safe four-key cleanup at 05:26. New own-process GL/Vulkan reads show physical Adreno730/no intercept, but this upload contains no new Settings.Global readback. Do not claim exact four-key state at 05:38 without evidence, and do not reactivate developer layers just to test the already verified frame-cadence feature.
