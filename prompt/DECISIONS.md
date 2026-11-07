@@ -77,3 +77,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-027 — License completeness & provenance gate
 **Accepted.** New Zygisk Next README has post-v4-0.9.2 proprietary no-redistribution/no-picking conditions; ReZygisk README claims AGPL-3 while LICENSE is GPL-3 text; COPG top-level Apache-2.0 license does not establish rights to any unpublished PRO binary or missing native sources; iUnlockerGL prohibits reverse engineering/derivatives. Do not import source/binaries until all provenance and license conditions are clear. See `research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md`.
+
+## ADR-028 (MO-20261107-CHAT-P10-IDENTITY-LAB-017) — Safe educational identity lab
+**Accepted.** Implement independent read-only identity measurements plus pure local mock gates inside MO-owned disposable test APK, not stock game's process. Show Java Build, CPU, Java/NDK GLES and Vulkan as distinct channels. The UI fake 120 FPS menu is explicitly simulated and cannot prove real game settings unlocked.
+
+## ADR-029 — P10 shipment must not risk GPU Debug rollback in main MO
+**Accepted.** Deliver P10 using `probe` v0.4.0 only, leave `app` main v0.9 source unchanged. CI rebuilds both APKs with per-run debug certs; avoid uninstall/updating installed main MO, whose private GPU rollback snapshot can matter. Verify four GPU keys clean before replacing **only owned disposable test**. GitHub build success is not device runtime proof.
