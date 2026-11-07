@@ -1,5 +1,15 @@
 # MO memory — 2026-11-07
 
+## Current authoritative continuation — MO-20261107-CHAT-P9-AUDIT-015
+- **Active phase P9** (the 2026-11-07 initial Planning-only entries below are historical). Confirmed main starting HEAD `3c3c20a51ce976c64984ea3a076cf5bd9a5bec5b`, documentation child of P9 code `968e13d19a956a0016c4e57609ca744c253da3db`.
+- Verified GitHub Actions [42316925749](https://github.com/alwansan/MO/actions/runs/42316925749) success and [v0.9 direct APK prerelease](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run16), **not on-device v0.9 validation**.
+- Current owner device proof only v0.8 guarded cleanup OK, with stale cached shell panel; need fresh independent four-key readback and new process Native/eglGetProcAddress renderer after force-stop of **only owned test app**. No new activation/upgrade before confirmation.
+- Stock Outlanders `com.tencent.mhadv` targetSdk36, Debuggable NO, injectLayers opt-in NO; cannot use official external rootless GLES layers on stock build. Owned NDK interception/mock FPS is not a commercial game FPS unlock.
+- Original proprietary iUnlockerGL ZIP/KernelSU APK were not available or required during this audit; `SOURCE_INVENTORY` hashes/licensing remain canonical. No original binaries/code in public MO.
+- Source review follow-up **hypothesis only**: pending Shizuku service-connection action and initial asynchronous snapshot could race; investigate after phone state verified, not a proven device defect.
+- Audit session [log](sessions/MO-20261107-CHAT-P9-AUDIT-015.md); no source, game, GPU settings or CI builds changed during this documentation-only cycle.
+
+
 ## طلب المالك
 إنشاء تطبيق Android مفتوح التطوير في alwansan/MO يعمل بواجهة Shizuku على جهاز POCO F5 Pro بدون روت أو فك بوتلودر؛ فهم iUnlockerGL وKernelSU؛ بناء خطة كاملة وملفات جلسات قابلة للاستعادة. أولوية هذه الجلسة التخطيط فقط لا البناء.
 
