@@ -52,3 +52,10 @@
 
 ## السلامة والخصوصية
 لم نغيّر لعبة المستخدم أو أرشيفاته ولم نرفع بياناته الخام إلى GitHub؛ جميع التغييرات كانت في وثائق هندسية. لا نوصي بتحرير `.pak/.ucas/.utoc` أو `PrecacheBinaries` أو `RemoteConfig.config` قبل فهم بنية الملف ودليل أن اللعبة تستخدمه لأذونات جودة الرسوميات. أي ملف أو إعداد قابل للتعديل لا يساوي حقًا في تصعيد مواصفات العتاد أو يتجنب شروط اللعبة تلقائيًا.
+
+## محاسبة حجم الأرشيف من عمليات المقارنة نفسها
+- Total ADDED files' reported uncompressed sizes: **10,271,665 bytes**.
+- Total DELETED HotRes' reported uncompressed sizes: **6,929,592 bytes**.
+- `MHMobile.log` grew by **3,805,957 bytes** (13,283,940 − 9,477,983).
+- `RemoteConfig.config`, `PrecacheBinaries` and `centauriLog.mmap` had **unchanged length**, though their content SHA256 changed.
+- Net file-data change = `10,271,665 − 6,929,592 + 3,805,957 = 7,148,030 bytes` ≈ **6.817 MiB**, consistent with reported TAR 230M→237M difference. This increase is explained by new/expanded logs plus HotRes cleanup; it is **not** independent evidence of a graphics-settings file.
