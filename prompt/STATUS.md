@@ -1,5 +1,13 @@
 # Current status
 
+## CURRENT — MO-20261108-CHAT-P16-RISH-028: Rish is UID2000 shell, not root; ZIP/TAR comparator repaired and CI passed
+- User's Python errors are from **wrong directory and non-existent placeholder snapshots**: script exists in `Download`, not Termux `~`; `BEFORE.zip` and `AFTER.zip` never created. Running `sh rish` switched to Android shell `mondrian:/ $` where Termux `python`/`pkg` are absent. This does **not** require root to fix.
+- `/storage/emulated/0/Android/data/com.tencent.mhadv` external data may be accessible to Rish ADB shell UID2000 **only if on-phone `ls` succeeds**; `/data/user/0/com.tencent.mhadv` is private and remains off-limits to normal Termux/Rish. No game files need writing.
+- Fixed `tools/compare_android_data_snapshots.py` to accept TAR/TAR.GZ and ZIP, compare incremental SHA256 of archive file contents without extraction, and explain missing placeholder files; added Python tests and dedicated CI workflow. **[run42421428529](https://github.com/alwansan/MO/actions/runs/42421428529) SUCCESS**. No APK rebuilt.
+- Practical backup: while game closed, in Rish `tar -cf /storage/emulated/0/Download/MHO_BEFORE.tar -C /storage/emulated/0/Android/data com.tencent.mhadv` only if permitted; after a legitimate in-game option change, repeat `MHO_AFTER.tar`. **Exit Rish**, then Termux runs refreshed Python diff on two actual archive filenames. Details `docs/P16_TERMUX_RISH_ANDROID_DATA_SNAPSHOTS_AR.md` and `prompt/sessions/MO-20261108-CHAT-P16-RISH-028.md`.
+- This is **config storage discovery**, not spoofing Adreno840 or unlocking MHO; do not invent Android/data ini/PAK patch. iUnlocker rooted Zygisk integration is not reproducible by copying strings into external data.
+
+
 ## CURRENT — MO-20261108-CHAT-P15-IUNLOCKER-DATA-027: rooted iUnlocker proof vs Android/data no-root goal
 - Owner shared 8 TikTok screenshots showing manager fields **OpenGL GPU Adreno840**, **Vulkan GPU Adreno840**, **Vulkan Version 1.3.243**, **Manufacturer RedMagic 11S Pro+**, **Model NX809J** for **`com.garena.game.mho` Garena**; owner's previously installed game `com.tencent.mhadv` Global is a DIFFERENT package. Screenshots are **UI config, not actual independent in-game API readback** or confirmed unlock in the images; video MP4/TikTok couldn't be decoded in this environment, so don't claim watched it.
 - Confirmed official **iUnlockerGL v1.1.5-r4 is Magisk/KernelSU + Zygisk module**, intercepts target-app Java/Native GLES/Vulkan at runtime; settings are NOT a simple `Android/data` file. Shizuku UID2000/no root cannot emulate this injection on stock nondebuggable MHO.
