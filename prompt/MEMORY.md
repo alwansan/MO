@@ -1,5 +1,13 @@
 # MO memory — 2026-11-07
 
+## Latest — MO-20261107-CHAT-P11-FRAME-PACING-019: user self-reported restore/delete; owned-frame P11
+- User stated GPU Debug settings were restored and an app was deleted; app identity **unspecified**, no exact Shizuku 4-key post-action readback. Do not assume any particular package is installed/removed or GPU settings have been independently verified. Prior P10 report of active keys is earlier-time evidence. No new GPU Debug activation planned.
+- Implemented independent owned-app GLSurfaceView Frame Pacing Lab (version `probe v0.5.0`) after P10 mock UI proof: Choreographer callbacks/sec vs GLES Renderer.draw callbacks/sec, stride 1/2/4. Not FPS displayed/composited by system, not Outlanders FPS. Android15 insets fix for clipped identity lab title. Main MO source remains v0.9; no Shizuku or game changes.
+- Android official references: `GLSurfaceView` onPause/onResume/RENDERMODE_WHEN_DIRTY and `Choreographer.FrameCallback`; `docs/OWNED_FRAME_PACING_LAB_AR.md` describes limits. Pure Java JUnit coverage `FramePacingWindowTest`.
+- P11 source complete at `9abd11a3cbc3062836ceef6f2facd968286faa6f`; CI run `42325865139` initially unit tests passed but build/release awaiting final verification. Only report success after actual completion.
+- Session `prompt/sessions/MO-20261107-CHAT-P11-FRAME-PACING-019.md`; future user device check optional for P11 test app. No direct phone operations performed in chat.
+
+
 ## Latest — MO-20261107-CHAT-P10-DEVICE-018: P10 phone PASS; GPU Debug newly reported ENABLED
 - Three owner screenshots prove MO Layer Test v0.4.0 + Game Identity Lab run on POCO F5 Pro under PID5783. Real Build `23013PC75G`, SoC `SM8475`, Java/NDK GLES and native Vulkan Adreno730, display120Hz. Actual mode0 mock combined 120 menu LOCKED; all synthetic mode6 mock combined UNLOCKED. This is simulated UI only, not real game performance. Modes1–5 not yet device tested.
 - **Newest owner report** from MO v0.9 shows Shizuku UID2000 and all four MO-owned GPU Debug keys **active**, `enable_gpu_debug_layers=1` plus exact three markers, confirmed in system panel and after-action readback. Supersedes previous report 0/absent valid only at earlier instant. Cause unknown; synthetic dropdown itself performs no settings write.
