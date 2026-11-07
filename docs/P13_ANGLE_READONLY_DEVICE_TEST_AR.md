@@ -52,3 +52,12 @@
 - ANGLE Setup: https://github.com/google/angle/blob/main/doc/DevSetupAndroid.md
 - Rootless GLES loader policy: https://developer.android.com/ndk/guides/rootless-debug-gles
 - `research/REAL_GPU_IDENTITY_SPOOF_ANDROID15_ANGLE_AR.md`
+
+## نتيجة بناء P13 المنشور — تحقق نهائي
+- Source commit: `5666cb45c6f8601acf14aeaca02a8b626979ff63`.
+- GitHub Actions [42332224614](https://github.com/alwansan/MO/actions/runs/42332224614), **completed SUCCESS**: `:app:testDebugUnitTest`, `:probe:testDebugUnitTest`, بناء Android/NDK للتطبيقين، تجهيز ملفَي APK ونشرهما في Releases.
+- Public prerelease: [mo-v0.11.0-alpha.11-run59](https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run59)، ملفا APK بحالة uploaded:
+  - [MO-Graphics-Probe-v0.11.0-alpha.11.apk](https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run59/MO-Graphics-Probe-v0.11.0-alpha.11.apk) — **1,167,998 bytes**, SHA-256 `4372a3b077632925df8c51161843f110c53777d9009254c6c51c2ffd6fe5925f`.
+  - [MO-Layer-Test-v0.6.0.apk](https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run59/MO-Layer-Test-v0.6.0.apk) — **208,508 bytes**, SHA-256 `8540a452ee162a7e13a94a9e28d6ba2e50883239a3c44565ee3c37ca040fd607`. لا توجد تغييرات وظيفية لتطبيق المختبر مقارنة بـv0.6؛ أُعيد توقيعه فقط ببناء CI جديد.
+- **هذا نجاح بناء وليس اختبار هاتف.** توفر ANGLE وتطبيق override فعلي على POCO ما يزالان غير مثبتين حتى يرسل المالك فحص ANGLE من تطبيق MO الرئيسي.
+- **توقيع Debug مختلف لكل CI:** إذا اضطررت لإزالة MO الرئيسي لتثبيت إصدار جديد، تأكد أولًا من عدم وجود أي إعداد GPU Debug مفعّل وضرورة الاحتفاظ بالنسخة الاحتياطية. آخر تقرير P12 السابق أكد التنظيف المحروس إلى 0/غياب ثلاث علامات، وليس قراءة حديثة بعد P13. لا تحذف لعبة ولا تجبر خيارات ANGLE العامة.
