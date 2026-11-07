@@ -34,3 +34,12 @@ No Shizuku write, no new GPU layer activation, no root, no bootloader change, no
 ## Next evidence
 - GitHub Actions `:app:testDebugUnitTest`, `:probe:testDebugUnitTest`, native ARM64 builds, raw `MO-Layer-Test-v0.4.0.apk` Release asset verification.
 - On phone after confirming GPU Debug keys remain disabled: reopen existing MO-owned test in new process for definitive post-cleanup PID/Adreno readback; then test new lab, comparing one simulated channel and ALL modes, and prove physical output remains same. Never trigger a new layer experiment merely for this readback.
+
+## Final P10 CI/release verification
+- `https://github.com/alwansan/MO/actions/runs/42324225397` completed **SUCCESS**, job `verify-and-build` all steps passed. Logs explicitly show `:app:testDebugUnitTest`, `:probe:testDebugUnitTest`, `:app:assembleDebug`, `:probe:assembleDebug` and two Gradle BUILD SUCCESSFUL messages, followed by release publishing. ARM64 native Vulkan was linked and built.
+- Release https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run25 is public, prerelease, draft=false, both raw assets state=uploaded:
+  - `MO-Layer-Test-v0.4.0.apk` — 172148 bytes, SHA-256 `6fdc64c09d76bd0b071d46f5e10f850347a79212256a846a745ac9e8263095dd`.
+  - `MO-Graphics-Probe-v0.9.0-alpha.9.apk` — 1135214 bytes, SHA-256 `42fdb05b4256feb1ff6024f43f99b9206bbbd17c40f70ff925cbd719a9965282`; **a re-signed main build, not an app-feature upgrade**. Do not install main just to access lab.
+- Current main HEAD immediately before this session-file closeout: `d3001281b9d62b89c4c616fd5811da184f348fec`. This includes documentation-only updates after the verified source commit; docs-only paths did not create new app builds.
+- New docs `docs/OWNED_GAME_IDENTITY_LAB_AR.md`, updated `docs/IMPLEMENTATION_PHASES.md`, `README.md`, `prompt/PLAN_AR.md`, `prompt/STATUS.md`, `prompt/MEMORY.md`, `prompt/DECISIONS.md`, `prompt/RESTORE_AR.md`, `AGENTS.md`.
+- **Outstanding:** no POCO P10 runtime result yet, no fresh post-last-cleanup owned-app PID confirmation, no measured Outlanders FPS unlock. No phone/device/game write or ROOT action in this cycle.
