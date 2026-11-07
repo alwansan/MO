@@ -95,3 +95,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-033 — Respect owner-reported restore and ambiguous app uninstall
 **Accepted.** User says GPU Debug was restored and an app deleted, but package identity and exact four-key readback weren't included. Record as **self-reported**, do not demand reinstating main MO for optional owned lab, and do not claim verified clean state. A future global GLES layer activation requires independent current-state check and user consent, not permitted implicitly by "Continue".
+
+## ADR-034 (MO-20261107-CHAT-P12-LOG-EXPORT-020) — Separate owned-app evidence archives without global logcat
+**Accepted.** Add a timestamped process-local diagnostic log to main MO and disposable MO Layer Test; persist bounded history (3×3MiB), errors and own-action reports, permit explicit user export to Download/log.txt and clipboard. Never claim that ordinary Android app privilege or Shizuku UID2000 can read all apps' protected logs, and never auto-upload. App-private history is lost at uninstall. Main and probe each export their *own* histories.
+
+## ADR-035 — Use Android MediaStore and report actual output filename
+**Accepted.** Android 10+ apps can create their own Download records through `MediaStore.Downloads` with `RELATIVE_PATH` / `IS_PENDING`, no all-files permission. Reuse only self-owned URI from private preferences on repeat; don't overwrite files created by another app; on collision, the OS may choose a different filename, which the UI reports. Clipboard full only under bounded size; truncation explicitly communicated. Both apps must pass CI, real device file/clipboard remains a separate evidence gate. No new GPU layer activation is needed.
