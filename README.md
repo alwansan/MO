@@ -1,5 +1,13 @@
 # MO — Android graphics identity research & diagnostics
 
+## P13 available — system ANGLE capability scanner (2026-11-07)
+**[Download MO Graphics Probe v0.11.0-alpha.11](https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run59/MO-Graphics-Probe-v0.11.0-alpha.11.apk)** • [verified CI run 42332224614](https://github.com/alwansan/MO/actions/runs/42332224614) • 1,167,998 bytes • SHA-256 `4372a3b077632925df8c51161843f110c53777d9009254c6c51c2ffd6fe5925f`.
+
+This release adds a new **P13 / ANGLE CAPABILITY — READ ONLY** panel to investigate the owner's primary goal: getting a **different app** to really read a chosen GPU identifier from its own graphics API, rather than creating fake MO-local labels. Using **Shizuku ADB UID 2000 only**, the panel queries system ANGLE package names, driver-selection global settings, and `debug.angle.gl_renderer` / vendor / version properties through a strict 14-command read-only allowlist. Results appear in MO diagnostics and can be exported to `Download/log.txt` (previous P12 feature). No GPU setting, driver, property or game is modified by this panel.
+
+**Do not set `angle_gl_driver_all_angle=1`: official AOSP warns this may prevent boot.** Even a positive ANGLE package/property readback does **not** prove that a target game's `glGetString(GL_RENDERER)` is spoofed, that native Vulkan/Java identity changed, or that real FPS options unlocked. **POCO phone test is pending.** [P13 safe phone test guide](docs/P13_ANGLE_READONLY_DEVICE_TEST_AR.md) | [Primary goal and ANGLE feasibility](research/REAL_GPU_IDENTITY_SPOOF_ANDROID15_ANGLE_AR.md) | [P13 session](prompt/sessions/MO-20261107-CHAT-P13-ANGLE-READONLY-025.md).
+
+
 ## Primary goal restored — real app-observed GPU identity substitution (P13, 2026-11-07)
 The owner clarified the real objective: enable **a different Android app/game** to read a chosen higher GPU identifier (example: Adreno 840 instead of real Adreno 730), potentially affecting its device-whitelisted Graphics/FPS options. **P10 simulated labels, P11 MO-owned frame callback rates and P12 logs are diagnostic tools—not proof of this primary feature.** No such cross-app device spoof or commercial-game FPS unlock is currently demonstrated.
 
