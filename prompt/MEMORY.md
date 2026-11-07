@@ -1,5 +1,12 @@
 # MO memory — 2026-11-07
 
+## Latest — MO-20261107-CHAT-P10-DEVICE-018: P10 phone PASS; GPU Debug newly reported ENABLED
+- Three owner screenshots prove MO Layer Test v0.4.0 + Game Identity Lab run on POCO F5 Pro under PID5783. Real Build `23013PC75G`, SoC `SM8475`, Java/NDK GLES and native Vulkan Adreno730, display120Hz. Actual mode0 mock combined 120 menu LOCKED; all synthetic mode6 mock combined UNLOCKED. This is simulated UI only, not real game performance. Modes1–5 not yet device tested.
+- **Newest owner report** from MO v0.9 shows Shizuku UID2000 and all four MO-owned GPU Debug keys **active**, `enable_gpu_debug_layers=1` plus exact three markers, confirmed in system panel and after-action readback. Supersedes previous report 0/absent valid only at earlier instant. Cause unknown; synthetic dropdown itself performs no settings write.
+- Immediate gate: preserve installed MO main and its private rollback; normal restore if valid, read all 4 keys; if absent/refused share exact error, then only separately consented guarded MO-marker cleanup as appropriate. Do not uninstall/update main MO, re-enable layer or modify game. Fresh test PID after verified rollback remains pending.
+- Detailed evidence `docs/DEVICE_FEEDBACK_P10_2026-11-07.md`, session `prompt/sessions/MO-20261107-CHAT-P10-DEVICE-018.md`. No new app code/build/device writes performed this cycle.
+
+
 ## P10 — MO-20261107-CHAT-P10-IDENTITY-LAB-017 (2026-11-07)
 - User's "Continue" after Zygisk feasibility research authorized continued **owned-only** engineering. Created `IdentityLabPolicy` with immutable real signals and 7 mock modes (actual, single Build.MODEL, CPU, Java GLES, NDK GLES, Vulkan, or all synthetic); mock combined 120 menu gate requires all flags and physical panel >=120Hz. No real system property or graphics API hook in this lab.
 - `GameIdentityLabActivity` in existing disposable `com.alwansan.mo.glesprobe` reads own process Java Build, GLES20, NDK GLES, native Vulkan GPU name, display Hz; uses non-exported Activity and simulation-only UI. Probe bumped to v0.4.0; MO main remains v0.9.0-alpha.9. Docs `docs/OWNED_GAME_IDENTITY_LAB_AR.md`.
