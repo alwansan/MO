@@ -1,0 +1,27 @@
+name: MO read-only Android data archive diff tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/compare_android_data_snapshots.py'
+      - 'tools/test_compare_android_data_snapshots.py'
+      - '.github/workflows/mo-archive-diff-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test read-only ZIP and TAR comparator
+        run: python -m unittest discover -s tools -p 'test_compare_android_data_snapshots.py' -v
+      - name: Check script syntax
+        run: python -m py_compile tools/compare_android_data_snapshots.py
