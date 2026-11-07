@@ -1,5 +1,13 @@
 # Current status
 
+## CURRENT — MO-20261107-CHAT-P11-FRAME-PACING-019 (supersedes earlier P10 GPU Debug status)
+- Owner states **they restored GPU Debug and deleted an app** after P10. They did not specify whether MO Graphics Probe or the disposable Layer Test was deleted, and provided no post-restore four-key readback. Treat it as **owner-reported rollback, not independently verified system settings**. Do not require installing the main MO solely for P11; do not reactivate GPU debug layers.
+- P11 source: **measured frame callback lab** added only to the disposable `probe/` app, version `0.5.0`. `FramePacingLabActivity` measures Choreographer callbacks/s and GLES Renderer.onDrawFrame callbacks/s under stride 1,2,4, **not SurfaceFlinger-presented FPS or other-game FPS**. `GameIdentityLabActivity` gets an internal entry button and Android15 inset correction. App main stays source v0.9.0-alpha.9.
+- Unit test code covers sample arithmetic, independent rates, clock/count resets. Evidence/guide `docs/OWNED_FRAME_PACING_LAB_AR.md`; session `prompt/sessions/MO-20261107-CHAT-P11-FRAME-PACING-019.md`.
+- Complete-source CI https://github.com/alwansan/MO/actions/runs/42325865139 auto-triggered at `9abd11a3cbc3062836ceef6f2facd968286faa6f`; verify final conclusion + direct Release asset before saying APK is available. Current observed in progress with unit tests PASS and build step running.
+- No on-device P11 validation, game FPS unlock, root, APK clone, global Android settings writes, or proprietary code import. P10 true/fictional identity result on POCO remains as documented.
+
+
 ## CURRENT — MO-20261107-CHAT-P10-DEVICE-018 (supersedes older P10 and P9 clean-state notes)
 - **P10 owned identity lab ON-DEVICE PASS (limited)** from three owner screenshots: PID `5783`, Build.MODEL `23013PC75G`, SoC `SM8475`, Java GLES, native GLES and native Vulkan `Adreno (TM) 730`, panel `120.0 Hz`. Mode0 actual-only **fake combined FPS LOCKED**; mode6 all-local-synthetic **fake combined FPS UNLOCKED**; real readings unchanged. This proves mock UI only, **not Outlanders FPS/graphics unlock**. Individual modes 1–5 lack phone screenshots.
 - **CRITICAL: newer owner MO v0.9 report supersedes prior clean-state evidence:** `enable_gpu_debug_layers=1` with `gpu_debug_app=com.alwansan.mo.glesprobe`, `gpu_debug_layers_gles=libMOGlesProofLayer.so`, `gpu_debug_layer_app=com.alwansan.mo.glesprobe`, corroborated by both SHIZUKU SYSTEM and `[READBACK AFTER ACTION]`. Latest **reported** GPU Debug settings are active despite PID5783 showing no intercepted renderer. The cause/time of activation was not established; mock dropdown cannot activate system settings.
