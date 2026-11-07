@@ -1,5 +1,13 @@
 # MO — Android graphics identity research & diagnostics
 
+## P12 — timestamped diagnostic log export in BOTH Android apps (2026-11-07)
+**CI passed, phone verification pending.** [P12 release](https://github.com/alwansan/MO/releases/tag/mo-v0.10.0-alpha.10-run53) has direct raw APKs:
+- [MO Graphics Probe v0.10.0-alpha.10](https://github.com/alwansan/MO/releases/download/mo-v0.10.0-alpha.10-run53/MO-Graphics-Probe-v0.10.0-alpha.10.apk) — main Shizuku/device/GPU app.
+- [MO Layer Test v0.6.0](https://github.com/alwansan/MO/releases/download/mo-v0.10.0-alpha.10-run53/MO-Layer-Test-v0.6.0.apk) — owned GLES/identity/frame pacing lab; no main MO or Shizuku needed to run this test.
+
+Both now record time-stamped **own-app** events, then provide buttons **إخراج السجل: نسخه + حفظ Download/log.txt** and copy-only. MediaStore writes to Download on Android 10+ without all-files permission; actual filename is shown (OS may rename on collision). Bounded private history of latest 3×3 MiB and crash/lifecycle details; clipboard may be limited to most recent 180000 characters, while the exported file contains the complete retained history. **No automatic upload, no protected game logs or full system logcat**, no changes to stock Outlanders. Learn how to test and share evidence in [P12 logging guide](docs/DIAGNOSTIC_LOG_EXPORT_AR.md).
+
+
 ## Latest P11 — owned frame pacing measurement (2026-11-07)
 - **[P11 direct APK release](https://github.com/alwansan/MO/releases/tag/mo-v0.9.0-alpha.9-run32)** includes [**MO Layer Test v0.5.0**](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run32/MO-Layer-Test-v0.5.0.apk), source `9abd11a3cbc3062836ceef6f2facd968286faa6f`, [Actions run 42325865139](https://github.com/alwansan/MO/actions/runs/42325865139) verified SUCCESS. Experimental test app only; phone test pending.
 - The owned GLES frame pacing lab counts Choreographer callbacks and GLSurfaceView Renderer.onDrawFrame calls over one-second intervals; selectable stride 1/2/4. **These are not true presented FPS or the FPS of Outlanders.** No Root, Shizuku permissions, game changes, system GPU settings writes or original proprietary code.
