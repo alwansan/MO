@@ -1,5 +1,9 @@
 # MO — Android graphics identity research & diagnostics
 
+## Latest real POCO P11 test — owned app pacing PASS (2026-11-07)
+A third user-uploaded `MO Layer Test v0.6.0` diagnostic file (`log (2).txt`) confirms all requested app-local pacing settings: **stride1 ~119.63**, **stride2 ~59.56**, **stride4 ~30.08** owned GLES draw callbacks/s, from 45 measured one-second windows. Choreographer updates remained around 120/s. This is **not actual presented/displayed FPS**, GPU performance gain or FPS of `com.tencent.mhadv`. A new test process after earlier owned GPU Debug cleanup again observed real Adreno730; current global four-key values were not reread in this test-only log. [Full device report](docs/DEVICE_FEEDBACK_P11_STRIDE_2026-11-07.md). **No new APK required**: [current published P12 test v0.6.0](https://github.com/alwansan/MO/releases/tag/mo-v0.10.0-alpha.10-run53) already passed. Private uploaded log remains out of public GitHub.
+
+
 ## New real-device evidence — P12 log export passed (2026-11-07)
 The user uploaded both Android15 app-generated `log.txt` files: **35 main MO diagnostic events** and **119 disposable owned-test events**, captured with times and PIDs. This verifies both apps' user-accessible text-file export path; clipboard, crash-catching and rotation still need specific testing. The main log shows guarded GPU Debug cleanup at 05:25:51 and read-only reconfirmations through 05:26:02: `enable_gpu_debug_layers=0` and all 3 MO markers absent at last check. **No re-activation needed.** The owned GLES Frame Pacing Lab recorded 21 one-second **stride1** samples averaging **120.47 own draw callbacks/s**, not actual display/game FPS. Stride2/4 remain untested. [Detailed P12 device-log findings](docs/DEVICE_FEEDBACK_P12_LOGS_2026-11-07.md) and [session evidence](prompt/sessions/MO-20261107-CHAT-P12-DEVICE-LOGS-021.md).
 
