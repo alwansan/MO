@@ -8,3 +8,8 @@
 - Interpretation: previous P17 8 HotRes deletions did **not** reverse upon Low→Medium; likely hotfix resource maintenance, not evidence of GPU whitelist control. The screenshot shows unlock ceilings unchanged, so no evidence of elevating allowed Graphics/FPS. No settings files were added in the observed external data.
 - Recommended controlled next step is to separate game start effects: without changing Medium, restart the stock game, exit, snapshot `MHO_MEDIUM_CONTROL.tar`, compare against current `MHO_AFTER_GRAPHICS_MEDIUM.tar` for `RemoteConfig` and other changes. This **Medium→Medium control** is stronger for ruling out launch-side changes than another direction toggle alone. No need for root or private `/data/user/0` access.
 - No app source changes, APK build, system GPU settings writes, file patching or alternative client launching in this session. Report added and STATUS/MEMORY/RESTORE updated for continuity.
+
+## Closeout — verified public repository state
+- Main head before this final session update: `94b10755e64472d0122bb912b2f9003477852737`. 
+- Recent CI still [run 42421428529](https://github.com/alwansan/MO/actions/runs/42421428529) `completed/success`, source `aab7306eaa905063731136807f99412ac16d6b20`. This P18 cycle consists only of new Markdown research and handoff documents; **no new binary build or source feature**.
+- Private archive bytes remain unprocessed due persistent local runtime failure; this limitation is explicit in the user-facing result and P18 document. No private file content published.
