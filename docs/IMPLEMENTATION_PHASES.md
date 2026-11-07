@@ -183,3 +183,12 @@ See docs/GLES_LAYER_TROUBLESHOOTING_AR.md.
 - [ ] User phone test: after four GPU Debug keys remain 0/absent, optionally force-stop/reopen existing owned layer test for post-cleanup new PID. Then use P10 lab to compare one simulated channel vs all; no actual Android identity change or game FPS unlock. **Do not update/uninstall main MO for the lab.**
 - [ ] Stable signing keystore kept private in GitHub Actions Secrets is still pending; updated probe debug APK may need uninstall of **probe only**, after checking GPU Debug disabled. Never uninstall original games.
 Guide: `docs/OWNED_GAME_IDENTITY_LAB_AR.md`. Rootless stock Outlanders remains ineligible for official Android external layers (targetSdk36, Debuggable NO, opt-in NO).
+
+## P11 — independent owned-app callback pacing measurements
+- User **reports** restoring GPU Debug then deleting an unspecified application. No fresh four-key post-uninstall readback: do not claim independent verification. This does not authorize new global graphics layer experiment.
+- Added `FramePacingWindow` pure Java 1+ second timing counter + JUnit tests, `FramePacingLabActivity` with **only self-owned** GLES2 GLSurfaceView and Choreographer callbacks with strides 1/2/4. Counts own draw callback rates, not SurfaceFlinger presentation or commercial game FPS.
+- Added optional button in existing Game Identity Laboratory, improved Android15 WindowInsets handling to prevent status-bar title clipping. Only disposable `probe` APK version bumped to v0.5.0; main app still v0.9.0-alpha.9.
+- [x] GitHub Actions [42325865139](https://github.com/alwansan/MO/actions/runs/42325865139) **SUCCESS** source `9abd11a3cbc3062836ceef6f2facd968286faa6f`; Java tests, native builds, both APKs and Release uploaded.
+- [x] Public raw APK [MO-Layer-Test-v0.5.0.apk](https://github.com/alwansan/MO/releases/download/mo-v0.9.0-alpha.9-run32/MO-Layer-Test-v0.5.0.apk), 182484 bytes sha256 `5aca59d8dc61ec0a1e3763963de96974f02c62f60d15d7041233d774afae37d8`.
+- [ ] Owner P11 phone test: stride1/2/4 callback/s and render onDrawFrame/s, ensure lifecycle stops when exiting. These rates cannot prove rendered FPS in Outlanders or any other game.
+- Guide: `docs/OWNED_FRAME_PACING_LAB_AR.md` and session `prompt/sessions/MO-20261107-CHAT-P11-FRAME-PACING-019.md`. No root, VM, game mods or GPU Debug writes.
