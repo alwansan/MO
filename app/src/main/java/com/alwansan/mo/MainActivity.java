@@ -432,6 +432,8 @@ public final class MainActivity extends Activity {
         final IReadOnlyProbe service = layerService;
         new Thread(() -> {
             String outcome;
+            String currentLayerSettings = null;
+            String currentSystemSnapshot = null;
             try {
                 if (service == null) {
                     outcome = "ERROR: Shizuku UserService disconnected";
@@ -475,15 +477,45 @@ public final class MainActivity extends Activity {
                 } else {
                     outcome = service.diagnoseOwnedLayer();
                 }
+                // The existing SHIZUKU SYSTEM panel was cached from before the
+                // settings change. Refresh both panels in one read-only pass
+                // after every operation; never mistake a stale 1 for a failed
+                // cleanup (or a stale 0 for a successful cleanup).
+                if (service != null) {
+                    try {
+                        currentLayerSettings = service.diagnoseOwnedLayer();
+                    } catch (Exception refreshError) {
+                        currentLayerSettings = "تعذّر تأكيد حالة GPU بعد العملية: "
+                                + refreshError.getClass().getSimpleName();
+                    }
+                    try {
+                        currentSystemSnapshot = service.getSnapshot("com.tencent.mhadv");
+                    } catch (Exception refreshError) {
+                        currentSystemSnapshot = "تعذّر تحديث فحص Shizuku بعد العملية؛ "
+                                + "البيانات السابقة أُلغيت. أعد الفحص.";
+                    }
+                }
             } catch (Exception e) {
                 outcome = "فشلت العملية: " + e.getClass().getSimpleName();
             }
-            String display = outcome;
+            final String display = outcome;
+            final String verifiedSettings = currentLayerSettings;
+            final String refreshedSystem = currentSystemSnapshot;
             runOnUiThread(() -> {
                 layerBusy = false;
                 if (!isFinishing() && !isDestroyed()) {
-                    layerOutput.setText(display + "\n"
-                            + (layerPrefs().contains(LAYER_BACKUP)
+                    if (refreshedSystem != null) {
+                        shellOutput.setText(refreshedSystem);
+                    } else if (action == 1 || action == 2 || action == 4) {
+                        // Never leave a potentially misleading pre-write
+                        // report visible if a refresh itself failed.
+                        shellOutput.setText("قد يكون تقرير Shizuku السابق قديمًا. "
+                                + "اضغط فحص Game Mode وANGLE لتحديثه.");
+                    }
+                    layerOutput.setText(display
+                            + (verifiedSettings == null ? "" :
+                                "\n\n[READBACK AFTER ACTION]\n" + verifiedSettings)
+                            + "\n" + (layerPrefs().contains(LAYER_BACKUP)
                             ? "تنبيه: يجب استعادة إعدادات GPU قبل حذف أو تحديث MO."
                             : "لا توجد تغييرات معلقة مسجلة لدى MO."));
                 }

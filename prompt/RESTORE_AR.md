@@ -123,3 +123,11 @@ v0.5 source introduces native-vs-Java GLES, manual ELF load test, process PID, a
   - `MO-Layer-Test-v0.3.0.apk` (155,196 bytes), unchanged probe.
 - On-device P8 emergency cleanup **NOT tested**; user still must test existing v0.7 Restore/readback first. Do not force an upgrade or claim full prior-state restoration. If v0.7 restore fails and exact four owned markers persist, v0.8 offers explicit guarded cleanup, only with owner consent. Shizuku UID2000 is mandatory.
 - New run results are not evidence original Outlanders FPS/graphics options unlocked; original game's manifest flags still exclude official GLES external layers.
+
+## MO-20261107-CHAT-P9-REFRESH-014 (2026-11-07): v0.8 cleanup success, stale cached report fix
+- User v0.8 screenshot shows guarded cleanup returned OK (backend checks 0 and missing owned markers); retry activation protection also correctly refused already configured MO developer GPU layer settings.
+- Copied report still contained `enable_gpu_debug_layers=1` in independently cached shell readout; source code confirmed it never refreshed `shellOutput` after cleanup. Do not construe this as proof cleanup failed; require fresh readback from user.
+- v0.9 source refreshes shell panel and exact Shizuku-owned four key diagnostic after each operation, includes readback in report and invalidates stale data on refresh failure.
+- User should re-diagnose GPU settings and force-stop/reopen the owned test app, verify Native GL_RENDERER returns Adreno730 before updating. Do not enable a new experiment.
+- Outlanders game still Debuggable NO, external layer opt-in NO; no rootless official GLES hook possible via Shizuku alone.
+- Evidence: docs/DEVICE_FEEDBACK_ALPHA8_2026-11-07.md.

@@ -10,8 +10,8 @@ android {
         applicationId 'com.alwansan.mo'
         minSdk 28
         targetSdk 35
-        versionCode 8
-        versionName '0.8.0-alpha.8'
+        versionCode 9
+        versionName '0.9.0-alpha.9'
     }
 
     // Ubuntu 24.04 GitHub runner NDK/CMake versions (explicitly pinned).
