@@ -23,3 +23,8 @@
 
 - `../research/GAME_PROFILE_SPOOFING_AR.md` مقارنة تخصصية لتزييف هوية الجهاز وفتح FPS في الألعاب، مع الملفات المقروءة من المشاريع.
 - `../research/POCO_GAME_COMPATIBILITY_AR.md` معلومات شريحة POCO وسياسات PUBG وMonster Hunter Now ومحددات الاختبار.
+
+## 2026-11-07 P9 source ecosystem and device recheck
+- `../research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md` — live ZygiskNext/ReZygisk/NeoZygisk/COPG/iUnlockerGL, rights, architecture and feasible rootless paths.
+- `../docs/DEVICE_FEEDBACK_ALPHA9_2026-11-07.md` — v0.9 final four-key cleanup PASS and post-cleanup process PID still pending.
+- `sessions/MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016.md` — this chat-origin research and safety evidence cycle.
