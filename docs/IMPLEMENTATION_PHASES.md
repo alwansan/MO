@@ -171,3 +171,15 @@ See docs/GLES_LAYER_TROUBLESHOOTING_AR.md.
 - User should re-diagnose GPU settings and force-stop/reopen the owned test app, verify Native GL_RENDERER returns Adreno730 before updating. Do not enable a new experiment.
 - Outlanders game still Debuggable NO, external layer opt-in NO; no rootless official GLES hook possible via Shizuku alone.
 - Evidence: docs/DEVICE_FEEDBACK_ALPHA8_2026-11-07.md.
+
+## P10 — owned Game Identity Laboratory (MO-20261107-CHAT-P10-IDENTITY-LAB-017)
+- User asked to continue after rootless Zygisk/COPG study, which found no permitted stock-game injector. P10 is strictly original, in-memory simulation inside **our existing disposable probe app**, not commercial-game modification.
+- [x] Pure Java `IdentityLabPolicy` with independent MODEL, CPU, Java GLES, Native GLES and Vulkan gates plus a physical refresh-rate criterion; no system writes.
+- [x] Added Java JUnit tests for channel isolation, real baseline, all-simulated + 120Hz threshold, and invalid inputs.
+- [x] Added `GameIdentityLabActivity` (non-exported) launched by button in existing `ProbeActivity`; it reads real Build/SOC, Java and Native GLES, Vulkan NDK physical GPU name, and display Hz **inside own process**, then applies fake strings only in the local simulation UI.
+- [x] Added independent native Vulkan name reader to existing `libMOProbeRenderer`; linked `vulkan` in CMake. No graphics layer added or spoofing performed by this reader.
+- [x] Bumped only owned disposable `probe` version to 0.4.0; MO main remains 0.9.0-alpha.9.
+- [ ] Verify GitHub Actions JUnit + NDK builds, release uploads and APK integrity before stating APK ready. The source push automatically started CI; see Actions runs and newest successful run.
+- [ ] User phone test: after four GPU Debug keys remain 0/absent, optionally force-stop/reopen existing owned layer test for post-cleanup new PID. Then use P10 lab to compare one simulated channel vs all; no actual Android identity change or game FPS unlock. **Do not update/uninstall main MO for the lab.**
+- [ ] Stable signing keystore kept private in GitHub Actions Secrets is still pending; updated probe debug APK may need uninstall of **probe only**, after checking GPU Debug disabled. Never uninstall original games.
+Guide: `docs/OWNED_GAME_IDENTITY_LAB_AR.md`. Rootless stock Outlanders remains ineligible for official Android external layers (targetSdk36, Debuggable NO, opt-in NO).
