@@ -208,3 +208,10 @@ Guide: `docs/OWNED_GAME_IDENTITY_LAB_AR.md`. Rootless stock Outlanders remains i
 - [x] New test process PID31111 after prior recorded main-app GPU Debug cleanup confirms own Java/NDK/Vulkan physical Adreno730, no own layer intercept observed. New probe-only log did **not** recheck global GPU four keys. No new privileged settings writes required.
 - [ ] Actual SurfaceFlinger-presented frame metrics, power/thermal and game FPS still **not measured**. These are not necessary for P11 scoped pacing acceptance and must not be inferred from `onDrawFrame` counts.
 - No code/API/build changes for these evidence-only docs, no new APK release. See `docs/DEVICE_FEEDBACK_P11_STRIDE_2026-11-07.md` and `prompt/sessions/MO-20261107-CHAT-P11-STRIDE-022.md`.
+
+## P10/P11/P12 repeat follow-up — session MO-20261107-CHAT-P11-REPEAT-023
+- [x] **P10 all seven mock selections on owner device:** actual/single-source combined gate locked and ALL_SIMULATED gate unlocked *inside owned application only*; physical GLES/Vulkan identity unchanged.
+- [x] **P11 independent second run:** on new process PID3604, stride1/2/4 own GLES draw callback means **120.061/59.834/30.037 per second** (38 windows), UI callback rate remains ~120/s. This replicates prior successful PID31111 test. NOT true displayed FPS or commercial-game graphics unlock.
+- [x] **P12 process-persistent bounded logs and lifecycle**: 201 cumulative app events across PID31111/PID3604; earlier session logs post-export `FRAME_LAB_PAUSE` and MediaStore/clipboard API `EXPORT_RESULT`. Independent clipboard paste, error-path and log rotation remain untested.
+- [ ] Actual compositor-presented frame timing and jank instrumentation is a separate possible future owned-app experiment, **not** inferred from P11 and not required to accept P10/11.
+- No source/CI changes or new Release. Evidence `docs/DEVICE_FEEDBACK_P11_REPEAT_AND_IDENTITY_2026-11-07.md` and `prompt/sessions/MO-20261107-CHAT-P11-REPEAT-023.md`.
