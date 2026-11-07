@@ -10,7 +10,7 @@ import android.widget.TextView;
 public final class DiagnosticLogUi {
     private DiagnosticLogUi() {}
 
-    public static void attach(Activity activity, LinearLayout column) {
+    public static void attach(Activity activity, LinearLayout column, Runnable beforeExport) {
         TextView title = new TextView(activity);
         title.setText("MO / COMPLETE APP DIAGNOSTIC LOG");
         title.setTextSize(17f);
@@ -37,6 +37,7 @@ public final class DiagnosticLogUi {
         all.setText("إخراج السجل: نسخه + حفظ Download/log.txt");
         all.setOnClickListener(v -> {
             all.setEnabled(false);
+            if (beforeExport != null) beforeExport.run();
             status.setText("جارٍ تجهيز السجل وكتابته في Download...");
             DiagnosticLogExporter.copyAndExport(activity, message -> {
                 if (activity.isFinishing() || activity.isDestroyed()) return;
@@ -50,6 +51,7 @@ public final class DiagnosticLogUi {
         copy.setAllCaps(false);
         copy.setText("نسخ سجل MO للحافظة فقط");
         copy.setOnClickListener(v -> {
+            if (beforeExport != null) beforeExport.run();
             status.setText("جارٍ نسخ السجل...");
             DiagnosticLogExporter.copyOnly(activity, text -> {
                 if (!activity.isFinishing() && !activity.isDestroyed()) status.setText(text);
