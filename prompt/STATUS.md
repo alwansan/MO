@@ -1,5 +1,12 @@
 # Current status
 
+## CURRENT DEVICE CONFIRMATION — MO-20261108-CHAT-P16-RISH-DEVICE-029
+- Owner sent **verified Rish ADB Shell output:** `uid=2000(shell)`, `ext_data_rw` group and `ls` works in **external** `/storage/emulated/0/Android/data/com.tencent.mhadv` (contains `cache` and `files`). `/system/bin/tar` exists. **No root or private /data/user/0 access**.
+- First TAR backup `/storage/emulated/0/Download/MHO_BEFORE.tar` created successfully, immediate `echo $?` = **0**, size **230M**. **MHO_AFTER.tar does not exist yet**, so running the comparator gives the expected "Two real archive files are required"; Python and the downloaded 6626-byte script are working.
+- **Next device step:** Keep BEFORE unchanged; change only an allowed in-game UI setting, close game, use Rish `tar -cf .../MHO_AFTER.tar` and confirm exit0, then **exit Rish** and Termux Python compare both `--all --output all_differences.txt`. User uploads just the text diff, not huge archives. This is file-change discovery only, not proof of GPU identity spoof or unlocked FPS.
+- Evidence report `docs/P16_TERMUX_RISH_ANDROID_DATA_SNAPSHOTS_AR.md`, session `prompt/sessions/MO-20261108-CHAT-P16-RISH-DEVICE-029.md`. No source code/APK/game file changes in this feedback turn.
+
+
 ## CURRENT — MO-20261108-CHAT-P16-RISH-028: Rish is UID2000 shell, not root; ZIP/TAR comparator repaired and CI passed
 - User's Python errors are from **wrong directory and non-existent placeholder snapshots**: script exists in `Download`, not Termux `~`; `BEFORE.zip` and `AFTER.zip` never created. Running `sh rish` switched to Android shell `mondrian:/ $` where Termux `python`/`pkg` are absent. This does **not** require root to fix.
 - `/storage/emulated/0/Android/data/com.tencent.mhadv` external data may be accessible to Rish ADB shell UID2000 **only if on-phone `ls` succeeds**; `/data/user/0/com.tencent.mhadv` is private and remains off-limits to normal Termux/Rish. No game files need writing.
