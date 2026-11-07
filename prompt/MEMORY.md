@@ -1,5 +1,12 @@
 # MO memory — 2026-11-07
 
+## Latest P19 — MO-20261108-CHAT-P19-MEDIUM-CONTROL-032
+- Owner verified MHO Global Graphics preset Medium stays selected, but clicking High/Ultra/Concept Art displays `This setting isn't currently supported on your device.`; top Device Load High is separate. Their Rish Medium control TAR exit0 compared with previous Medium TAR and gave **55->55 files, 11 differences**: 1 added MHMobile backup, 1 deleted old log segment, 9 modified including GCloud, Gamelet, centauri logs, `RemoteConfig.config` 146->146 with distinct SHA, shader `PrecacheBinaries` 55,691,684->55,691,684 distinct SHA, MHMobile.log. User tapped unsupported presets, so control unchanged accepted quality but still interactions.
+- Across Medium->Low, Low->Medium, and Medium->Medium, RemoteConfig changed, ruling out its **change alone** as a specific graphics quality indicator. Its internal semantics not decoded. No new .ini file or proof external Android/data can unlock high graphics. User-uploaded raw TAR could not be read by container/Python (ClientError); do not pretend binary inspection succeeded.
+- Created targeted safe `tools/inspect_mho_remote_config.py` to compare exact 146B member in pre-existing TAR snapshots, output only offset ranges/hashes/format hints and no private raw bytes. Added synthetic tests and CI run `42426253058` awaiting confirmation. Full `docs/P19_MHO_MEDIUM_CONTROL_2026-11-08_AR.md`; session `prompt/sessions/MO-20261108-CHAT-P19-MEDIUM-CONTROL-032.md`. User can run on existing LOW/MEDIUM/CONTROL TARs in Termux; no repeated 230MB game backups needed.
+- Main objective actual game-process higher GL/Vulkan/Build identity and unlocked FPS still unproven; no root/KernelSU, game modification or app APK build this session.
+
+
 ## P18 owner evidence — MO-20261108-CHAT-P18-LOW-MEDIUM-031
 - Latest user screenshot shows MHO Global Graphics Quality restored to **Medium** after Low, while High/Ultra graphics and higher Field FPS remain locked. Rish archived `MHO_AFTER_GRAPHICS_MEDIUM.tar` with TAR_EXIT=0; Termux SHA256 comparator produced `LOW_TO_MEDIUM.txt` and user uploaded both.
 - Text diff **51 before / 55 after / 10 changes (4 added, 6 modified)**: 3 GCloud logs + rotated MHMobile backup added; `RemoteConfig.config` changed content but stayed 146 bytes (also changed in prior Medium→Low), `RHICache/.../PrecacheBinaries` grew 56603 bytes, Gamelet log/centauri logs changed, MHMobile.log rotated 13283940→8437368 with matching 13283940 backup. No new graphics `.ini` or proof of GPU/FPS whitelist setting in external folder.
