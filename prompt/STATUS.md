@@ -1,5 +1,12 @@
 # Current status
 
+## CURRENT VERIFIED DELIVERY — P13 ANGLE READ-ONLY probe v0.11.0-alpha.11
+- **CI completed SUCCESS**: [run 42332224614](https://github.com/alwansan/MO/actions/runs/42332224614) at full source `5666cb45c6f8601acf14aeaca02a8b626979ff63`, new strict ANGLE UID2000 read-only allowlist JUnit passes, both debug APKs built and published.
+- Public [Release run59](https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run59): `MO-Graphics-Probe-v0.11.0-alpha.11.apk` **1,167,998 bytes**, SHA256 `4372a3b077632925df8c51161843f110c53777d9009254c6c51c2ffd6fe5925f`; owned test v0.6.0 unchanged source, newly debug-signed. **This does not prove real ANGLE availability or Adreno840 spoof on user's phone**.
+- Main app contains 05B P13 zero-write ANGLE package/driver selection/property reading and logs. Shizuku UID2000 and GRANTED required. **P13 on-phone report pending**; first actual cross-app spoof proof is still outstanding. Don't set global `angle_gl_driver_all_angle` due to AOSP boot risk.
+- Device guide `docs/P13_ANGLE_READONLY_DEVICE_TEST_AR.md`, session `prompt/sessions/MO-20261107-CHAT-P13-ANGLE-READONLY-025.md`. Last verified P12 four-key cleanup was prior-time, not a fresh reading after install. Per-CI debug signatures may require reinstall and lose app-private history; do not delete active GPU Debug backup.
+
+
 ## CURRENT — MO-20261107-CHAT-P13-ANGLE-READONLY-025: P13 read-only ANGLE capability probe implemented, cross-app spoof still UNPROVEN
 - Original project goal stays **real GPU identity observed by an independent app**, e.g. `glGetString(GL_RENDERER)` reading a chosen `Adreno 840` rather than physical `Adreno 730`; original Outlanders graphics/FPS unlocking is not demonstrated. P10 local synthetic menu, P11 own draw callbacks and P12 logs are diagnostics only.
 - **P13 main MO v0.11.0-alpha.11 source implemented:** new **05B / P13 ANGLE CAPABILITY — READ ONLY** screen button. Shizuku UID2000 `getAngleSnapshot()` with a 14-command strict `AngleReadOnlyCommandPolicy` for `pm list/path` ANGLE packages, `settings get global` driver selection and dangerous all-app switch (read only), `getprop debug.angle.gl_renderer/vendor/version` and build debug flags. All readbacks are included in MO's timestamped log and copied report; **no system writes or driver activation**.
