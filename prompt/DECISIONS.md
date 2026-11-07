@@ -101,3 +101,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-035 — Use Android MediaStore and report actual output filename
 **Accepted.** Android 10+ apps can create their own Download records through `MediaStore.Downloads` with `RELATIVE_PATH` / `IS_PENDING`, no all-files permission. Reuse only self-owned URI from private preferences on repeat; don't overwrite files created by another app; on collision, the OS may choose a different filename, which the UI reports. Clipboard full only under bounded size; truncation explicitly communicated. Both apps must pass CI, real device file/clipboard remains a separate evidence gate. No new GPU layer activation is needed.
+
+## ADR-036 (MO-20261107-CHAT-P12-DEVICE-LOGS-021) — Accept real P12 app-log export and four-key guarded cleanup
+**Accepted with scope boundaries.** Two owner-uploaded actual Android15 text exports (35 main events, 119 owned test) prove runtime logging and user-accessible file export, not clipboard success or full system logs. Main log has explicit owner action1 enabled layers, action4 guarded cleanup, repeat action3 diagnoses twice verifying enable=0 and removal of 3 exact MO markers. This supersedes earlier uncertain device-state claims; **known-safe MO marker cleanup is not exact original settings restoration**. No new activation for routine experiments.
+
+## ADR-037 — P11 callback rate versus real presented FPS and loader new-process limitation
+**Accepted.** 21 stride1 samples from owned app average 120.47 Choreographer/draw callbacks per second; stride2/4 not yet tested, and neither rate is SurfaceFlinger-presented frames or Outlanders FPS. Owned probe PID23395 started before user enabled developer layer, therefore later same-process `intercepted NO` does not prove failure for a new process. Require new PID after any relevant toggle for loader conclusions, but **do not request new activation** given completed cleanup.
