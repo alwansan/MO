@@ -51,3 +51,14 @@ No newly recognized `GameUserSettings.ini`, `DeviceProfiles.ini`, `UserCustom.in
 - P18 preceding report: `docs/P18_MHO_LOW_TO_MEDIUM_DIFF_2026-11-08_AR.md`.
 - P17: `docs/P17_MHO_GRAPHICS_LOW_TAR_DIFF_2026-11-08_AR.md`.
 - `tools/compare_android_data_snapshots.py`.
+
+## Final tool validation and owner command
+- GitHub Actions **[42426253058](https://github.com/alwansan/MO/actions/runs/42426253058)** was verified `completed/success` against source commit `6d2852e8f3622f22985cda688ae4b365a2fee082`. This verifies **synthetic Python unit tests only**, NOT decoding the owner's original binary `RemoteConfig.config`.
+- In owner's Termux (no Rish needed; all archives already in Download), retrieve the latest helper:
+```bash
+cd /storage/emulated/0/Download
+curl -fL https://raw.githubusercontent.com/alwansan/MO/main/tools/inspect_mho_remote_config.py -o inspect_mho_remote_config.py
+python inspect_mho_remote_config.py MHO_AFTER_GRAPHICS_LOW.tar MHO_AFTER_GRAPHICS_MEDIUM.tar MHO_MEDIUM_CONTROL.tar --output REMOTE_CONFIG_PATTERN.txt
+```
+- User should inspect/upload only `REMOTE_CONFIG_PATTERN.txt` to private conversation. The report prints length/SHA256/byte-offset differences/format clues but no raw config contents. The tool **never changes game files or writes to Android/data**. If filenames differ/missing, check them in Download before running.
+- Do not conclude backend whitelist location from metadata alone; actual engine/API origin remains unproven.
