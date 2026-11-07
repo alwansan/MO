@@ -67,3 +67,13 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-024 — Phase precedence and narrow continuation
 **Accepted.** Earlier P0 planning statements are historical; owner explicitly authorized P1–P9 implementation. GitHub CI and releases confirm code maturity, but do not substitute for device runtime tests. This audit documents and preserves current evidence without modifying the phone, game, or app source. Potential cold Shizuku service-connection snapshot race is a **code-review hypothesis**, not a confirmed defect. Investigate only as a focused follow-up after safety gate.
+
+
+## ADR-025 (MO-20261107-CHAT-ZYGISK-COPG-AUDIT-016) — Separate P9 restored-key proof from new-process renderer proof
+**Accepted.** The final user v0.9 pasted report provides directly refreshed Shizuku readback (enable=0; three MO owned markers absent). This confirms the bounded MO cleanup at that moment. It does **not** reconstruct unknown old key values. The screenshot PID16719 showing Adreno730 predates or cannot be proven to follow the last cleanup; keep post-cleanup new-process renderer check as pending and avoid new activation.
+
+## ADR-026 — Zygisk implementations are research references only on stock phone
+**Accepted.** No root/bootloader/VM/clone/patch/ptrace to a third-party process. ZygiskNext, ReZygisk, NeoZygisk and COPG all require rooted/bootstrap integration for cross-process modules; Shizuku UID2000 remains a strictly limited broker. COPG JSON schema may inspire an original, **unprivileged owned-app-only** Game Identity Laboratory, not a claim of rootless stock Outlanders GPU spoof.
+
+## ADR-027 — License completeness & provenance gate
+**Accepted.** New Zygisk Next README has post-v4-0.9.2 proprietary no-redistribution/no-picking conditions; ReZygisk README claims AGPL-3 while LICENSE is GPL-3 text; COPG top-level Apache-2.0 license does not establish rights to any unpublished PRO binary or missing native sources; iUnlockerGL prohibits reverse engineering/derivatives. Do not import source/binaries until all provenance and license conditions are clear. See `research/ZYGISK_COPG_NO_ROOT_FEASIBILITY_AR.md`.
