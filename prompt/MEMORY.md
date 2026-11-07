@@ -1,5 +1,12 @@
 # MO memory — 2026-11-07
 
+## Latest P16 — MO-20261108-CHAT-P16-RISH-028
+- User can access external Android/data path but cannot reach `/data/user/0/com.tencent.mhadv`; tried Termux Python script from wrong cwd `~`, then from Download with non-existent placeholder BEFORE.zip/AFTER.zip, then entered `sh rish` Android shell where Termux `python` and `pkg` are absent. Need to explain that Rish ADB UID2000 is not root; private app folder still protected.
+- Repaired archive diff helper to support ZIP, TAR, TAR.GZ with streamed SHA256 member comparison; test workflow `mo-archive-diff-tests.yml` succeeded run `42421428529`. Source `tools/compare_android_data_snapshots.py`, tests under `tools/test_compare_android_data_snapshots.py`; no APK build.
+- Safe workflow: Rish shell only for reading allowed external game folder and creating `MHO_BEFORE.tar` / `MHO_AFTER.tar` into Download if `ls` and `tar` succeed, check tar exit code; Termux `python` after exiting Rish. Compare around change to a **legitimate in-game setting**. No game modification, root, private /data/user/0 or guaranteed GPU whitelist unlock.
+- Guide `docs/P16_TERMUX_RISH_ANDROID_DATA_SNAPSHOTS_AR.md`; session `prompt/sessions/MO-20261108-CHAT-P16-RISH-028.md`.
+
+
 ## Latest P15 — MO-20261108-CHAT-P15-IUNLOCKER-DATA-027 (2026-11-08)
 - User saw TikTok iUnlockerGL+KernelSU example for Garena `com.garena.game.mho`, screenshot config OpenGL/Vulkan Adreno (TM)840, Vulkan1.3.243, retail Manufacturer "RedMagic 11S Pro+", Model NX809J, asks if same values can be pasted into Global `com.tencent.mhadv` Android/data to unlock graphics/FPS.
 - Crucial mismatch: **iUnlocker official v1.1.5-r4 requires ROOT via KernelSU/Magisk and Zygisk runtime hooking** of GLES/Vulkan/Build/CPU; screenshot UI fields are not proof target has read these values. Old existing uploaded Global data ZIP **no .ini** or clear editable device profile (87 entries total, 53 files); user-created filename alone cannot spoof hardware APIs. RedMagic NX809J is Nubia, retail name entered in Manufacturer field is inaccurate.
