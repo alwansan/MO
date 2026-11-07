@@ -49,3 +49,10 @@
   - `MO-Graphics-Probe-v0.9.0-alpha.9.apk` (unchanged source, newly debug-signed build), 1135214 bytes, SHA-256 `42fdb05b4256feb1ff6024f43f99b9206bbbd17c40f70ff925cbd719a9965282`. **DO NOT uninstall/update installed MO main just to use this test lab**.
 - Earlier intermediate CI runs also produced releases from partial P10 commits. Use run25 as the complete P10 delivery candidate.
 - No P10 device runtime test yet. Before replacing *only the disposable probe* APK, reconfirm `enable_gpu_debug_layers=0` and absence of the three MO owned layer keys; debug APK signatures differ between CI builds.
+
+## نتيجة الهاتف بعد الإصدار — MO-20261107-CHAT-P10-DEVICE-018
+- **PASS ضمن حدود المختبر فقط:** صور المالك تثبت تشغيل MO Layer Test v0.4.0 وGame Identity Lab على POCO F5 Pro في العملية PID5783. القراءات الحقيقية Build.MODEL `23013PC75G`، SoC `SM8475`، Java/NDK GLES + native Vulkan `Adreno (TM) 730`، الشاشة 120.0Hz.
+- Mode0 يعرض combined fake FPS LOCKED؛ Mode6 يعرض combined fake FPS UNLOCKED مع سلسلة اسم كل قناة موسومة `(SIMULATED)` والقراءات الأصلية ثابتة. لا يعد هذا فتح 120FPS في Outlanders. أوضاع المحاكاة المفردة 1–5 لم توثق صورها حتى الآن.
+- **تنبيه جديد أعلى أولوية:** تقرير MO v0.9 الأحدث يعرض `enable_gpu_debug_layers=1` وثلاث علامات مملوكة لـMO في النظام وبعد العملية. هذا يأتي بعد تقرير P9 سابق نظيف 0/absent؛ لذا الحالة الأخيرة المرصودة *مفعّلة*. لا تحذف أو تحدّث تطبيق MO الأساسي، ولا تعِد التفعيل. استخدم الاستعادة العادية القائمة على النسخة الاحتياطية السليمة، وافحص القيم الأربع. إذا تعذرت الاستعادة شارك الخطأ، ويمكن مناقشة التنظيف المحروس الاختياري فقط عند تطابق بصمة MO.
+- **مطلوب لإغلاق اختبار التراجع:** قيم الأربع مفاتيح 0/غياب علامات MO، ثم **PID جديد بعد التراجع** مع GL_RENDERER الحقيقي. PID5783 أثناء استمرار التفعيل لا يكفي.
+- التفاصيل: `docs/DEVICE_FEEDBACK_P10_2026-11-07.md`.
