@@ -113,3 +113,9 @@ Use global com.tencent.mhadv (regional com.garena.game.mho differs), not Monster
 
 ## ADR-039 — Do not infer present GPU Debug key values from a probe-only log
 **Accepted.** New owned test PID31111 started at 05:38 after main MO had independently confirmed last safe four-key cleanup at 05:26. New own-process GL/Vulkan reads show physical Adreno730/no intercept, but this upload contains no new Settings.Global readback. Do not claim exact four-key state at 05:38 without evidence, and do not reactivate developer layers just to test the already verified frame-cadence feature.
+
+## ADR-040 (MO-20261107-CHAT-P11-REPEAT-023) — Treat same-named uploaded diagnostic archives as versioned cumulative evidence
+**Accepted.** The new `log (2).txt` is a 41724-byte SHA256 `dbdfe2ecfa429012378459ae212e34c3181619ebe699dba055e30676d5bb7415` file, not the earlier 15982-byte upload. It contains **201 cumulative events** split as 85 prior PID31111 (now with export-result/Frame Lab pause evidence) + 116 new PID3604 events. Separate new and previously counted events; do not count 201 as new or publish the raw user log. In-app clipboard return message is not independent paste verification.
+
+## ADR-041 — Accept repeated P11 and all seven P10 synthetic modes on real POCO only within owned-app scope
+**Accepted.** New PID3604 repeated P11 stride1 (120.061/s own render), stride2 (59.834/s), stride4 (30.037/s), while UI callbacks stayed ~120/s. This replicates earlier PID31111 and completes the intended local render-request cadence validation. All 7 synthetic identity menu modes now device-observed; **only** ALL_SIMULATED unlocks the fictional combined gate, unchanged physical GL/Vulkan Adreno730. No actual SurfaceFlinger presentation, stock Outlanders FPS unlock, global spoof or power saving is demonstrated. No new APK/source change warranted.
