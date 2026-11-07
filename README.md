@@ -1,5 +1,9 @@
 # MO — Android graphics identity research & diagnostics
 
+## New real-device evidence — P12 log export passed (2026-11-07)
+The user uploaded both Android15 app-generated `log.txt` files: **35 main MO diagnostic events** and **119 disposable owned-test events**, captured with times and PIDs. This verifies both apps' user-accessible text-file export path; clipboard, crash-catching and rotation still need specific testing. The main log shows guarded GPU Debug cleanup at 05:25:51 and read-only reconfirmations through 05:26:02: `enable_gpu_debug_layers=0` and all 3 MO markers absent at last check. **No re-activation needed.** The owned GLES Frame Pacing Lab recorded 21 one-second **stride1** samples averaging **120.47 own draw callbacks/s**, not actual display/game FPS. Stride2/4 remain untested. [Detailed P12 device-log findings](docs/DEVICE_FEEDBACK_P12_LOGS_2026-11-07.md) and [session evidence](prompt/sessions/MO-20261107-CHAT-P12-DEVICE-LOGS-021.md).
+
+
 ## P12 — timestamped diagnostic log export in BOTH Android apps (2026-11-07)
 **CI passed, phone verification pending.** [P12 release](https://github.com/alwansan/MO/releases/tag/mo-v0.10.0-alpha.10-run53) has direct raw APKs:
 - [MO Graphics Probe v0.10.0-alpha.10](https://github.com/alwansan/MO/releases/download/mo-v0.10.0-alpha.10-run53/MO-Graphics-Probe-v0.10.0-alpha.10.apk) — main Shizuku/device/GPU app.
