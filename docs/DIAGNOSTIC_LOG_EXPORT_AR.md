@@ -44,3 +44,6 @@
 - السجل الرئيسي يوثق نجاح **التنظيف المحروس**: 05:25:51 `enable_gpu_debug_layers=0` واختفاء العلامات الثلاث، وأكده فحصان لاحقان حتى 05:26:02. لا داعي لإعادة تفعيل أي طبقة.
 - قياسات P11: `stride=1` فقط، 21 عينة ومتوسط 120.47 استدعاء رسم/ثانية. تجربتا stride2 وstride4 لم تُجرَّبا بعد؛ هذا ليس FPS الشاشة أو Outlanders.
 - التفاصيل الكاملة في `docs/DEVICE_FEEDBACK_P12_LOGS_2026-11-07.md`.
+
+## Cumulative process retention and in-app clipboard result — MO-20261107-CHAT-P11-REPEAT-023
+A later user-uploaded `log (2).txt` (41,724 bytes, SHA256 `dbdfe2ecfa429012378459ae212e34c3181619ebe699dba055e30676d5bb7415`) contains 85 earlier PID31111 records plus 116 new PID3604 records. This proves the app-private log continued **across a process restart**. The older session now has an `EXPORT_RESULT` event at 05:39:36 reporting MediaStore saved `Download/log (2).txt` and **in-app clipboard operation returned success** for 15,943 characters; a separate manual clipboard paste was not observed. The newly uploaded snapshot ends at its own `USER_ACTION` and cannot contain the outcome of that same export, although the user obtained the saved file. No system-wide logcat or game logs were collected. Full report `docs/DEVICE_FEEDBACK_P11_REPEAT_AND_IDENTITY_2026-11-07.md`.
