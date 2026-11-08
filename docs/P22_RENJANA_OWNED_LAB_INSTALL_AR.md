@@ -5,7 +5,24 @@
 بحثنا في `josskixg/renjana` نسخة v0.2.0 مفتوحة المصدر Apache-2.0. الإصدار غير منشور رسميًا كـ APK؛ GitHub Actions Workflow المنفصل في MO يجلب **SHA محددًا** `14302a57cd66114c6979acf7ca56c97f845a6841` ويبني debug لـ ARM64 من المصدر وينشره **فقط بعد** نجاح اختبارات الوحدة والبناء والتحقق من توقيع APK.
 - Workflow: https://github.com/alwansan/MO/actions/workflows/mo-renjana-owned-lab.yml
 - أول تشغيل: https://github.com/alwansan/MO/actions/runs/42429358721
-- عند النجاح فقط، Release تجريبي بعنوان `Renjana OWNED APP Lab` وفيه APK مباشر وملف ترخيص وSHA256. راجع: https://github.com/alwansan/MO/releases . **لا تفترض وجود الرابط أو نجاحه قبل تحقق النتيجة**.
+## حالة البناء والنشر الفعلية (2026-11-08)
+- Build #1 run `42429358721`: جميع اختبارات المصدر وتجميع/فحص توقيع APK نجحت، لكن مهمة النشر فشلت فقط بسبب وجود `renjana-output/` في `SHA256SUMS.txt` بعد انتقال الملف إلى مجلد `release/`.
+- أصلحت شكل SHA256SUMS في commit `77867f4ec178fadfb25719692be859f1333f2300` بحيث تكون أسماء ملفات نسبية.
+- Build #2 https://github.com/alwansan/MO/actions/runs/42429759178 **completed SUCCESS**: اختبارات الوحدة، بناء ARM64، توقيع APK والتحقق، ثم النشر مرّت كلها.
+- GitHub prerelease **مؤكد، draft=false**: https://github.com/alwansan/MO/releases/tag/renjana-owned-lab-run2
+- رابط APK المباشر: https://github.com/alwansan/MO/releases/download/renjana-owned-lab-run2/Renjana-v0.2.0-arm64-OWNED-LAB-debug.apk
+- الحجم **55,348,455 بايت**، SHA-256 `7b62bfad247050e03bcdcefd693cb47b14d45b4c5ac945ca74fa58f092349b63` (verified in GitHub uploaded release asset metadata); source pinned to `14302a57cd66114c6979acf7ca56c97f845a6841`.
+- هذا إثبات **build+publish فقط**، لا اختبار هاتف ولا ضمان تخصيص GLES/Vulkan. لا توجد ضرورة لـ Shizuku لتشغيل Renjana الأساسي.
+
+### تحميل عبر Termux (بدون روت)
+```sh
+cd /storage/emulated/0/Download
+curl -fL 'https://github.com/alwansan/MO/releases/download/renjana-owned-lab-run2/Renjana-v0.2.0-arm64-OWNED-LAB-debug.apk' -o Renjana-OWNED-LAB.apk
+sha256sum Renjana-OWNED-LAB.apk
+```
+طابق الـSHA مع القيمة أعلاه ثم افتح `Renjana-OWNED-LAB.apk` من مدير الملفات وثبته. لا تثبّت نسخة بعنوان Renjana من رابط فيديو أو متجر غير معروف.
+
+- عند النجاح فقط، Release تجريبي بعنوان `Renjana OWNED APP Lab` وفيه APK مباشر وملف ترخيص وSHA256. راجع: https://github.com/alwansan/MO/releases . **تم التحقق من نجاح الإصدار الثاني؛ التعليمات أدناه تستخدم رابط run2 المباشر**.
 - هذا ليس مُنتج MO الرسمي ولا نسخة upstream رسمية ولا نتيجة إثبات التوافق؛ ليس VM بنظام Android ROM كامل؛ لا وعد أداء أو تشغيل Outlanders أو فتح FPS.
 - لا يستخدم روت/Shizuku/تعديل نظام لتشغيل الحاوية. لا يحتاج فك البوتلودر.
 
