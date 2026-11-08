@@ -18,6 +18,7 @@ public final class ProbeNativeRenderer {
     private static native String nativeEglEvidence();
     private static native String nativeVulkanName();
     private static native String nativeStorageRoundTrip(String privateFilesDir);
+    private static native String nativeDispatchEvidence();
     public static String eglEvidence() {
         if (!READY) return "EGL evidence: NDK module unavailable";
         try {
@@ -47,6 +48,16 @@ public final class ProbeNativeRenderer {
             return nativeStorageRoundTrip(privateFilesDir);
         } catch (RuntimeException | LinkageError ex) {
             return "UNAVAILABLE(" + ex.getClass().getSimpleName() + ")";
+        }
+    }
+
+    /** Read-only, module-name-only symbol provenance; never patches the process. */
+    public static String dispatchEvidence() {
+        if (!READY) return "P27 symbols unavailable (native module not loaded)";
+        try {
+            return nativeDispatchEvidence();
+        } catch (RuntimeException | LinkageError ex) {
+            return "P27 symbols unavailable (" + ex.getClass().getSimpleName() + ")";
         }
     }
 
