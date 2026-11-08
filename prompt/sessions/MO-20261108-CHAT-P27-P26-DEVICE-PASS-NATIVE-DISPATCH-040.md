@@ -24,3 +24,9 @@ Researched official Android rootless GLES/Vulkan debug layer requirements and Bi
 
 ## Scope limits and next
 Keep verified Renjana P26 unchanged. P27 native symbol module name does **not** prove actual driver ICD implementation or ability to globally hook. No on-device P27 result. Owner may test only disposable MO Layer Test v0.8 with same-PID screenshot after a verified release; no Outlanders files, signature or accounts, no Root/Bootloader/KernelSU/Zygisk, no global GLES/ANGLE/Settings changes. Original and modified Renjana releases stay separate.
+
+## P27 CI/release closeout (verified)
+- Run https://github.com/alwansan/MO/actions/runs/42435412976 (#71) **completed SUCCESS** for source commit 80a08dd7c3af7288a1d8edb3c35a1bd0812a0139. Unit tests, NDK compilation, both APK debug builds, Release publication completed.
+- https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run71 published with raw MO-Layer-Test-v0.8.0.apk **232400 bytes**, SHA256 **d0279836d1e70b3696f413342a6afaefc69ca13a025587fd13113728c637d8d5**: https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run71/MO-Layer-Test-v0.8.0.apk .
+- Workflow also rebuilt main MO Graphics Probe, but it is NOT needed for testing P27; do not replace it due to debug-signing/rollback state.
+- **P27 v0.8 has not run on the user's phone**. CI success proves compilation/release and cannot confirm runtime symbol origins or effect on GPU values.
