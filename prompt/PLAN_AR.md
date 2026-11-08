@@ -1,3 +1,13 @@
+## تحديث الخطة P28 — 2026-11-08: Native-first بدل تبديل الحاويات
+
+- **القرار الحالي:** احتفظ بـRenjana P26 كتجربة Guest مملوكة ثبت نجاح التخزين فيها؛ لا تستبدلها بـNEXTVM الآن. تكرر فحص P27 الحقيقي من MO Layer Test v0.8.0: Build.MODEL NE2215 لكن GLES Java/NDK/EGL وVulkan deviceName جميعها Adreno730. رموز glGetString من libGLESv2.so وVulkan من libvulkan.so في فضاء العملية المقاسة، وليس إثباتًا لنجاح intercept.
+- فحصنا NEXTVM الموجود أصلًا في بحث P21 مرة أخرى: هو يطبق GOT/PLT لـlibc/path/system_property فقط، ولا توجد native glGetString أو Vulkan hooks في جدول C++، والـGuest launch ما زال موضع Issue مفتوحة. لا GitHub Release مثبتة، ولا سبب لمبادلة حاوية مثبتة بأخرى غير مختبرة. جرّب المالك BlackBoxReborn مسبقًا ولم يشغّل Outlanders.
+- **P29:** إثبات Native GLES interception داخل التطبيق التجريبي المملوك فقط، باستخدام مكتبة مثل ByteHook (MIT) مع pinning وترخيص واضح. اختبار OFF/ON/OFF يستدعي glGetString الفعلي ويسجل hook count وscope واختلاف Java/NDK/EGL وrollback؛ لا نعتمد محاكاة واجهة ولا نغير capabilities/extensions أو FPS.
+- **P30:** Vulkan native properties/dispatch proof منفصل، يشمل lookup والـphysical device handle الصحيح، على APK مملوك فقط؛ ليس ضمن إثبات P29 تلقائيًا.
+- **P31:** إن نجحا فقط، تجربة Renjana-delivered helper داخل Guest المملوك قبل تحميل JNI دون أن يحمّل التطبيق المكتبة بنفسه؛ إثبات PID مستقل، وقراءات Java/NDK/EGL/Vulkan A/B وكلفة الذاكرة والثبات. لا تشغيل لعبة أو نقل حساب.
+- **توقف مبكر:** إذا فشل تحميل الهوك أو أغلب مسارات API أو تدهور الثبات/الأداء على Android15 ARM64، اشرح حدود no-root/no-repackaging، ولا تبنِ حاويات بديلة بلا سبب. نجاح تغيير GL_RENDERER نصيًا لا يثبت خيارات Ultra/120FPS؛ P20 RemoteConfig لم يحدد gate، و120Hz شاشة لا يعني 120FPS فعلي.
+- **P28 بحث وتوثيق فقط؛ لم يُبن APK ولم تُنفذ تجربة هاتف جديدة.** المرجع: research/P28_NATIVE_FIRST_CONTAINER_STRATEGY_AR.md وprompt/sessions/MO-20261108-CHAT-P28-NEXTVM-STRATEGY-041.md.
+
 # خطة MO الهندسية الكاملة — الإصدار الأول
 
 ## آخر تقدّم P13 المُثبت — 2026-11-07
