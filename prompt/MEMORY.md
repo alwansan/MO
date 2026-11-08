@@ -1,5 +1,11 @@
 # MO memory — 2026-11-07
 
+## Latest P22 — MO-20261108-CHAT-P22-RENJANA-OWNED-LAB-035
+- User requested steps and APK for practical minimal overhead rootless Android container test. Renjana upstream was verified live at main commit `14302a57cd66114c6979acf7ca56c97f845a6841`, Apache2, app version0.2.0 minSdk29, targetSdk34, split arm64. No official upstream Release. 
+- Added standalone, pinned-source unmodified build workflow `.github/workflows/mo-renjana-owned-lab.yml`, commit `00b40cc7b8000b23edcf67c14487e4ed0d5b01d6`. Actions run `42429358721` in progress after checkout, license check, SDK/JDK/Gradle setup; require verified build/test + actual experimental prerelease before providing a direct APK URL. No imported source, repo/core app changes or original game modifications. Test license/provenance and signed ARM64 debug APK only, no accounts.
+- `docs/P22_RENJANA_OWNED_LAB_INSTALL_AR.md` gives safe user workflow: install existing own MO Layer Test v0.6.0 `mo-v0.11.0-alpha.11-run59`, baseline host PID/GLES/Vulkan, then clone **only owned test app** in Renjana with all sensitive options OFF; verify `StubActivity` sandbox launch versus `FallbackNoIsolation` direct-app open. Rish logcat filtered to `Download/MO_RENJANA_LAB_LOG.txt` if fails. P22 session under prompt/sessions.
+
+
 ## Latest P21 — MO-20261108-CHAT-P21-LIGHT-CONTAINERS-034 (2026-11-08)
 - Goal: find minimal-overhead FOSS non-root Android-on-Android guest/container that runs MHO Global and changes guest GL/Vulkan/CPU/Build identity without VMOS+ or changing original game. Surveyed live 2026 GitHub repo source, commits, releases/CI and issues. **No ready verified solution**.
 - Renjana Apache2 pushed 2026-08-25; native app-host container via Pine/StubActivity, README advertises split APK/GMS. Source `InstanceLauncher.kt` fallback launches real app directly **without sandbox or spoof**; no release APK, zero Actions runs, issues ask for binaries; no glGetString/Vulkan hook found. First R&D candidate **only for owned GL/VK probe**, not production game.
