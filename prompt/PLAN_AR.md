@@ -1,3 +1,12 @@
+## P29 Field Check 043 — 2026-11-08: نطاق P29 لم يُجرَّب بعد
+
+- صور المالك الجديدة تثبت فصل PID414 لتطبيق MO المثبّت مباشرةً عن PID3585 لـRenjana Guest، مؤكدًا بالأمر `ps`، وأن Shizuku يعمل فعليًا بصلاحية `uid=2000(shell)` وSELinux shell وليس Root.
+- في PID414 ترجع Native GLES وeglGetProcAddress النص **MO-GLES-LAYER-PROOF (SIMULATED)** المطابق تمامًا لمكتبة طبقة GLES القديمة `mo_gles_layer.cpp`، بينما Java GLES وVulkan حقيقيان Adreno730؛ نطاقها Native ONLY وFPS UNLOCKED محاكاة فقط.
+- في Guest PID3585 ترجع GLES Java/NDK/EGL وVulkan Adreno730، وتنجح كل اختبارات التخزين والـcleanup؛ وهو خط أساس أنظف لتجربة ByteHook.
+- **كلتا صورتَي P29 تعرضان NOT RUN on this process**، لذا لا تُسجّل نجاحًا/فشلًا لاعتراض ByteHook. علامته المختلفة هي `MO_P29_OWNED_GLES_HOOK_ONLY` وتظهر فقط في تقرير مستقل بعد الضغط على زر P29.
+- **التالي:** داخل Renjana P26 الحالية مع MO Layer Test v0.9.0 الحالية، اضغط زر **P29 اختبار اعتراض GLES (OFF/ON/OFF)** مرة واحدة واحتفظ بنتيجة baseline/active/after وCallback OK/hits/status/unhook، مع PID جديد إذا تغير. لا تعِد P25-P27 ولا تغيّر إعدادات النظام أو تطلب إعادة بناء APK. تجربة host لاحقًا تُحلَّل كطبقة GLES قديمة فعالة وليست bare host baseline.
+- المصدر: docs/DEVICE_FEEDBACK_P29_GLES_LAYER_SEPARATION_2026-11-08_AR.md والجلسة 043. لا Root أو تعديل للعبة أو FPS حقيقي.
+
 ## أحدث مرحلة P29 — 2026-11-08: تجربة Native glGetString داخل MO المملوك
 
 - **تم تنفيذ كود P29 ونشر APK منفصل للتجربة**: MO Layer Test v0.9.0 فقط؛ hook PLT يستهدف glGetString في libMOProbeRenderer.so حصريًا بالضغط على زر P29، مع baseline الحقيقي، mock ثابت مؤقت ضمن Thread الاختبار، قياس callback/hits، وإزالة hook ثم مقارنة original. لا يغير GPU الحقيقي، Vulkan، FPS، اللعبة أو النظام.
