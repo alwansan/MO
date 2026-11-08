@@ -29,6 +29,14 @@ ps -A -o PID,NAME | grep -E 'com.fesu.renjana|com.alwansan.mo.glesprobe'
 ```
 
 إذا ظهر PID الذي تعرضه شاشة MO Layer Test تحت اسم العملية `com.alwansan.mo.glesprobe` فقد يكون تشغيلًا خارجيًا عاديًا. إذا ظهر تحت `com.fesu.renjana:pN` فهذا يدعم تشغيله داخل حاوية Renjana لكن لا يثبت بمفرده صحة كل hooks. أرفق الصورة والإخراج للمقارنة. لا تحتاج root.
+إذا أردت قياس كلفة الحاوية أثناء تشغيل تطبيق الاختبار، نفّذ في Rish فقط:
+
+```sh
+dumpsys meminfo com.fesu.renjana > /storage/emulated/0/Download/MO_RENJANA_MEMINFO.txt
+```
+
+هذا يقيس ذاكرة عمليات Renjana وقت الفحص، وليس FPS لعبة؛ التقط قياسًا مع عدم تشغيل أي instance ثم قياسًا مع MO Layer Test guest لتقدير الزيادة، مع تسجيل الوقت/حرارة الجهاز والسياق.
+
 9. للحصول على سجلات مختصرة من Rish shell UID2000 فقط (في حال فشل تشغيل guest)، نفّذ بعد محاولة الإطلاق:
 
 ```sh
