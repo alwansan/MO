@@ -37,7 +37,7 @@ dumpsys meminfo com.fesu.renjana > /storage/emulated/0/Download/MO_RENJANA_MEMIN
 
 هذا يقيس ذاكرة عمليات Renjana وقت الفحص، وليس FPS لعبة؛ التقط قياسًا مع عدم تشغيل أي instance ثم قياسًا مع MO Layer Test guest لتقدير الزيادة، مع تسجيل الوقت/حرارة الجهاز والسياق.
 
-9. للحصول على سجلات مختصرة من Rish shell UID2000 فقط (في حال فشل تشغيل guest)، نفّذ بعد محاولة الإطلاق:
+9. في Renjana نفسه يمكن فتح **Settings → Error Logs** ثم فتح رسالة الخطأ واختيار **Copy** أو **Share** (حسب واجهة الإصدار)، وهي طريقة أبسط قبل Rish. دليل upstream: https://github.com/josskixg/renjana/blob/main/docs/ERROR_LOG.md . وللحصول على سجل أوسع من Rish shell UID2000 فقط (في حال فشل تشغيل guest)، نفّذ بعد محاولة الإطلاق:
 
 ```sh
 logcat -d -v threadtime | grep -Ei 'renjana|fesu|glesprobe|stubactivity|fallback|no isolation|AndroidRuntime|FATAL EXCEPTION|ClassNotFoundException|UnsatisfiedLinkError' | tail -n 600 > /storage/emulated/0/Download/MO_RENJANA_LAB_LOG.txt
