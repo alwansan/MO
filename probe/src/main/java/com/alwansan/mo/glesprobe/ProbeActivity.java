@@ -73,6 +73,38 @@ public final class ProbeActivity extends Activity {
         refreshEgl.setOnClickListener(v -> queryAsync());
         column.addView(refreshEgl);
 
+        // P29 is opt-in and short-lived. A button press creates the EGL context,
+        // intercepts only our JNI caller, unhooks, and displays A/B/A evidence.
+        TextView p29Result = new TextView(this);
+        p29Result.setTextSize(14f);
+        p29Result.setTextColor(Color.rgb(226, 237, 255));
+        p29Result.setTextIsSelectable(true);
+        p29Result.setText("P29 Native GLES interception: NOT RUN on this process.");
+        Button p29Button = new Button(this);
+        p29Button.setAllCaps(false);
+        p29Button.setText("P29: اختبار اعتراض GLES مؤقت داخل MO فقط (OFF/ON/OFF)");
+        p29Button.setOnClickListener(v -> {
+            p29Button.setEnabled(false);
+            p29Result.setText("P29: جارٍ فحص الاستدعاء الأصلي والاعتراض وإزالته...");
+            new Thread(() -> {
+                String report = query(true);
+                DiagnosticLog.log("P29_OWNED_GLES_TRIAL", report);
+                runOnUiThread(() -> {
+                    if (!isFinishing() && !isDestroyed()) {
+                        p29Result.setText(report);
+                        p29Button.setEnabled(true);
+                    }
+                });
+            }, "MO-owned-p29-gles").start();
+        });
+        column.addView(p29Button);
+        column.addView(p29Result);
+        TextView p29Notice = new TextView(this);
+        p29Notice.setText("P29 محدود إلى مكتبة MO المملوكة؛ اسم GPU الظاهر خلال التجربة "
+                + "محاكاة للواجهة فقط. لا يبدّل Vulkan أو العتاد أو FPS أو التطبيقات الأخرى.");
+        p29Notice.setTextColor(Color.rgb(177, 192, 219));
+        column.addView(p29Notice);
+
         Button lab = new Button(this);
         lab.setText("مختبر هوية الجهاز (محاكاة مستقلة فقط)");
         lab.setAllCaps(false);
@@ -131,7 +163,9 @@ public final class ProbeActivity extends Activity {
         }, "MO-owned-test-gles").start();
     }
 
-    private static String query() {
+    private static String query() { return query(false); }
+
+    private static String query(boolean p29Trial) {
         EGLDisplay d = EGL14.EGL_NO_DISPLAY;
         EGLContext c = EGL14.EGL_NO_CONTEXT;
         EGLSurface s = EGL14.EGL_NO_SURFACE;
@@ -156,6 +190,10 @@ public final class ProbeActivity extends Activity {
                     new int[]{EGL14.EGL_WIDTH, 1, EGL14.EGL_HEIGHT, 1, EGL14.EGL_NONE}, 0);
             if (s == EGL14.EGL_NO_SURFACE || !EGL14.eglMakeCurrent(d, s, s, c))
                 return "eglMakeCurrent failed";
+            if (p29Trial) {
+                return "Process PID: " + Process.myPid() + "\n"
+                        + ProbeNativeRenderer.runP29OwnedTrial();
+            }
             String vendor = safe(GLES20.glGetString(GLES20.GL_VENDOR));
             String renderer = safe(GLES20.glGetString(GLES20.GL_RENDERER));
             String nativeRenderer = ProbeNativeRenderer.inspect();
