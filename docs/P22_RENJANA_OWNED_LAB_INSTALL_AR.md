@@ -22,15 +22,22 @@ https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run59/MO-La
 5. ثبّت Renjana APK التجريبي إن اجتاز CI، افتح **Apps** وابحث عن `MO Layer Test` / `com.alwansan.mo.glesprobe`; أنشئ **instance** منفصلًا. إن وجدت شاشة إعدادات: اجعل Enable GMS **OFF**، Spoof Signature **OFF**، Anti-Detection **OFF**، Enable Fingerprint **OFF** أولًا. لا تضف حساب Google أو أي لعبة أو بيانات المستخدم.
 6. من Home في Renjana اضغط instance/Play، سجّل هل يفتح MO Layer Test بصورة طبيعية أم يتوقف أم يعيدك إلى التطبيق المثبت خارجيًا. **مهم**: مصدر `InstanceLauncher.kt` فيه fallback direct launch بدون عزل، لذلك مجرد فتح الشاشة لا يثبت نجاح الافتراضية. احفظ screenshot لرسالة Success / Fallback No Isolation / Failure إن ظهرت.
 7. داخل MO Layer Test الافتراضي، صور قراءات Game Identity Lab/GLES/Vulkan وسجّل PID وقارن مع baseline؛ أعد الاختبار بخيار Enable Fingerprint إذا ثبت تشغيل instance الافتراضي نفسه. حتى لو تغير Build.MODEL فلا تفترض تغير GL/Vulkan.
-8. للحصول على سجلات مختصرة من Rish shell UID2000 فقط (في حال فشل تشغيل guest)، نفّذ بعد محاولة الإطلاق:
+8. قبل التقاط السجل، و**أثناء بقاء MO Layer Test مفتوحًا داخل Renjana**، قارن اسم العملية الفعلي من Rish (UID2000):
+
+```sh
+ps -A -o PID,NAME | grep -E 'com.fesu.renjana|com.alwansan.mo.glesprobe'
+```
+
+إذا ظهر PID الذي تعرضه شاشة MO Layer Test تحت اسم العملية `com.alwansan.mo.glesprobe` فقد يكون تشغيلًا خارجيًا عاديًا. إذا ظهر تحت `com.fesu.renjana:pN` فهذا يدعم تشغيله داخل حاوية Renjana لكن لا يثبت بمفرده صحة كل hooks. أرفق الصورة والإخراج للمقارنة. لا تحتاج root.
+9. للحصول على سجلات مختصرة من Rish shell UID2000 فقط (في حال فشل تشغيل guest)، نفّذ بعد محاولة الإطلاق:
 
 ```sh
 logcat -d -v threadtime | grep -Ei 'renjana|fesu|glesprobe|stubactivity|fallback|no isolation|AndroidRuntime|FATAL EXCEPTION|ClassNotFoundException|UnsatisfiedLinkError' | tail -n 600 > /storage/emulated/0/Download/MO_RENJANA_LAB_LOG.txt
 ls -lh /storage/emulated/0/Download/MO_RENJANA_LAB_LOG.txt
 ```
 هذا لا يحتاج Python أو pkg داخل shell. إن لم تكن داخل Rish UID2000 استخدم `sh ~/test/rish` من Termux بعد ضبط `RISH_APPLICATION_ID` سابقًا. راجع السجل لاحتمال وجود بيانات حساسة قبل رفعه.
-9. اختبار المصدر والهوية مكتمل فقط عندما نرى في سجل Renjana أنه أطلق التطبيق **ضمن StubActivity** وأن التطبيق guest يعمل لا مجرد fallback، ويعرض قراءات Android الحقيقية/المتغيرة. لا تختبر أو تستنسخ Outlanders الآن.
-10. عند الانتهاء، أوقف/احذف instance التجريبي داخل Renjana فقط. لا تحذف `com.tencent.mhadv` ولا تنسخ ملفاته ولا تغيّر توقيعه أو حسابه. لا تتوقع تشغيل/تغيير اللعبة بفتح Launcher عادي.
+10. اختبار المصدر والهوية مكتمل فقط عندما نرى في سجل Renjana أنه أطلق التطبيق **ضمن StubActivity** وأن التطبيق guest يعمل لا مجرد fallback، ويعرض قراءات Android الحقيقية/المتغيرة. لا تختبر أو تستنسخ Outlanders الآن.
+11. عند الانتهاء، أوقف/احذف instance التجريبي داخل Renjana فقط. لا تحذف `com.tencent.mhadv` ولا تنسخ ملفاته ولا تغيّر توقيعه أو حسابه. لا تتوقع تشغيل/تغيير اللعبة بفتح Launcher عادي.
 
 ## ماذا نطلب من المالك بعد الاختبار
 - Screenshot من Create Instance ونتيجة Play.
