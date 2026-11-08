@@ -80,6 +80,36 @@ public final class ProbeActivity extends Activity {
                 new Intent(this, GameIdentityLabActivity.class)));
         column.addView(lab);
 
+        TextView storageResult = new TextView(this);
+        storageResult.setTextSize(14f);
+        storageResult.setTextColor(Color.rgb(226, 237, 255));
+        storageResult.setTextIsSelectable(true);
+        storageResult.setText("P25: فحص التخزين لم يُشغّل بعد.");
+        Button checkGuestStorage = new Button(this);
+        checkGuestStorage.setAllCaps(false);
+        checkGuestStorage.setText("P25: فحص تخزين Guest المملوك (ملفات مؤقتة فقط)");
+        checkGuestStorage.setOnClickListener(v -> {
+            checkGuestStorage.setEnabled(false);
+            storageResult.setText("جارٍ فحص ملفات MO الخاصة...");
+            new Thread(() -> {
+                String info = OwnedStorageProbe.inspect(this);
+                DiagnosticLog.log("OWNED_STORAGE_RESULT", info);
+                runOnUiThread(() -> {
+                    if (!isFinishing() && !isDestroyed()) {
+                        storageResult.setText(info);
+                        checkGuestStorage.setEnabled(true);
+                    }
+                });
+            }, "MO-owned-p25-storage").start();
+        });
+        column.addView(checkGuestStorage);
+        column.addView(storageResult);
+        TextView storageNotice = new TextView(this);
+        storageNotice.setText("فحص اختياري: ينشئ ويقرأ ويحذف ملفات صغيرة وفريدة داخل التخزين الخاص "
+                + "بتطبيق MO Layer Test فقط؛ لا يغيّر Settings.Global أو اللعبة أو ملفات التطبيقات الأخرى.");
+        storageNotice.setTextColor(Color.rgb(177, 192, 219));
+        column.addView(storageNotice);
+
         TextView instructions = new TextView(this);
         instructions.setText("عند تغيير إعدادات طبقات GLES من تطبيق MO، أغلق تطبيق الاختبار وافتحه مجددًا.\nهذا التطبيق لا يكتب أي إعداد للنظام.");
         instructions.setTextColor(Color.rgb(177, 192, 219));
@@ -130,6 +160,7 @@ public final class ProbeActivity extends Activity {
             String renderer = safe(GLES20.glGetString(GLES20.GL_RENDERER));
             String nativeRenderer = ProbeNativeRenderer.inspect();
             String eglEvidence = ProbeNativeRenderer.eglEvidence();
+            String nativeVulkan = ProbeNativeRenderer.vulkanDeviceName();
             boolean javaIntercept = MockGraphicsTier.isProofLayerRenderer(renderer);
             boolean nativeIntercept = MockGraphicsTier.isProofLayerRenderer(nativeRenderer);
             // Explicitly model a synthetic NATIVE engine profile. Java's
@@ -139,6 +170,7 @@ public final class ProbeActivity extends Activity {
                     + "\nGL_VENDOR: " + vendor
                     + "\nGL_RENDERER: " + renderer
                     + "\nGL_RENDERER (NDK): " + nativeRenderer
+                    + "\nNative Vulkan deviceName: " + nativeVulkan
                     + "\nProcess PID: " + Process.myPid()
                     + "\nDebuggable APK: " + (BuildConfig.DEBUG ? "YES" : "NO")
                     + "\n" + eglEvidence
