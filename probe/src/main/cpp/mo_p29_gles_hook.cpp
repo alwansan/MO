@@ -3,7 +3,7 @@
  * Only the MO-owned libMOProbeRenderer.so caller's glGetString PLT import is
  * targeted. No hooks of Android, games, other callers, EGL dispatch, or Vulkan.
  *
- * ByteHook v1.1.2, MIT: https://github.com/bytedance/bhook/tree/v1.1.2
+ * ByteHook v1.1.0, MIT: https://github.com/bytedance/bhook/tree/v1.1.0
  * ByteHook's automatic-mode stack scope is mandatory for proxy recursion safety.
  */
 #include <jni.h>
@@ -105,7 +105,7 @@ Java_com_alwansan_mo_glesprobe_ProbeNativeRenderer_nativeP29GlesTrial(
 
     bool pass = hook != nullptr && successfulCallbacks > 0 && hits > 0 &&
                 during == kP29Mock && before == after && unhookStatus == 0;
-    std::string report = "[P29 owned Native GLES PLT A/B/A — ByteHook 1.1.2]\n";
+    std::string report = "[P29 owned Native GLES PLT A/B/A — ByteHook 1.1.0]\n";
     report += "Scope: ONLY libMOProbeRenderer.so calling glGetString(GL_RENDERER)\n";
     report += "Baseline linked NDK: " + before + "\n";
     report += "Baseline EGL proc direct: " + beforeEgl + "\n";
