@@ -38,6 +38,6 @@ android {
 
 dependencies {
     // MIT-licensed ByteHook v1.1.2; only used by P29 opt-in owned GLES test.
-    implementation 'com.bytedance:bytehook:1.1.2'
+    implementation 'com.bytedance:bytehook:1.1.0'
     testImplementation 'junit:junit:4.13.2'
 }
