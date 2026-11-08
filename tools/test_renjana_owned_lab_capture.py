@@ -39,6 +39,32 @@ class CaptureTest(unittest.TestCase):
             self.assertIn("StubActivity: stub marker", txt)
             self.assertNotIn("should_not_appear", txt)
 
+    def test_failed_settings_read_is_unverified_not_clean(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp)
+            bindir = p / "bin"
+            bindir.mkdir()
+
+            def mock(name, body):
+                f = bindir / name
+                f.write_text("#!/bin/sh\n" + body + "\n")
+                f.chmod(0o700)
+
+            mock("ps", "printf '%s\n' '14699 com.fesu.renjana' '23140 com.fesu.renjana:p1'")
+            mock("settings", "echo 'cmd: Failure calling service settings: Failed transaction (2147483646)'; exit 1")
+            mock("getprop", "printf '35\n'")
+            mock("dumpsys", "printf 'TOTAL PSS: 123 TOTAL RSS: 456 TOTAL SWAP PSS: 0\n'")
+            mock("logcat", "exit 0")
+            env = dict(os.environ, PATH=str(bindir) + ":" + os.environ["PATH"], MO_RENJANA_OUTPUT_DIR=tmp)
+            res = subprocess.run(["sh", str(SCRIPT)], env=env, capture_output=True, text=True, timeout=8)
+            self.assertEqual(res.returncode, 0, res.stderr)
+            reports = list(p.glob("MO_RENJANA_OWNED_CAPTURE_*.txt"))
+            self.assertEqual(len(reports), 1)
+            txt = reports[0].read_text()
+            self.assertIn("enable_gpu_debug_layers = UNVERIFIED", txt)
+            self.assertNotIn("enable_gpu_debug_layers = 0", txt)
+            self.assertIn("23140 com.fesu.renjana:p1", txt)
+
     def test_missing_output_directory_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             env = dict(os.environ, MO_RENJANA_OUTPUT_DIR=str(Path(tmp) / "missing"))
