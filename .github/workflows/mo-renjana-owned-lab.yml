@@ -87,7 +87,7 @@ jobs:
           "$SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose renjana-output/*.apk
           "$SDK_ROOT/build-tools/34.0.0/aapt" dump badging renjana-output/*.apk | grep -E '^package:|^sdkVersion:|^targetSdkVersion:'
           "$SDK_ROOT/build-tools/34.0.0/aapt" dump badging renjana-output/*.apk | grep -q "name='com.fesu.renjana'"
-          sha256sum renjana-output/*.apk | tee renjana-output/SHA256SUMS.txt
+          ( cd renjana-output && sha256sum *.apk | tee SHA256SUMS.txt )
           printf 'Source: https://github.com/josskixg/renjana\nCommit: 14302a57cd66114c6979acf7ca56c97f845a6841\nLicense: Apache-2.0\nBuild: %s\nFor testing only: OWNED MO Layer Test app. Do not load games or Google accounts.\n' "$GITHUB_RUN_ID" > renjana-output/BUILD-PROVENANCE.txt
 
       - name: Handoff verified outputs to release job
