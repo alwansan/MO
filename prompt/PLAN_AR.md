@@ -1,3 +1,12 @@
+## أحدث مرحلة P29 — 2026-11-08: تجربة Native glGetString داخل MO المملوك
+
+- **تم تنفيذ كود P29 ونشر APK منفصل للتجربة**: MO Layer Test v0.9.0 فقط؛ hook PLT يستهدف glGetString في libMOProbeRenderer.so حصريًا بالضغط على زر P29، مع baseline الحقيقي، mock ثابت مؤقت ضمن Thread الاختبار، قياس callback/hits، وإزالة hook ثم مقارنة original. لا يغير GPU الحقيقي، Vulkan، FPS، اللعبة أو النظام.
+- بُني بـByteHook **v1.1.0** (MIT، مع ShadowHook1.1.1) لأنه متوافق مع compileSdk35. فشل build أولي #76 عند AAR metadata في v1.1.2 الذي يطلب compileSdk37؛ عولج بتثبيت إصدار متوافق دون ترقية SDK لكل مشروع MO.
+- **CI النهائي #78 SUCCESS** على source ead4f202ea5b9aa957d6edc9a9532004538836c8، و[Release](https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run78) يضم [MO-Layer-Test-v0.9.0.apk](https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run78/MO-Layer-Test-v0.9.0.apk) بحجم 342024B SHA256 3718601e4e26b31da697a4cdb04f50585fd4405e18af4dc6f1d32c1e73606041.
+- **لم يُختبر P29 على الهاتف**. الاختبار القادم لصاحب الجهاز هو تشغيل التطبيق المملوك خارج Renjana أولًا إن أمكن ثم داخل Renjana P26، والضغط على زر P29، وإرسال سطور callback/hits/unhook وbaseline/active/restored مع PID وربطه بـps عند الحاجة. ByteHook نجح في البناء، لكن نجاح الـHook الفعلي غير مثبت.
+- **Shizuku** إذا بدأ عبر Wireless Debugging يعمل بصلاحية UID2000 Shell، وليس root وهميًا يعادل UID0، ويمكن استعماله لتشخيص ps/meminfo/logcat قراءة فقط؛ لا يمنح حق حقن مكتبات في تطبيقات الإنتاج المغلقة أو تغيير GPU عالميًا. لا حاجة إليه لتجربة P29 المباشرة. لا Root/Bootloader/Zygisk ولا Settings.GPU Debug/ANGLE ولا Outlanders أو حساباتها.
+- القرارات والتفاصيل: docs/P29_OWNED_GLES_BYTEHOOK_AR.md، session MO-20261108-CHAT-P29-OWNED-GLES-BYTEHOOK-042.md. P30 Vulkan لا يبدأ باعتبار GLES إثباتًا له.
+
 ## تحديث الخطة P28 — 2026-11-08: Native-first بدل تبديل الحاويات
 
 - **القرار الحالي:** احتفظ بـRenjana P26 كتجربة Guest مملوكة ثبت نجاح التخزين فيها؛ لا تستبدلها بـNEXTVM الآن. تكرر فحص P27 الحقيقي من MO Layer Test v0.8.0: Build.MODEL NE2215 لكن GLES Java/NDK/EGL وVulkan deviceName جميعها Adreno730. رموز glGetString من libGLESv2.so وVulkan من libvulkan.so في فضاء العملية المقاسة، وليس إثباتًا لنجاح intercept.
