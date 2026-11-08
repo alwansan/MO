@@ -161,6 +161,7 @@ public final class ProbeActivity extends Activity {
             String nativeRenderer = ProbeNativeRenderer.inspect();
             String eglEvidence = ProbeNativeRenderer.eglEvidence();
             String nativeVulkan = ProbeNativeRenderer.vulkanDeviceName();
+            String dispatch = ProbeNativeRenderer.dispatchEvidence();
             boolean javaIntercept = MockGraphicsTier.isProofLayerRenderer(renderer);
             boolean nativeIntercept = MockGraphicsTier.isProofLayerRenderer(nativeRenderer);
             // Explicitly model a synthetic NATIVE engine profile. Java's
@@ -175,6 +176,7 @@ public final class ProbeActivity extends Activity {
                     + "\nDebuggable APK: " + (BuildConfig.DEBUG ? "YES" : "NO")
                     + "\n" + eglEvidence
                     + "\nGL_VERSION: " + safe(GLES20.glGetString(GLES20.GL_VERSION))
+                    + "\n\n" + dispatch
                     + "\n\n"
                     + (sampleTier ? "Mock Native FPS tier: UNLOCKED (simulation)" :
                             "Mock Native FPS tier: LOCKED (simulation)")
