@@ -6,6 +6,7 @@ target_link_libraries(MOGlesProofLayer log)
 
 # Probe's own NDK GLES reader: compare Java GLES20.glGetString with native libGLESv2
 # without loading the proof layer by hand.
-add_library(MOProbeRenderer SHARED mo_probe_renderer.cpp mo_dispatch_evidence.cpp)
+find_package(bytehook REQUIRED CONFIG)
+add_library(MOProbeRenderer SHARED mo_probe_renderer.cpp mo_dispatch_evidence.cpp mo_p29_gles_hook.cpp)
 target_compile_features(MOProbeRenderer PRIVATE cxx_std_17)
-target_link_libraries(MOProbeRenderer GLESv2 EGL vulkan dl)
+target_link_libraries(MOProbeRenderer GLESv2 EGL vulkan dl bytehook::bytehook)
