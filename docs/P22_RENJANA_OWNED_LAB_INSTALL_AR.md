@@ -1,4 +1,18 @@
 # MO P22 — تجربة Renjana داخل تطبيق مملوك (بلا روت، بلا لعبة)
+
+## تحديث P23 بعد اختبار الهاتف الحقيقي (2026-11-08)
+المالك شغّل **MO Layer Test داخل `com.fesu.renjana:p0` فعليًا**: guest PID 17591 وBuild.MODEL=RMX3491 مقابل host PID14458 وBuild.MODEL=23013PC75G. Java وNDK GLES في guest ما زالت Adreno730؛ لا إثبات spoof Vulkan أو FPS. سجل logcat السابق الذي وصل بعد إغلاق التطبيق هو آخر 600 سطر من رسائل UI غالبًا، وليس dump كاملًا من بدء guest. Meminfo السابق PID14699 يحصي **Renjana الرئيسي فقط**: PSS77021 kB؛ guest `:p0` لم يُقَس.
+**الأداة الحالية الأسهل والأدق** (لا تتطلب Root ولا تبدّل إعدادات): افتح MO Layer Test من Renjana أولًا واتركه مفتوحًا؛ نفّذ في Termux:
+```sh
+cd /storage/emulated/0/Download
+curl -fL https://raw.githubusercontent.com/alwansan/MO/main/tools/renjana_owned_lab_capture.sh -o renjana_owned_lab_capture.sh
+cd ~/test
+sh rish
+sh /storage/emulated/0/Download/renjana_owned_lab_capture.sh
+```
+ارفع `Download/MO_RENJANA_OWNED_CAPTURE_YYYYMMDD_HHMMSS.txt` بعد مراجعة محتواه؛ يتضمن PID والميموري لكل عملية ومفاتيح GPU Debug **قراءة فقط** وlogcat bounded `-t 12000` وينتهي تلقائيًا. لا تستعمل `logcat -c` ولا تكرر فتح لعبتك. لاحظ أن شاشة إنشاء Instance السابقة أظهرت Device Fingerprint Spoof ON بجانب Anti-Detection وSignature Spoof ON؛ للتجربة التالية اعزل خيار Fingerprint فقط في instance اختبار مملوكة، دون الحسابات أو اللعبة. إذا مفاتيح GPU Debug الحالية ما زالت مفعّلة، استعد إعداداتها الصحيحة عبر MO قبل حذفه/تحديثه.
+التفاصيل: [تقرير P23](../docs/DEVICE_FEEDBACK_RENJANA_P23_2026-11-08_AR.md).
+
 **التاريخ:** 2026-11-08 · **الجلسة:** MO-20261108-CHAT-P22-RENJANA-OWNED-LAB-035 · origin=chat
 
 ## ما هو هذا وما ليس هو
