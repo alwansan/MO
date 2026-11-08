@@ -17,6 +17,7 @@ public final class ProbeNativeRenderer {
     private static native String nativeRenderer();
     private static native String nativeEglEvidence();
     private static native String nativeVulkanName();
+    private static native String nativeStorageRoundTrip(String privateFilesDir);
     public static String eglEvidence() {
         if (!READY) return "EGL evidence: NDK module unavailable";
         try {
@@ -33,6 +34,19 @@ public final class ProbeNativeRenderer {
             return nativeVulkanName();
         } catch (RuntimeException | LinkageError ex) {
             return "(Vulkan query failed: " + ex.getClass().getSimpleName() + ")";
+        }
+    }
+
+    /**
+     * Read-only inspection of JNI call safety plus an ephemeral private file
+     * create/read/delete; never invokes native hooks on a third-party process.
+     */
+    public static String storageRoundTrip(String privateFilesDir) {
+        if (!READY) return "UNAVAILABLE(native module not loaded)";
+        try {
+            return nativeStorageRoundTrip(privateFilesDir);
+        } catch (RuntimeException | LinkageError ex) {
+            return "UNAVAILABLE(" + ex.getClass().getSimpleName() + ")";
         }
     }
 
