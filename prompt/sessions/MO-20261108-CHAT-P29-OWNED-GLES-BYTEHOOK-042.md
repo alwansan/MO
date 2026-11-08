@@ -26,3 +26,11 @@ Live GitHub main, P28 decisions/plans, probe Activity/NativeRenderer/JNI/CMake/G
 ## Safety and next action
 Only run owned APK P29 under opt-in button, ideally direct outside Renjana first. Test result includes baseline, during, after, callback status, true proxy hit counter and unhook result, with normal string restoration. If direct-host succeeds, consider a new owned-only Renjana P26 Guest test with read-only current PID mapping; if it fails, inspect hook result and stop, don't broaden to closed games or arbitrary libraries.
 No Root, Bootloader, Zygisk/KernelSU, no system Settings / ANGLE / GPU Debug writes, no Outlanders files/APK/signature/account changes and no false claims of unlock/real FPS. ByteHook's MIT license must be attributed.
+
+
+## P29 final GitHub Actions and Release verification (2026-11-08)
+- Run #77 https://github.com/alwansan/MO/actions/runs/42437612759 SUCCESS for first compileSdk35-compatible ByteHook pin. Final corrected source run #78 https://github.com/alwansan/MO/actions/runs/42437618103 **completed SUCCESS**, source commit **ead4f202ea5b9aa957d6edc9a9532004538836c8**.
+- Public prerelease https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run78 contains **MO-Layer-Test-v0.9.0.apk** uploaded (**342024 bytes**, SHA256 **3718601e4e26b31da697a4cdb04f50585fd4405e18af4dc6f1d32c1e73606041**): https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run78/MO-Layer-Test-v0.9.0.apk .
+- Existing workflow also rebuilt MO Graphics Probe main APK; **do not replace main MO** to test P29 (different debug signature/rollback data risk).
+- ByteHook 1.1.0 + transitive ShadowHook1.1.1 compiled successfully for arm64. CI native compile and test success does **not** establish on-device hook callback hits or actual GL string interception. No device output P29 yet.
+- Next owner trial: backup/export any disposable test app logs, install/upgrade only MO Layer Test v0.9.0. Ideally test direct outside Renjana first, then separate run inside working Renjana P26 (owner-initiated) with ps mapping if PID changed. Press button **P29 Native GLES OFF/ON/OFF** once and share textual outcome with hook callback count, hit count, unhook status, original/active/restored values. Run no Shizuku actions unless needed for **read-only** current PID mapping.
