@@ -49,3 +49,9 @@
 ## أدلة البناء
 - GitHub workflow mo-android-debug.yml يعمل بعد probe/** ويجري JUnit وGradle/NDK ويصدر MO Layer Test APK. لا تعتبر نجاح source commit أو وصول run إلى pending نجاح APK.
 - لم يُختبر P25 على هاتف المالك عند كتابة التقرير؛ لا يوجد دليل FPS أو GPU spoof داخل Renjana، ولا Outlanders.
+
+## P25 CI/Release — verified complete (2026-11-08)
+- Source APK commit 0195d5def3888a24d78b89cf879679e35e2199ef; GitHub Actions https://github.com/alwansan/MO/actions/runs/42433494794 completed **SUCCESS**. Unit tests, Gradle/NDK debug builds and release publishing all passed. CI is not phone proof.
+- Public prerelease https://github.com/alwansan/MO/releases/tag/mo-v0.11.0-alpha.11-run66: **MO-Layer-Test-v0.7.0.apk** uploaded, 230156 bytes SHA256 **0ebe84f65242036802db2e9e0817902c783f1089096518dec07d684f8b5d4462**. Direct APK: https://github.com/alwansan/MO/releases/download/mo-v0.11.0-alpha.11-run66/MO-Layer-Test-v0.7.0.apk
+- Workflow also rebuilt MO Graphics Probe main v0.11.0-alpha.11. **Do not replace main MO** merely for P25: per-run debug signing may differ and private rollback snapshot must be preserved.
+- P25 phone acceptance **NOT TESTED**. Owner must establish fresh guest PID plus actual Java/NDK/EGL/Vulkan and storage check results before any runtime claims.
