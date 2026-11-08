@@ -29,8 +29,17 @@ PIDCSV="$(printf '%s\n' "$PROCINFO" | awk '$1 ~ /^[0-9]+$/ {printf "%s%s",(n++ ?
   echo
   echo '[GPU DEBUG SETTINGS — READ ONLY; DO NOT CHANGE AUTOMATICALLY]'
   for KEY in enable_gpu_debug_layers gpu_debug_app gpu_debug_layers_gles gpu_debug_layer_app; do
-    printf '%s = ' "$KEY"
-    settings get global "$KEY" 2>&1 || echo '(unavailable)'
+    # A failed Settings service transaction is UNKNOWN, never a clean/disabled state.
+    SETTING_VALUE="$(settings get global "$KEY" 2>&1)"
+    SETTING_RC=$?
+    case "$SETTING_VALUE" in
+      ''|*'Failure calling service'*|*'Exception'*) SETTING_RC=1 ;;
+    esac
+    if [ "$SETTING_RC" -eq 0 ]; then
+      printf '%s = %s\n' "$KEY" "$SETTING_VALUE"
+    else
+      printf '%s = UNVERIFIED (read-only settings get failed; rc=%s)\n' "$KEY" "$SETTING_RC"
+    fi
   done
   echo
   echo '[PER-PROCESS MEMINFO SUMMARIES — kB]'
