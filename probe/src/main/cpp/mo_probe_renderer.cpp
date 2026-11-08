@@ -4,6 +4,11 @@
 #include <vulkan/vulkan.h>
 #include <cstring>
 #include <string>
+#include <vector>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <cerrno>
+#include <cstdlib>
 
 namespace {
 using GetStringFn = const GLubyte* (GL_APIENTRY*)(GLenum);
@@ -84,4 +89,54 @@ Java_com_alwansan_mo_glesprobe_ProbeNativeRenderer_nativeVulkanName(JNIEnv* env,
     }
     vkDestroyInstance(instance, nullptr);
     return env->NewStringUTF(name.c_str());
+}
+
+
+/*
+ * P25: native libc stat/mkstemp/write/read/unlink on the MO-owned private filesDir.
+ * Called ONLY from the user-triggered owned-app storage test; no arbitrary shell,
+ * system directories, external app data, or persistent native data.
+ * Reports status only (never private filesystem paths).
+ */
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_alwansan_mo_glesprobe_ProbeNativeRenderer_nativeStorageRoundTrip(
+        JNIEnv* env, jclass, jstring directory) {
+    if (directory == nullptr) return env->NewStringUTF("UNAVAILABLE(null filesDir)");
+    const char* utf = env->GetStringUTFChars(directory, nullptr);
+    if (utf == nullptr) return env->NewStringUTF("UNAVAILABLE(path encoding)");
+    std::string dir(utf);
+    env->ReleaseStringUTFChars(directory, utf);
+
+    // Context.getFilesDir normally resolves to /data/user/0/... (or /data/data/...).
+    // Reject any untrusted external or system location if a container returns one.
+    if (dir.size() > 2048 || dir.rfind("/data/", 0) != 0) {
+        return env->NewStringUTF("REFUSED(non-private Android filesDir)");
+    }
+
+    struct stat st{};
+    bool directoryExists = ::stat(dir.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
+    std::string status = std::string("libc stat directory: ") +
+            (directoryExists ? "YES" : "NO");
+    std::string pattern = dir + "/mo_p25_native_XXXXXX";
+    std::vector<char> tmp(pattern.begin(), pattern.end());
+    tmp.push_back('\0');
+    int fd = ::mkstemp(tmp.data()); // O_EXCL, mode 0600; unique file we own
+    if (fd < 0) {
+        status += " / native I/O: FAIL(mkstemp errno=" + std::to_string(errno) + ")";
+        return env->NewStringUTF(status.c_str());
+    }
+
+    constexpr char payload[] = "MO-P25-NATIVE-IO";
+    char buffer[sizeof(payload)] = {};
+    bool ok = (::write(fd, payload, sizeof(payload)) == sizeof(payload))
+            && (::lseek(fd, 0, SEEK_SET) == 0)
+            && (::read(fd, buffer, sizeof(payload)) == sizeof(payload))
+            && (std::memcmp(buffer, payload, sizeof(payload)) == 0);
+    int ioError = ok ? 0 : errno;
+    int closeResult = ::close(fd);
+    int unlinkResult = ::unlink(tmp.data()); // ONLY the file made by mkstemp
+    status += ok && closeResult == 0 ? " / native I/O: PASS" :
+            " / native I/O: FAIL(errno=" + std::to_string(ioError) + ")";
+    status += unlinkResult == 0 ? " / cleanup: PASS" : " / cleanup: FAIL";
+    return env->NewStringUTF(status.c_str());
 }
