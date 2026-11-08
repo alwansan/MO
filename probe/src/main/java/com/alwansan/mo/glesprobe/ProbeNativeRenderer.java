@@ -19,6 +19,7 @@ public final class ProbeNativeRenderer {
     private static native String nativeVulkanName();
     private static native String nativeStorageRoundTrip(String privateFilesDir);
     private static native String nativeDispatchEvidence();
+    private static native String nativeP29GlesTrial();
     public static String eglEvidence() {
         if (!READY) return "EGL evidence: NDK module unavailable";
         try {
@@ -58,6 +59,22 @@ public final class ProbeNativeRenderer {
             return nativeDispatchEvidence();
         } catch (RuntimeException | LinkageError ex) {
             return "P27 symbols unavailable (" + ex.getClass().getSimpleName() + ")";
+        }
+    }
+
+    /**
+     * P29 intentionally hooks only our own JNI glGetString PLT import, only
+     * after pressing the test button with an EGL context on the same thread.
+     * The native trial unhooks before returning and reports the result.
+     */
+    public static String runP29OwnedTrial() {
+        if (!READY) return "P29 unavailable: MO native module not loaded";
+        try {
+            int status = com.bytedance.android.bytehook.ByteHook.init();
+            if (status != 0) return "P29 unavailable: ByteHook init status=" + status;
+            return nativeP29GlesTrial();
+        } catch (RuntimeException | LinkageError ex) {
+            return "P29 unavailable: " + ex.getClass().getSimpleName();
         }
     }
 
