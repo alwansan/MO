@@ -1,0 +1,155 @@
+name: MO - Renjana Own-App Container Lab
+
+# Separate, deliberately scoped experimental upstream build.
+# No original game installation, game APK rewrite, game data, or root.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/mo-renjana-owned-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mo-renjana-owned-lab-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-upstream-debug:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout pinned unmodified Renjana source
+        uses: actions/checkout@v4
+        with:
+          repository: josskixg/renjana
+          ref: 14302a57cd66114c6979acf7ca56c97f845a6841
+          persist-credentials: false
+          path: renjana
+
+      - name: Verify precise upstream revision and Apache license
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C renjana rev-parse HEAD)" = "14302a57cd66114c6979acf7ca56c97f845a6841"
+          grep -q "Apache License" renjana/LICENSE
+          grep -q "Version 2.0" renjana/LICENSE
+          echo "Pinned upstream SHA: $(git -C renjana rev-parse HEAD)"
+
+      - name: Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Use runner Android SDK 34 (not obsolete Android tools package)
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          SDKMANAGER="$(command -v sdkmanager || true)"
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort -V | tail -n 1)"
+          fi
+          test -x "$SDKMANAGER"
+          yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" --install "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+
+      # Never run the upstream gradle wrapper JAR. Run installed Gradle on
+      # a pinned commit with minimum read-only repository token permissions.
+      - name: Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Run Renjana upstream unit tests
+        working-directory: renjana
+        run: gradle --no-daemon --stacktrace :app:testDebugUnitTest
+
+      - name: Build experimental Renjana ARM64 debug APK
+        working-directory: renjana
+        run: gradle --no-daemon --stacktrace :app:assembleDebug
+
+      - name: Verify APK and package raw build with license
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p renjana-output
+          APK="$(find renjana/app/build/outputs/apk/debug -maxdepth 1 -name '*arm64-v8a*debug*.apk' -type f | head -n 1)"
+          test -n "$APK" && test -s "$APK"
+          cp "$APK" renjana-output/Renjana-v0.2.0-arm64-OWNED-LAB-debug.apk
+          cp renjana/LICENSE renjana-output/Renjana-APACHE-2.0-LICENSE.txt
+          unzip -t renjana-output/*.apk >/dev/null
+          SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          "$SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose renjana-output/*.apk
+          "$SDK_ROOT/build-tools/34.0.0/aapt" dump badging renjana-output/*.apk | grep -E '^package:|^sdkVersion:|^targetSdkVersion:'
+          "$SDK_ROOT/build-tools/34.0.0/aapt" dump badging renjana-output/*.apk | grep -q "name='com.fesu.renjana'"
+          sha256sum renjana-output/*.apk | tee renjana-output/SHA256SUMS.txt
+          printf 'Source: https://github.com/josskixg/renjana\nCommit: 14302a57cd66114c6979acf7ca56c97f845a6841\nLicense: Apache-2.0\nBuild: %s\nFor testing only: OWNED MO Layer Test app. Do not load games or Google accounts.\n' "$GITHUB_RUN_ID" > renjana-output/BUILD-PROVENANCE.txt
+
+      - name: Handoff verified outputs to release job
+        uses: actions/upload-artifact@v4
+        with:
+          name: renjana-owned-lab-verified
+          path: renjana-output/*
+          if-no-files-found: error
+          retention-days: 14
+
+  publish-explicitly-experimental:
+    needs: build-upstream-debug
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download verified build output
+        uses: actions/download-artifact@v4
+        with:
+          name: renjana-owned-lab-verified
+          path: release
+
+      - name: Validate handoff without executing untrusted upstream code
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd release
+          test -s Renjana-v0.2.0-arm64-OWNED-LAB-debug.apk
+          sha256sum -c SHA256SUMS.txt
+          unzip -t Renjana-v0.2.0-arm64-OWNED-LAB-debug.apk >/dev/null
+          test -s Renjana-APACHE-2.0-LICENSE.txt
+          test -s BUILD-PROVENANCE.txt
+
+      - name: Publish raw APK as labeled prerelease (not MO app)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="renjana-owned-lab-run${GITHUB_RUN_NUMBER}"
+          cat > release-notes.md <<EOF
+          # Renjana ARM64 — OWNED APPLICATION LAB, NOT OFFICIAL RENJANA/MO
+
+          This is an **unmodified, debug-signed build** of third-party Apache-2.0 source
+          at [josskixg/renjana](https://github.com/josskixg/renjana), pinned SHA
+          `14302a57cd66114c6979acf7ca56c97f845a6841`.
+          Independently built by MO for an **owned app virtualization experiment**.
+          Upstream author is not responsible for this test build.
+
+          **Do not add your Google account, Monster Hunter Outlanders, or other private apps.**
+          First test only the separately owned `com.alwansan.mo.glesprobe`
+          from MO's prior release in a disposable container.
+
+          There is **no evidence** Renjana will launch Unreal Engine games on Android 15,
+          change real native GLES/Vulkan GPU identity in guest apps, or unlock FPS.
+          It can **fall back to opening a real app without isolation**.
+          Do not use fallback launch as proof of virtualization.
+          No Root, unlocking, replacing game APK, or device/system setting changes are needed for this test.
+
+          License, provenance and SHA256SUMS.txt are supplied as separate assets.
+          Build: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          EOF
+          gh release create "$TAG"             release/Renjana-v0.2.0-arm64-OWNED-LAB-debug.apk             release/Renjana-APACHE-2.0-LICENSE.txt             release/BUILD-PROVENANCE.txt             release/SHA256SUMS.txt             --repo "$GITHUB_REPOSITORY"             --target "$GITHUB_SHA"             --title "Renjana OWNED APP Lab (unofficial test build #${GITHUB_RUN_NUMBER})"             --notes-file release-notes.md             --prerelease
+          echo "https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}"
